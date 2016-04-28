@@ -13,7 +13,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --config --hot --progress --colors --inline",
+    "start": "webpack-dev-server --config --hot --progress --colors --inline --content-base dist",
     "build": "./build"
   }
 }
