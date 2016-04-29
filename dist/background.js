@@ -1,5 +1,6 @@
 var requestCount = {}
 var initialize = function(urls, enabledTabId) {
+  console.log(enabledTabId);
   if(!urls){
     urls = ["<all_urls>"];
   }
@@ -11,7 +12,7 @@ var initialize = function(urls, enabledTabId) {
       requestCount[tabId] += 1;
       chrome.browserAction.setBadgeText({text: '' +  requestCount[tabId], tabId: tabId});
     },
-    {urls: urls, types: ["xmlhttprequest"]},
+    {urls: urls, types: ["xmlhttprequest"], tabId: enabledTabId},
     ["blocking"]
   );
   // Listen to beforesendheaders and use request ID to keep collection info.
@@ -28,4 +29,14 @@ var initialize = function(urls, enabledTabId) {
   })
 }
 
-initialize();
+var enableLogging = function(url, tabId) {
+  initialize(null, tabId);
+}
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if(request.message == "ENABLE_LOGGING"){
+    enableLogging(request.url, request.tabId)
+  }
+});
+
+//initialize();

@@ -6,11 +6,22 @@ class App extends React.Component {
     super(props);
   }
 
-
   renderRequests(requests) {
     return requests.map((request, index) => {
       return(<div key={index}>{request}</div>);
     })
+  }
+
+  // Extract into a separate class
+  enableLogging(url, tabId) {
+    chrome.runtime.sendMessage({message: "ENABLE_LOGGING", url: url, tabId: tabId});
+  }
+
+  onEnable(event) {
+    event.preventDefault();
+    chrome.tabs.getSelected(null, function(tab) {
+      this.enableLogging(tab.url, tab.id);
+    }.bind(this));
   }
 
   render() {
@@ -18,7 +29,7 @@ class App extends React.Component {
       <div>
         <Watch/>
         {this.renderRequests(this.props.requests)}
-        <button ref="enable">Check this page now!</button>
+        <button ref="enable" onClick={this.onEnable.bind(this)}>Enable</button>
       </div>
     )
   }
@@ -30,26 +41,5 @@ App.propTypes = {
 App.defaultProps = {
   requests: ["hello", "world"]
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  var checkPageButton = document.getElementById('checkPage');
-  checkPageButton.addEventListener('click', function() {
-
-    chrome.tabs.getSelected(null, function(tab) {
-      var d = document;
-
-      var f = d.createElement('form');
-      f.action = 'http://gtmetrix.com/analyze.html?bm';
-      f.method = 'post';
-      var i = d.createElement('input');
-      i.type = 'hidden';
-      i.name = 'url';
-      i.value = tab.url;
-      f.appendChild(i);
-      d.body.appendChild(f);
-      f.submit();
-    });
-  }, false);
-}, false);
 
 export default App
