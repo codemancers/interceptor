@@ -1,35 +1,45 @@
 import React from 'react';
-import Watch from './watch';
+//import Watch from './watch';
+import RequestList from './request_list'
+import MessageService from './message_service'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.messageService = new MessageService();
+    this.state = {
+      enabled: false
+    }
   }
 
-  renderRequests(requests) {
-    return requests.map((request, index) => {
-      return(<div key={index}>{request}</div>);
-    })
-  }
-
-  // Extract into a separate class
-  enableLogging(url, tabId) {
-    chrome.runtime.sendMessage({message: "ENABLE_LOGGING", url: url, tabId: tabId});
-  }
-
-  onEnable(event) {
+  onEnableToggle(event) {
     event.preventDefault();
-    chrome.tabs.getSelected(null, function(tab) {
-      this.enableLogging(tab.url, tab.id);
-    }.bind(this));
+    this.setState({enabled: !this.state.enabled}, () => {
+      if(this.state.enabled) {
+        chrome.tabs.getSelected(null, (tab) => {
+          this.messageService.enableLogging(tab.url, tab.id);
+        });
+      } else {
+        //chrome.tabs.getSelected(null, function(tab) {
+          //this.messageService.disableLogging(tab.url, tab.id);
+        //});
+      }
+    });
+  }
+
+  getEnableStatus(enabled) {
+    return enabled ? "Disable" : "Enable";
   }
 
   render() {
     return (
       <div>
-        <Watch/>
-        {this.renderRequests(this.props.requests)}
-        <button ref="enable" onClick={this.onEnable.bind(this)}>Enable</button>
+        {/* <Watch/> */}
+        <RequestList requests={this.props.requests}/>
+
+        <button ref="enable" onClick={this.onEnableToggle.bind(this)}>
+          {this.getEnableStatus(this.state.enabled)}
+        </button>
       </div>
     )
   }
@@ -39,7 +49,7 @@ App.propTypes = {
   requests: React.PropTypes.array.isRequired
 }
 App.defaultProps = {
-  requests: ["hello", "world"]
+  requests: []
 }
 
 export default App
