@@ -1,7 +1,10 @@
+import MessageService from './message_service'
+
 class BackgroundWorker {
 
   constructor() {
     this.data = {};
+    this.messageService = new MessageService();
   }
 
   startMessageListener() {
@@ -36,6 +39,7 @@ class BackgroundWorker {
       (details) => {
         this.data[tabId].count += 1;
         chrome.browserAction.setBadgeText({text: '' + this.data[tabId].count, tabId: tabId});
+        this.messageService.logRequest(tabId, details);
       },
       {urls: ["<all_urls>"], types: ["xmlhttprequest"], tabId: tabId},
       ["blocking"]
