@@ -2,10 +2,14 @@ var path = require("path")
 var webpack = require('webpack')
 
 module.exports = {
-  entry: "./app/entry.js",
+  entry: {
+    popup: "./app/popup.js",
+    background: "./app/background.js",
+    content_script: "./app/content_script.js"
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "bundle.js"
+    filename: "[name].js"
   },
   module: {
     loaders: [
