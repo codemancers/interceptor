@@ -8,4 +8,12 @@ export default class MessageService {
     //chrome.runtime.sendMessage({message: "DISABLE_LOGGING", url: url, tabId: tabId});
     // NOOP for now
   }
+
+  logRequest(tabId, request) {
+    chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request: request});
+  }
+
+  getStore(tabId, callback) {
+    chrome.tabs.sendMessage(tabId, {message: "GET_STORE"}, callback)
+  }
 }
