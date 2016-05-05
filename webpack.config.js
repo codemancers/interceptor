@@ -1,5 +1,6 @@
 var path = require("path")
 var webpack = require('webpack')
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
   entry: {
@@ -17,6 +18,10 @@ module.exports = {
         test: /\.js$/,
         loaders: ["react-hot", "babel"],
         include: path.join(__dirname, 'app')
+      },
+      { test: /\.css$/,
+        loader: "style-loader!css-loader",
+        include: path.join(__dirname, 'app')
       }
     ]
   },
@@ -25,6 +30,7 @@ module.exports = {
       'process.env': {
         'NODE_ENV': `"${process.env.NODE_ENV}"`
       }
-    })
+    }),
+    new CommonsChunkPlugin("common.js", ["popup", "content_script"])
   ]
 };
