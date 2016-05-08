@@ -1,41 +1,65 @@
+import MessageService from './message_service'
+
 class BackgroundWorker {
 
   constructor() {
     this.data = {};
+    this.messageService = new MessageService();
   }
 
   startMessageListener() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      console.log(`Received message ${request.message}`);
-      if(request.message == "ENABLE_LOGGING"){
-        this.enableLogging(request.tabId);
+      switch (request.message) {
+        case 'ENABLE_LOGGING':
+          this.enableLogging(request.tabId);
+          break;
+        case 'GET_ENABLED_STATUS':
+          let tabId = request.tabId || sender.tab.id;
+          if(this.data[tabId]) {
+            sendResponse(this.data[tabId].enabled);
+          } else {
+            sendResponse(false);
+          }
+          break;
       }
     });
   }
 
-  //monitorTabsForEnabledUrls() {
-    //chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      //if(changeInfo.status == "loading") {
-        //this.startTrackingRequests(tabId);
-      //}
-    //});
-  //}
+  startListeningToPageLoad() {
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      if(this.enabledForTab(tabId) && changeInfo.status == "loading") {
+        this.resetData(tabId);
+      }
+    });
+  }
+
+  notifyForegroundWorker(tabId) {
+    chrome.tabs.sendMessage(tabId, {message: "ENABLE_LOGGING"});
+  }
 
   enableLogging(tabId) {
+    this.notifyForegroundWorker(tabId);
     this.startTrackingRequests(tabId);
   }
 
   resetData(tabId) {
-    this.data[tabId] = {count: 0, requests: []};
+    this.data[tabId] = this.data[tabId] || {};
+    this.data[tabId].count = 0;
+    this.data[tabId].requests = [];
+  }
+
+  enabledForTab(tabId) {
+    return this.data[tabId] && this.data[tabId].enabled
   }
 
   startTrackingRequests(tabId) {
-    console.log(`Starting tracking for tab: ${tabId}`);
     this.resetData(tabId);
+    this.data[tabId].enabled = true;
     chrome.webRequest.onBeforeRequest.addListener(
       (details) => {
         this.data[tabId].count += 1;
-        chrome.browserAction.setBadgeText({text: '' + this.data[tabId].count, tabId: tabId});
+        chrome.browserAction.setBadgeText({text: `${this.data[tabId].count}`, tabId: tabId});
+        this.messageService.logRequest(tabId, details);
       },
       {urls: ["<all_urls>"], types: ["xmlhttprequest"], tabId: tabId},
       ["blocking"]
@@ -44,5 +68,5 @@ class BackgroundWorker {
 }
 
 let worker = new BackgroundWorker();
+worker.startListeningToPageLoad();
 worker.startMessageListener();
-//worker.monitorTabsForEnabledUrls();

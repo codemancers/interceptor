@@ -11,7 +11,7 @@ const RequestList = (props) => {
     <table>
       <thead>
         <tr>
-          <th>URL</th>
+          <th>URLs</th>
         </tr>
       </thead>
       <tbody>

@@ -1,0 +1,55 @@
+import { requestStore } from './store'
+import React from "react"
+import ReactDOM from "react-dom"
+import App from './app';
+import MessageService from './message_service'
+
+
+require("./content_script.css");
+
+class ForegroundWorker {
+  constructor() {
+    this.messageService = new MessageService();
+    this.requestStore = requestStore;
+  }
+
+  showWidgetIfEnabled() {
+    this.messageService.getEnabledStatus((enabled) => {
+      if(enabled){
+        this.showWidget();
+      }
+    });
+  }
+
+  showWidget() {
+    let widget = document.createElement("div");
+    widget.setAttribute("id", "interceptor-container");
+    widget.innerHTML = "Hello world";
+    document.body.insertBefore(widget, document.body.firstChild);
+    this.requestStore.subscribe(() => {
+      this.renderWidget(this.requestStore.getState());
+    });
+    this.renderWidget(this.requestStore.getState());
+  }
+
+  renderWidget(requests) {
+    ReactDOM.render(<App requests={requests}/>, document.getElementById('interceptor-container'));
+  }
+
+  startMessageListener() {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      switch (request.message) {
+        case 'ENABLE_LOGGING':
+          this.showWidget();
+          break;
+        case 'LOG_REQUEST':
+          this.requestStore.dispatch({type: "ADD_REQUEST", request: request.request});
+          break;
+      }
+    })
+  }
+}
+
+let worker = new ForegroundWorker();
+worker.showWidgetIfEnabled();
+worker.startMessageListener();
