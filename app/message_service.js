@@ -21,6 +21,10 @@ export default class MessageService {
     chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS"}, callback);
   }
 
+  getRequests(callback) {
+    chrome.runtime.sendMessage({message: "GET_REQUESTS"}, callback);
+  }
+
   getEnabledStatusForTab(tabId, callback) {
     chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId: tabId}, callback);
   }

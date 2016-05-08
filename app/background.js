@@ -9,16 +9,23 @@ class BackgroundWorker {
 
   startMessageListener() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      let tabId = request.tabId || sender.tab.id;
       switch (request.message) {
         case 'ENABLE_LOGGING':
           this.enableLogging(request.tabId);
           break;
         case 'GET_ENABLED_STATUS':
-          let tabId = request.tabId || sender.tab.id;
           if(this.data[tabId]) {
             sendResponse(this.data[tabId].enabled);
           } else {
             sendResponse(false);
+          }
+          break;
+        case 'GET_REQUESTS':
+          if(this.data[tabId]) {
+            sendResponse(this.data[tabId].requests);
+          } else {
+            sendResponse([]);
           }
           break;
       }
@@ -58,6 +65,7 @@ class BackgroundWorker {
     chrome.webRequest.onBeforeRequest.addListener(
       (details) => {
         this.data[tabId].count += 1;
+        this.data[tabId].requests.push(details);
         chrome.browserAction.setBadgeText({text: `${this.data[tabId].count}`, tabId: tabId});
         this.messageService.logRequest(tabId, details);
       },

@@ -10,4 +10,6 @@ function requestReducer(state=[], action) {
   }
 }
 
-export var requestStore = createStore(requestReducer);
+export const initializeStore = function(requests) {
+  return createStore(requestReducer, requests);
+}
