@@ -13,6 +13,10 @@ export default class MessageService {
     chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request: request});
   }
 
+  resetData(tabId) {
+    chrome.tabs.sendMessage(tabId, {message: "RESET_DATA"});
+  }
+
   getStore(callback) {
     chrome.tabs.sendMessage(tabId, {message: "GET_STORE"}, callback)
   }

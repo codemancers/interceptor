@@ -10,9 +10,10 @@ require("./content_script.css");
 class ForegroundWorker {
   constructor() {
     this.messageService = new MessageService();
-    this.requestStore = initializeStore([]);
     this.messageService.getRequests((requests) => {
       this.requestStore = initializeStore(requests);
+      this.showWidgetIfEnabled();
+      this.startMessageListener();
     });
   }
 
@@ -47,11 +48,12 @@ class ForegroundWorker {
         case 'LOG_REQUEST':
           this.requestStore.dispatch({type: "ADD_REQUEST", request: request.request});
           break;
+        case 'RESET_DATA':
+          this.requestStore.dispatch({type: "CLEAR_REQUESTS"});
+          break;
       }
     })
   }
 }
 
 let worker = new ForegroundWorker();
-worker.showWidgetIfEnabled();
-worker.startMessageListener();

@@ -53,6 +53,7 @@ class BackgroundWorker {
     this.data[tabId] = this.data[tabId] || {};
     this.data[tabId].count = 0;
     this.data[tabId].requests = [];
+    this.messageService.resetData(tabId);
   }
 
   enabledForTab(tabId) {
