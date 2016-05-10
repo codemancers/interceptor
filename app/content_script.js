@@ -1,4 +1,4 @@
-import { requestStore } from './store'
+import { initializeStore } from './store'
 import React from "react"
 import ReactDOM from "react-dom"
 import App from './app';
@@ -10,7 +10,11 @@ require("./content_script.css");
 class ForegroundWorker {
   constructor() {
     this.messageService = new MessageService();
-    this.requestStore = requestStore;
+    this.messageService.getRequests((requests) => {
+      this.requestStore = initializeStore(requests);
+      this.showWidgetIfEnabled();
+      this.startMessageListener();
+    });
   }
 
   showWidgetIfEnabled() {
@@ -24,7 +28,6 @@ class ForegroundWorker {
   showWidget() {
     let widget = document.createElement("div");
     widget.setAttribute("id", "interceptor-container");
-    widget.innerHTML = "Hello world";
     document.body.insertBefore(widget, document.body.firstChild);
     this.requestStore.subscribe(() => {
       this.renderWidget(this.requestStore.getState());
@@ -45,11 +48,12 @@ class ForegroundWorker {
         case 'LOG_REQUEST':
           this.requestStore.dispatch({type: "ADD_REQUEST", request: request.request});
           break;
+        case 'RESET_DATA':
+          this.requestStore.dispatch({type: "CLEAR_REQUESTS"});
+          break;
       }
     })
   }
 }
 
 let worker = new ForegroundWorker();
-worker.showWidgetIfEnabled();
-worker.startMessageListener();

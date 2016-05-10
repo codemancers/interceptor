@@ -1,8 +1,8 @@
 import React from 'react';
 
 var renderRequests = function(requests) {
-  return requests.map(function(request){
-    return <tr>{request.url}</tr>
+  return requests.map(function(request, index){
+    return <tr key={index}>{request.url}</tr>
   });
 }
 

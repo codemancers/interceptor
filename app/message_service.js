@@ -13,12 +13,20 @@ export default class MessageService {
     chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request: request});
   }
 
+  resetData(tabId) {
+    chrome.tabs.sendMessage(tabId, {message: "RESET_DATA"});
+  }
+
   getStore(callback) {
     chrome.tabs.sendMessage(tabId, {message: "GET_STORE"}, callback)
   }
 
   getEnabledStatus(callback) {
     chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS"}, callback);
+  }
+
+  getRequests(callback) {
+    chrome.runtime.sendMessage({message: "GET_REQUESTS"}, callback);
   }
 
   getEnabledStatusForTab(tabId, callback) {
