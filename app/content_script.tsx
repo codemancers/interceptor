@@ -3,9 +3,6 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import App from './app';
 import * as MessageService from './message_service'
-// Note: This might not work since we don't have a webpack-based loader. Need
-// to figure out if this is natively supported in TS.
-import styles from './content_script.css'
 import { RequestObj } from './request_list'
 
 
@@ -33,8 +30,8 @@ class ForegroundWorker {
   showWidget() {
     const widget = document.createElement("div");
     widget.setAttribute("id", "interceptor-container");
-    widget.setAttribute("class", styles['interceptor-container']);
     document.body.insertBefore(widget, document.body.firstChild);
+
     this.requestStore.subscribe(() => {
       this.renderWidget(this.requestStore.getState());
     });

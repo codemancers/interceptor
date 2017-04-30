@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 import { RequestObj } from './request_list'
 
-interface Action  {
+interface Action {
   type: string
   request?: RequestObj
 }

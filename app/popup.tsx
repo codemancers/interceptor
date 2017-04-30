@@ -6,11 +6,10 @@ import * as MessageService from './message_service'
 
 const enableFunc = () => {
   chrome.tabs.getSelected(tab => {
-    if (tab.url && tab.id) {
+   if (tab.url && tab.id) {
       MessageService.enableLogging(tab.url, tab.id);
     }
   });
-  window.close();
 }
 
 const disableFunc = () => {
@@ -19,13 +18,12 @@ const disableFunc = () => {
       MessageService.disableLogging(tab.url, tab.id);
     }
   });
-  window.close();
 }
 
 interface PopupProps { enabled: boolean }
 
 const Popup = (props: PopupProps) => {
-  const onClickFunc = props.enabled ? enableFunc : disableFunc;
+  const onClickFunc = props.enabled ? disableFunc : enableFunc;
   const buttonDesc = props.enabled ? 'Disable': 'Enable';
 
   return (
@@ -48,4 +46,6 @@ chrome.tabs.query(queryParams, tabs => {
       ReactDOM.render(<Popup enabled={enabled} />, document.getElementById('root'));
     });
   }
+
+  ReactDOM.render(<Popup enabled={false} />, document.getElementById('root'));
 });
