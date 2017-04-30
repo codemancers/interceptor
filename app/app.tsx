@@ -1,23 +1,8 @@
-import React from 'react';
-//import Watch from './watch';
-import RequestList from './request_list'
+import * as React from 'react';
+import RequestList, { RequestObj } from './request_list'
 
+export interface AppProps { requests: Array<RequestObj> }
 
-const App = (props) => {
-  return(
-    <div>
-      {/* <Watch/> */}
-      <RequestList requests={props.requests}/>
-    </div>
-  );
-}
-
-App.defaultProps = {
-  requests: []
-}
-
-App.propTypes = {
-  requests: React.PropTypes.array.isRequired
-}
+const App = (props: AppProps) => <RequestList requests={props.requests} />
 
 export default App
