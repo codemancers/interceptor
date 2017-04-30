@@ -4,25 +4,29 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
   entry: {
-    popup: "./app/popup.js",
-    background: "./app/background.js",
-    content_script: "./app/content_script.js"
+    popup: "./app/popup.tsx",
+    background: "./app/background.ts",
+    content_script: "./app/content_script.tsx"
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "[name].js"
   },
+  resolve: {
+    extensions: ["", ".ts", ".tsx", ".js", ".json"]
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        loaders: ["react-hot", "babel"],
-        include: path.join(__dirname, 'app')
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader"
       },
       { test: /\.css$/,
-        loader: "style-loader!css-loader",
-        include: path.join(__dirname, 'app')
+        loader: "style-loader!css-loader"
       }
+    ],
+    preLoaders: [
+      { test: /\.js$/, loader: "source-map-loader" }
     ]
   },
   plugins: [
