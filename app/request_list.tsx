@@ -1,7 +1,8 @@
+/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import * as React from 'react';
 
 // TODO: Find out what type a request is, if possible
-export interface RequestObj { url: string, request: any }
+export type RequestObj = chrome.webRequest.WebRequestBodyDetails;
 
 const renderRequests = (requests: Array<RequestObj>) =>
   requests.map((request, index) =>

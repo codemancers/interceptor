@@ -1,21 +1,27 @@
-import React from 'react';
+import * as React from 'react';
 
-class Watch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      watchRegex: "*"
-    }
-  }
+interface WatchProps {
 
-  onChange(event) {
-    this.setState({watchRegex: event.target.value});
+}
+
+interface WatchState {
+  watchRegex: string
+}
+
+class Watch extends React.Component<WatchProps, WatchState> {
+  state = { watchRegex: "*" }
+
+  handleOnChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    const target = event.currentTarget;
+
+    this.setState({watchRegex: target.value});
   }
 
   render() {
     return (
       <div>
-        <input value={this.state.watchRegex} onChange={this.onChange.bind(this)}/>
+        <input value={this.state.watchRegex} onChange={this.handleOnChange} />
       </div>
     )
   }
