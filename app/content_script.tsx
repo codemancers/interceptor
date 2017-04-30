@@ -1,15 +1,15 @@
 import { initializeStore } from './store'
-import React from "react"
-import ReactDOM from "react-dom"
+import * as React from "react"
+import * as ReactDOM from "react-dom"
 import App from './app';
-import MessageService from './message_service'
+import * as MessageService from './message_service'
 
 
 require("./content_script.css");
 
 class ForegroundWorker {
   constructor() {
-    this.messageService = new MessageService();
+    this.messageService = MessageService;
     this.messageService.getRequests((requests) => {
       this.requestStore = initializeStore(requests);
       this.showWidgetIfEnabled();

@@ -1,40 +1,36 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import MessageService from './message_service'
+import * as React from "react"
+import * as ReactDOM from "react-dom"
+import * as MessageService from './message_service'
 
-let messageService = new MessageService();
-
-let enable = () => {
+const enableFunc = () => {
   chrome.tabs.getSelected(null, (tab) => {
-    messageService.enableLogging(tab.url, tab.id);
+    MessageService.enableLogging(tab.url, tab.id);
   });
   window.close();
 }
 
-let disable = () => {
+const disableFunc = () => {
   chrome.tabs.getSelected(null, (tab) => {
-    messageService.disableLogging(tab.url, tab.id);
+    MessageService.disableLogging(tab.url, tab.id);
   });
   window.close();
 }
 
-let statusButton = (enabled) => {
-  if(enabled){
-    return <button onClick={disable}>Disable</button>
-  } else {
-    return <button onClick={enable}>Enable</button>
-  }
-}
-const Popup = (props) => {
-  return(
-    <div>
-      {statusButton(props.enabled)}
-    </div>
+interface PopupProps { enabled: boolean }
+
+const Popup = (props: PopupProps) => {
+  const onClickFunc = props.enabled ? enableFunc : disableFunc;
+  const buttonDesc = props.enabled ? 'Disable': 'Enable';
+
+  return (
+    <button type='button' onClick={onClickFunc}>
+      {buttonDesc}
+    </button>
   );
 }
 
 chrome.tabs.query({ active: true, currentWindow: true}, (tabs) => {
-  messageService.getEnabledStatusForTab(tabs[0].id, (enabled) => {
-    ReactDOM.render(<Popup enabled={enabled}/>, document.getElementById('root'));
+  MessageService.getEnabledStatusForTab(tabs[0].id, (enabled: boolean) => {
+    ReactDOM.render(<Popup enabled={enabled} />, document.getElementById('root'));
   });
 });

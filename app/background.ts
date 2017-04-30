@@ -1,10 +1,10 @@
-import MessageService from './message_service'
+import * as MessageService from './message_service'
 
 class BackgroundWorker {
 
   constructor() {
     this.data = {};
-    this.messageService = new MessageService();
+    this.messageService = MessageService;
   }
 
   startMessageListener() {
