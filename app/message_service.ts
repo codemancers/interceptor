@@ -1,34 +1,36 @@
+import { RequestObj } from './request_list';
+type GenericCallback = (_: any) => void;
+
 // Outgoing
-export function enableLogging(url, tabId) {
-  chrome.runtime.sendMessage({message: "ENABLE_LOGGING", url: url, tabId: tabId});
+export function enableLogging(url: string, tabId: number) {
+  if (url) {
+    chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url: url, tabId: tabId });
+  }
 }
 
-export function disableLogging(url, tabId) {
-  //chrome.runtime.sendMessage({message: "DISABLE_LOGGING", url: url, tabId: tabId});
-  // NOOP for now
+export function disableLogging(url: string | undefined, tabId: number) {
+  if (url) {
+    chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url: url, tabId: tabId });
+  }
 }
 
-export function logRequest(tabId, request) {
+export function logRequest(tabId: number, request: RequestObj) {
   chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request: request});
 }
 
-export function resetData(tabId) {
+export function resetData(tabId: number) {
   chrome.tabs.sendMessage(tabId, {message: "RESET_DATA"});
 }
 
-export function getStore(callback) {
-  chrome.tabs.sendMessage(tabId, {message: "GET_STORE"}, callback)
-}
-
-export function getEnabledStatus(callback) {
+export function getEnabledStatus(callback: GenericCallback) {
   chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS"}, callback);
 }
 
-export function getRequests(callback) {
+export function getRequests(callback: GenericCallback) {
   chrome.runtime.sendMessage({message: "GET_REQUESTS"}, callback);
 }
 
-export function getEnabledStatusForTab(tabId, callback) {
+export function getEnabledStatusForTab(tabId: number, callback: GenericCallback) {
   chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId: tabId}, callback);
 }
 

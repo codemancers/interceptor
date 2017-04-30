@@ -6,14 +6,18 @@ import * as MessageService from './message_service'
 
 const enableFunc = () => {
   chrome.tabs.getSelected(tab => {
-    MessageService.enableLogging(tab.url, tab.id);
+    if (tab.url && tab.id) {
+      MessageService.enableLogging(tab.url, tab.id);
+    }
   });
   window.close();
 }
 
 const disableFunc = () => {
   chrome.tabs.getSelected(tab => {
-    MessageService.disableLogging(tab.url, tab.id);
+    if (tab.url && tab.id) {
+      MessageService.disableLogging(tab.url, tab.id);
+    }
   });
   window.close();
 }
@@ -37,7 +41,11 @@ const queryParams : chrome.tabs.QueryInfo = {
 }
 
 chrome.tabs.query(queryParams, tabs => {
-  MessageService.getEnabledStatusForTab(tabs[0].id, (enabled: boolean) => {
-    ReactDOM.render(<Popup enabled={enabled} />, document.getElementById('root'));
-  });
+  const id = tabs[0].id;
+
+  if (id) {
+    MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
+      ReactDOM.render(<Popup enabled={enabled} />, document.getElementById('root'));
+    });
+  }
 });
