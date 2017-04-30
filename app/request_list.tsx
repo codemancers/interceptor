@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-export interface RequestObj { url: string }
+// TODO: Find out what type a request is, if possible
+export interface RequestObj { url: string, request: any }
 
-var renderRequests = function(requests: Array<RequestObj>) {
-  return requests.map(function(request, index){
-    return <tr key={index}>{request.url}</tr>
-  });
-}
+const renderRequests = (requests: Array<RequestObj>) =>
+  requests.map((request, index) =>
+    <tr key={index}>{request.url}</tr>
+  );
 
 export interface RequestListProps { requests: Array<RequestObj> }
 
