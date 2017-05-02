@@ -3,42 +3,48 @@ import * as MessageService from './message_service'
 import { RequestObj } from './request_list'
 
 interface Data {
+  tabId: number,
   enabled: boolean,
   requests: Array<RequestObj>
   count: number
-}
+};
+
+const DEFAULT_DATA : Data = {
+  tabId: -1,
+  enabled: false,
+  requests: [],
+  count: 0
+};
 
 class BackgroundWorker {
-  data: Array<Data>
+  data : Array<Data> = [];
 
-  constructor() {
-    this.data = [];
+  findItem = (tabId : number) => {
+    for (let index = 0; index < this.data.length; index++) {
+      const data = this.data[index];
+
+      if (Boolean(data) && data.tabId === tabId) {
+        return data;
+      }
+    }
+
+    return DEFAULT_DATA;
   }
 
   startMessageListener() {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (!request.tabId || !sender.tab || !sender.tab.id) {
-        return;
-      }
+    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+      const tabId = request.tabId;
+      const data = this.findItem(tabId);
 
-      const tabId = request.tabId || sender.tab.id;
       switch (request.message) {
         case 'ENABLE_LOGGING':
           this.enableLogging(request.tabId);
           break;
         case 'GET_ENABLED_STATUS':
-          if(this.data[tabId]) {
-            sendResponse(this.data[tabId].enabled);
-          } else {
-            sendResponse(false);
-          }
+          sendResponse(data.enabled);
           break;
         case 'GET_REQUESTS':
-          if(this.data[tabId]) {
-            sendResponse(this.data[tabId].requests);
-          } else {
-            sendResponse([]);
-          }
+          sendResponse(data.requests);
           break;
       }
     });
