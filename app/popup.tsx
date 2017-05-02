@@ -1,32 +1,73 @@
-/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
-
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import * as MessageService from './message_service'
 
-const enableFunc = () => {
-  chrome.tabs.getSelected(tab => {
-    MessageService.enableLogging(tab.url, tab.id);
-  });
+const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
+
+const isChromeUrl = (url : string) => {
+  return CHROME_URL_REGEX.test(url);
 }
 
-const disableFunc = () => {
-  chrome.tabs.getSelected(tab => {
-    MessageService.disableLogging(tab.url, tab.id);
-  });
-}
+type ButtonLabel = 'Enable' | 'Disable';
+interface PopupProps { enabled: boolean, tabId: number, tabUrl: string };
+interface PopupState { enabled: boolean, label: ButtonLabel, errorMessage?: string };
 
-interface PopupProps { enabled: boolean }
+class Popup extends React.Component<PopupProps, PopupState> {
+  constructor(props: PopupProps) {
+    super(props);
+    this.state = {
+      enabled: props.enabled,
+      label: props.enabled ? 'Disable' : 'Enable',
+      errorMessage: ''
+    };
+  }
 
-const Popup = (props: PopupProps) => {
-  const onClickFunc = props.enabled ? disableFunc : enableFunc;
-  const buttonDesc = props.enabled ? 'Disable': 'Enable';
+  isUrlInValid = (tabUrl : string) => {
+    return !tabUrl || isChromeUrl(tabUrl);
+  }
 
-  return (
-    <button type='button' onClick={onClickFunc}>
-      {buttonDesc}
-    </button>
-  );
+  handleClick = (_ : React.SyntheticEvent<HTMLButtonElement>) => {
+    const isEnabled = this.state.enabled;
+    const willBeEnabled = !isEnabled;
+    const label = willBeEnabled ? 'Disable' : 'Enable';
+    const { tabId, tabUrl } = this.props;
+
+    if(this.isUrlInValid(tabUrl)) {
+      this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
+      return;
+    }
+
+    const newState: PopupState = {
+      enabled: willBeEnabled,
+      label,
+      errorMessage: ''
+    };
+
+    this.setState(newState, () => {
+      if (isEnabled) {
+        MessageService.enableLogging(tabUrl, tabId);
+      } else {
+        MessageService.disableLogging(tabUrl, tabId);
+      }
+    });
+  }
+
+  render () {
+    const errorMessage = this.state.errorMessage;
+
+    return (
+      <div>
+        {
+          errorMessage
+            ? <p>{errorMessage}</p>
+            : null
+        }
+        <button type='button' onClick={this.handleClick}>
+          {this.state.label}
+        </button>
+      </div>
+    );
+  }
 }
 
 const queryParams : chrome.tabs.QueryInfo = {
@@ -37,10 +78,11 @@ const queryParams : chrome.tabs.QueryInfo = {
 chrome.tabs.query(queryParams, tabs => {
   const tab = tabs[0];
   if (!tab) return;
-  const id = tabs[0].id;
-  if (typeof id === 'undefined') return;
+
+  const { id, url } = tab;
+  if (typeof id === 'undefined' || typeof url === 'undefined') return;
 
   MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
-    ReactDOM.render(<Popup enabled={enabled} />, document.getElementById('root'));
+    ReactDOM.render(<Popup enabled={enabled} tabId={id} tabUrl={url} />, document.getElementById('root'));
   });
 });

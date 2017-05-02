@@ -2,16 +2,12 @@ import { RequestObj } from './request_list';
 type GenericCallback = (_: any) => void;
 
 // Outgoing
-export function enableLogging(url: string | undefined, tabId: number | undefined) {
-  if (url && tabId) {
-    chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url: url, tabId: tabId });
-  }
+export function enableLogging(url: string, tabId: number) {
+  chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url: url, tabId: tabId });
 }
 
-export function disableLogging(url: string | undefined, tabId: number | undefined) {
-  if (url) {
-    chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url: url, tabId: tabId });
-  }
+export function disableLogging(url: string, tabId: number) {
+  chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url: url, tabId: tabId });
 }
 
 export function logRequest(tabId: number, request: RequestObj) {
