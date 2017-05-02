@@ -1,5 +1,4 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
-import * as MessageService from './message_service'
 import { RequestObj } from './request_list'
 
 interface Data {
@@ -28,7 +27,8 @@ class BackgroundWorker {
       }
     }
 
-    return DEFAULT_DATA;
+    // Lazy code for object cloning
+    return JSON.parse(JSON.stringify(DEFAULT_DATA));
   }
 
   startMessageListener() {
@@ -38,7 +38,7 @@ class BackgroundWorker {
 
       switch (request.message) {
         case 'ENABLE_LOGGING':
-          this.enableLogging(request.tabId);
+          this.startTrackingRequests(tabId);
           break;
         case 'GET_ENABLED_STATUS':
           sendResponse(data.enabled);
@@ -50,50 +50,41 @@ class BackgroundWorker {
     });
   }
 
-  startListeningToPageLoad() {
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
-      if(this.enabledForTab(tabId) && changeInfo.status == "loading") {
-        this.resetData(tabId);
-      }
-    });
-  }
-
-  notifyForegroundWorker(tabId: number) {
-    chrome.tabs.sendMessage(tabId, {message: "ENABLE_LOGGING"});
-  }
-
-  enableLogging(tabId: number) {
-    this.notifyForegroundWorker(tabId);
-    this.startTrackingRequests(tabId);
-  }
-
-  resetData(tabId: number) {
-    this.data[tabId] = this.data[tabId] || {};
-    this.data[tabId].count = 0;
-    this.data[tabId].requests = [];
-    MessageService.resetData(tabId);
-  }
-
   enabledForTab(tabId: number) {
-    return this.data[tabId] && this.data[tabId].enabled
+    return this.findItem(tabId).enabled;
   }
 
   startTrackingRequests(tabId: number) {
-    this.resetData(tabId);
-    this.data[tabId].enabled = true;
+    const currentItem = this.findItem(tabId);
+
+    if (currentItem.tabId === DEFAULT_DATA.tabId) {
+      // This means that this is a new object. In this case, set the tabId to the current one.
+      currentItem.tabId = tabId;
+      currentItem.enabled = true;
+    }
+
+    // Insert the current object into the main list
+    this.data.push(currentItem);
+
     chrome.webRequest.onBeforeRequest.addListener(
       (details) => {
-        this.data[tabId].count += 1;
-        this.data[tabId].requests.push(details);
-        chrome.browserAction.setBadgeText({text: `${this.data[tabId].count}`, tabId: tabId});
-        MessageService.logRequest(tabId, details);
+        // Since this is a closure, the currentItem object when modified, will get reflected in the Array, thanks to JS.
+        currentItem.count += 1;
+        currentItem.requests.push(details);
+
+        chrome.browserAction.setBadgeText({
+          text: `${currentItem.count}`,
+          tabId
+        });
       },
-      {urls: ["<all_urls>"], types: ["xmlhttprequest"], tabId: tabId},
+      {
+        urls: ["<all_urls>"],
+        types: ["xmlhttprequest"],
+        tabId: tabId
+      },
       ["blocking"]
     );
   }
 }
 
-let worker = new BackgroundWorker();
-worker.startListeningToPageLoad();
-worker.startMessageListener();
+(new BackgroundWorker()).startMessageListener();
