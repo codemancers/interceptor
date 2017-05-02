@@ -46,9 +46,9 @@ class Popup extends React.Component<PopupProps, PopupState> {
 
     this.setState(newState, () => {
       if (isEnabled) {
-        MessageService.enableLogging(tabUrl, tabId);
-      } else {
         MessageService.disableLogging(tabUrl, tabId);
+      } else {
+        MessageService.enableLogging(tabUrl, tabId);
       }
     });
   }
