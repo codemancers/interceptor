@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import * as MessageService from './message_service'
+import * as cx from 'classnames';
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 
@@ -8,7 +9,7 @@ const isChromeUrl = (url : string) => {
   return CHROME_URL_REGEX.test(url);
 }
 
-type ButtonLabel = 'Enable' | 'Disable';
+type ButtonLabel = 'Start Listening' | 'Stop Listening';
 interface PopupProps { enabled: boolean, tabId: number, tabUrl: string };
 interface PopupState { enabled: boolean, label: ButtonLabel, errorMessage?: string };
 
@@ -17,7 +18,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
     super(props);
     this.state = {
       enabled: props.enabled,
-      label: props.enabled ? 'Disable' : 'Enable',
+      label: props.enabled ? 'Stop Listening' : 'Start Listening',
       errorMessage: ''
     };
   }
@@ -29,7 +30,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
   handleClick = (_ : React.SyntheticEvent<HTMLButtonElement>) => {
     const isEnabled = this.state.enabled;
     const willBeEnabled = !isEnabled;
-    const label = willBeEnabled ? 'Disable' : 'Enable';
+    const label = willBeEnabled ? 'Stop Listening' : 'Start Listening';
     const { tabId, tabUrl } = this.props;
 
     if(this.isUrlInValid(tabUrl)) {
@@ -54,15 +55,23 @@ class Popup extends React.Component<PopupProps, PopupState> {
 
   render () {
     const errorMessage = this.state.errorMessage;
+    const isListening = this.state.enabled;
+    const buttonClass = cx(
+      'button',
+      {
+        'button-start-listening': !isListening,
+        'button-stop-listening': isListening
+      }
+    );
 
     return (
-      <div>
+      <div className='popup'>
         {
           errorMessage
-            ? <p>{errorMessage}</p>
+            ? <p className='popup-error-message popup-error'>{errorMessage}</p>
             : null
         }
-        <button type='button' onClick={this.handleClick}>
+        <button type='button' onClick={this.handleClick} className={buttonClass}>
           {this.state.label}
         </button>
       </div>

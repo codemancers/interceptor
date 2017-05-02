@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/chrome": "0.0.46",
+    "@types/classnames": "^0.0.32",
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
     "classnames": "^2.2.5"
