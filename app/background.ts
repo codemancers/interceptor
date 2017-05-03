@@ -19,16 +19,12 @@ class BackgroundWorker {
   data : Array<Data> = [];
 
   findItem = (tabId : number) => {
-    for (let index = 0; index < this.data.length; index++) {
-      const data = this.data[index];
-
-      if (Boolean(data) && data.tabId === tabId) {
-        return data;
-      }
-    }
+    // Not using a polyfill because this is supported in Chrome v. > 45. We
+    // might have to add some restriction in manifest related to this
+    const data = this.data.find(item => item.tabId === tabId) || DEFAULT_DATA;
 
     // Lazy code for object cloning
-    return JSON.parse(JSON.stringify(DEFAULT_DATA));
+    return JSON.parse(JSON.stringify(data));
   }
 
   startMessageListener() {
@@ -61,7 +57,8 @@ class BackgroundWorker {
     const currentItem = this.findItem(tabId);
 
     if (currentItem.tabId === DEFAULT_DATA.tabId) {
-      // This means that this is a new object. In this case, set the tabId to the current one.
+      // This means that this is a new object. In this case, set the tabId to
+      // the current one.
       currentItem.tabId = tabId;
       currentItem.enabled = true;
     }
@@ -71,7 +68,8 @@ class BackgroundWorker {
 
     chrome.webRequest.onBeforeRequest.addListener(
       (details) => {
-        // Since this is a closure, the currentItem object when modified, will get reflected in the Array, thanks to JS.
+        // Since this is a closure, the currentItem object when modified, will
+        // get reflected in the Array, thanks to JS.
         currentItem.count += 1;
         currentItem.requests.push(details);
 
