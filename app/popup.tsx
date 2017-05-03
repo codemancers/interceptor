@@ -85,7 +85,6 @@ const queryParams : chrome.tabs.QueryInfo = {
 }
 
 chrome.tabs.query(queryParams, tabs => {
-  const background = chrome.extension.getBackgroundPage();
   const tab = tabs[0];
   if (!tab) return;
 
@@ -93,9 +92,6 @@ chrome.tabs.query(queryParams, tabs => {
   if (typeof id === 'undefined' || typeof url === 'undefined') return;
 
   MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
-    if (background) {
-      background.console.log(enabled)
-    }
     ReactDOM.render(<Popup enabled={enabled} tabId={id} tabUrl={url} />, document.getElementById('root'));
   });
 });
