@@ -34,18 +34,21 @@ class BackgroundWorker {
   startMessageListener() {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       const tabId = request.tabId;
-      const data = this.findItem(tabId);
 
       switch (request.message) {
         case 'ENABLE_LOGGING':
           this.startTrackingRequests(tabId);
           break;
-        case 'GET_ENABLED_STATUS':
+        case 'GET_ENABLED_STATUS': {
+          const data = this.findItem(tabId);
           sendResponse(data.enabled);
-          break;
-        case 'GET_REQUESTS':
+        }
+        break;
+        case 'GET_REQUESTS': {
+          const data = this.findItem(tabId);
           sendResponse(data.requests);
-          break;
+        }
+        break;
       }
     });
   }
