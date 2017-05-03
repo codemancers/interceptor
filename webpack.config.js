@@ -7,8 +7,7 @@ module.exports = {
   context: path.join(__dirname, 'app'),
   entry: {
     popup: "./popup.tsx",
-    background: "./background.ts",
-    content_script: "./content_script.tsx"
+    background: "./background.ts"
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -34,7 +33,7 @@ module.exports = {
         'NODE_ENV': `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("common.js", ["popup", "content_script"]),
+    new CommonsChunkPlugin("common.js", ["popup"]),
     new CopyWebpackPlugin([
       { from: 'manifest.json' },
       { from: 'index.html' },
