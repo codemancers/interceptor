@@ -18,13 +18,6 @@
     "webRequestBlocking",
     "http://*/*",
     "https://*/*"
-  ],
-
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["common.js", "content_script.js"]
-    }
   ]
 }
 

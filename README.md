@@ -11,14 +11,6 @@ $ npm run watch
 # Install "./dist" directory as "unpacked chrome extension" (google it!)
 ```
 
-## Production
-
-```
-$ npm install
-$ ./build
-# Package ./dist directory as a chrome extension
-```
-
 ## Status
 
 Currently it just shows the count of total AJAX requests in a small badge

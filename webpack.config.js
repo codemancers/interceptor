@@ -1,28 +1,30 @@
-var path = require("path")
-var webpack = require('webpack')
-var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+const path = require("path");
+const webpack = require("webpack");
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  context: path.join(__dirname, 'app'),
   entry: {
-    popup: "./app/popup.js",
-    background: "./app/background.js",
-    content_script: "./app/content_script.js"
+    popup: "./popup.tsx",
+    background: "./background.ts"
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "[name].js"
   },
+  resolve: {
+    extensions: ["", ".ts", ".tsx", ".js", ".json"]
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        loaders: ["react-hot", "babel"],
-        include: path.join(__dirname, 'app')
-      },
-      { test: /\.css$/,
-        loader: "style-loader!css-loader",
-        include: path.join(__dirname, 'app')
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader"
       }
+    ],
+    preLoaders: [
+      { test: /\.js$/, loader: "source-map-loader" }
     ]
   },
   plugins: [
@@ -31,6 +33,11 @@ module.exports = {
         'NODE_ENV': `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("common.js", ["popup", "content_script"])
+    new CommonsChunkPlugin("common.js", ["popup"]),
+    new CopyWebpackPlugin([
+      { from: 'manifest.json' },
+      { from: 'index.html' },
+      { from: 'styles.css' }
+    ])
   ]
 };
