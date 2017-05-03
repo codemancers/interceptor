@@ -13,7 +13,8 @@
 		"noUnusedParameters": true,
 		"pretty": true,
 		"removeComments": true,
-		"strictNullChecks": true
+		"strict": true,
+		"sourceMap": true
 	},
 	"include": [
 		"./app/**/*"

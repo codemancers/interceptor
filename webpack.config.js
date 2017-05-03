@@ -22,9 +22,6 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: "awesome-typescript-loader"
-      },
-      { test: /\.css$/,
-        loader: "style-loader!css-loader"
       }
     ],
     preLoaders: [
