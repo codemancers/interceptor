@@ -5,8 +5,15 @@ import * as React from 'react';
 export type RequestObj = chrome.webRequest.WebRequestBodyDetails;
 
 const renderRequests = (requests: Array<RequestObj>) =>
-  requests.map((request, index) =>
-    <tr key={index}>{request.url}</tr>
+  requests.map((request, index) => {
+    console.log(request)
+
+    return( <tr key= {index}> 
+      <td>{request.url}</td> 
+      <td>{request.method}</td> 
+    </tr>
+    )
+  }
   );
 
 export interface RequestListProps { requests: Array<RequestObj> }

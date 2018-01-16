@@ -15,7 +15,7 @@ const DEFAULT_DATA : Data = {
   count: 0
 };
 
-class BackgroundWorker {
+export class BackgroundWorker {
   data : Array<Data> = [];
 
   findItem = (tabId : number) => {
@@ -31,6 +31,8 @@ class BackgroundWorker {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       const tabId = request.tabId;
 
+      //console.log('message service :: ', request);
+
       switch (request.message) {
         case 'ENABLE_LOGGING':
           this.startTrackingRequests(tabId);
@@ -42,6 +44,7 @@ class BackgroundWorker {
         break;
         case 'GET_REQUESTS': {
           const data = this.findItem(tabId);
+          //console.log( 'data :: ',data)
           sendResponse(data.requests);
         }
         break;
@@ -55,7 +58,6 @@ class BackgroundWorker {
 
   startTrackingRequests(tabId: number) {
     const currentItem = this.findItem(tabId);
-
     if (currentItem.tabId === DEFAULT_DATA.tabId) {
       // This means that this is a new object. In this case, set the tabId to
       // the current one.
