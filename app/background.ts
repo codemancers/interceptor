@@ -30,9 +30,6 @@ export class BackgroundWorker {
   startMessageListener() {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       const tabId = request.tabId;
-
-      //console.log('message service :: ', request);
-
       switch (request.message) {
         case 'ENABLE_LOGGING':
           this.startTrackingRequests(tabId);

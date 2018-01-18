@@ -1,49 +1,56 @@
-import * as React from "react"
-import * as ReactDOM from "react-dom"
-import * as cx from 'classnames';
-import * as MessageService from './message_service'
-import RequestList from './request_list'
-
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as cx from "classnames";
+import * as MessageService from "./message_service";
+import RequestList from "./request_list";
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 
-const isChromeUrl = (url : string) => {
+const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
-}
+};
 
-type ButtonLabel = 'Start Listening' | 'Stop Listening';
-interface PopupProps { enabled: boolean, tabId: number, tabUrl: string };
-interface PopupState { enabled: boolean, label: ButtonLabel, errorMessage?: string, requests: Array<[]> };
+type ButtonLabel = "Start Listening" | "Stop Listening";
+interface PopupProps {
+  enabled: boolean;
+  tabId: number;
+  tabUrl: string;
+}
+interface PopupState {
+  enabled: boolean;
+  label: ButtonLabel;
+  errorMessage?: string;
+  requests: Array<[]>;
+}
 
 class Popup extends React.Component<PopupProps, PopupState> {
   constructor(props: PopupProps) {
     super(props);
     this.state = {
       enabled: props.enabled,
-      label: props.enabled ? 'Stop Listening' : 'Start Listening',
-      errorMessage: '',
-      requests: [],
+      label: props.enabled ? "Stop Listening" : "Start Listening",
+      errorMessage: "",
+      requests: []
     };
   }
 
   componentDidMount() {
-    MessageService.getRequests(this.props.tabId, (requests) => {
-      console.log('reqs :: ', requests);
+    MessageService.getRequests(this.props.tabId, requests => {
       this.setState({ requests });
     });
   }
 
-  isUrlInValid = (tabUrl : string) => {
+  isUrlInValid = (tabUrl: string) => {
     return !tabUrl || isChromeUrl(tabUrl);
-  }
+  };
 
-  handleClick = (_ : React.SyntheticEvent<HTMLButtonElement>) => {
+  handleClick = (_: React.SyntheticEvent<HTMLButtonElement>) => {
     const isEnabled = this.state.enabled;
     const willBeEnabled = !isEnabled;
-    const label = willBeEnabled ? 'Stop Listening' : 'Start Listening';
+    const label = willBeEnabled ? "Stop Listening" : "Start Listening";
     const { tabId, tabUrl } = this.props;
 
-    if(this.isUrlInValid(tabUrl)) {
+    if (this.isUrlInValid(tabUrl)) {
       this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
       return;
     }
@@ -51,7 +58,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
     const newState: PopupState = {
       enabled: willBeEnabled,
       label,
-      errorMessage: ''
+      errorMessage: ""
     };
 
     this.setState(newState, () => {
@@ -61,51 +68,51 @@ class Popup extends React.Component<PopupProps, PopupState> {
         MessageService.enableLogging(tabUrl, tabId);
       }
     });
-  }
+  };
 
-  render () {
+  render() {
     const errorMessage = this.state.errorMessage;
     const isListening = this.state.enabled;
-    const buttonClass = cx(
-      'button',
-      {
-        'button-start-listening': !isListening,
-        'button-stop-listening': isListening
-      }
-    );
+    const buttonClass = cx("button", {
+      "button-start-listening": !isListening,
+      "button-stop-listening": isListening
+    });
 
     return (
-      <div className='popup'>
-        {
-          errorMessage
-            ? <p className='popup-error-message popup-error'>{errorMessage}</p>
-            : null
-        }
-        <button type='button' onClick={this.handleClick} className={buttonClass}>
+      <div className="popup">
+        {errorMessage ? (
+          <p className="popup-error-message popup-error">{errorMessage}</p>
+        ) : null}
+        <button
+          type="button"
+          onClick={this.handleClick}
+          className={buttonClass}
+        >
           {this.state.label}
         </button>
 
-        <RequestList requests= {this.state.requests} />
-
+        <RequestList requests={this.state.requests} />
       </div>
     );
   }
 }
 
-const queryParams : chrome.tabs.QueryInfo = {
+const queryParams: chrome.tabs.QueryInfo = {
   active: true,
   currentWindow: true
-}
-
+};
 
 chrome.tabs.query(queryParams, tabs => {
   const tab = tabs[0];
   if (!tab) return;
 
   const { id, url } = tab;
-  if (typeof id === 'undefined' || typeof url === 'undefined') return;
+  if (typeof id === "undefined" || typeof url === "undefined") return;
 
   MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
-    ReactDOM.render(<Popup enabled={enabled} tabId={id} tabUrl={url} />, document.getElementById('root'));
+    ReactDOM.render(
+      <Popup enabled={enabled} tabId={id} tabUrl={url} />,
+      document.getElementById("root")
+    );
   });
 });
