@@ -17,6 +17,7 @@
     "build": "./build",
     "watch": "webpack --progress --colors --watch"
   },
+  "lock": false,
   "dependencies": {
     "@types/chrome": "0.0.46",
     "@types/classnames": "^0.0.32",
