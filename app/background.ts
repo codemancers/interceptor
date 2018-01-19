@@ -15,7 +15,7 @@ const DEFAULT_DATA : Data = {
   count: 0
 };
 
-export class BackgroundWorker {
+ class BackgroundWorker {
   data : Array<Data> = [];
 
   findItem = (tabId : number) => {
@@ -41,8 +41,8 @@ export class BackgroundWorker {
         break;
         case 'GET_REQUESTS': {
           const data = this.findItem(tabId);
-          //console.log( 'data :: ',data)
-          sendResponse(data.requests);
+          sendResponse(data);
+
         }
         break;
       }
@@ -64,14 +64,15 @@ export class BackgroundWorker {
 
     // Insert the current object into the main list
     this.data.push(currentItem);
+    
 
-    chrome.webRequest.onBeforeRequest.addListener(
+    chrome.webRequest.onHeadersReceived.addListener(
       (details) => {
         // Since this is a closure, the currentItem object when modified, will
         // get reflected in the Array, thanks to JS.
         currentItem.count += 1;
-        currentItem.requests.push(details);
-
+        console.log(details.responseHeaders)
+        currentItem.requests.push(details.responseHeaders);
         chrome.browserAction.setBadgeText({
           text: `${currentItem.count}`,
           tabId
@@ -82,7 +83,7 @@ export class BackgroundWorker {
         types: ["xmlhttprequest"],
         tabId: tabId
       },
-      ["blocking"]
+      ["blocking", "responseHeaders"]
     );
   }
 }

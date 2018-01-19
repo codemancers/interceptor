@@ -19,8 +19,8 @@ interface PopupProps {
 interface PopupState {
   enabled: boolean;
   label: ButtonLabel;
-  errorMessage?: string;
-  requests: Array<[]>;
+  errorMessage: string;
+  requests: Array<Object>;
 }
 
 class Popup extends React.Component<PopupProps, PopupState> {
@@ -58,7 +58,8 @@ class Popup extends React.Component<PopupProps, PopupState> {
     const newState: PopupState = {
       enabled: willBeEnabled,
       label,
-      errorMessage: ""
+      errorMessage: "",
+      requests : []
     };
 
     this.setState(newState, () => {

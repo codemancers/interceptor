@@ -22,7 +22,7 @@ export function getEnabledStatus(callback: GenericCallback) {
   chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS"}, callback);
 }
 
-export function getRequests(tabId, callback: GenericCallback) {
+export function getRequests(tabId:number, callback: GenericCallback) {
   chrome.runtime.sendMessage(chrome.runtime.id, {message: "GET_REQUESTS", tabId: tabId }, {}, callback);
 }
 
