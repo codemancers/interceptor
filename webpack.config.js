@@ -39,5 +39,5 @@ module.exports = {
       { from: 'index.html' },
       { from: 'styles.css' }
     ])
-  ]
+  ] 
 };

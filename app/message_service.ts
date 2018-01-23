@@ -18,17 +18,12 @@ export function resetData(tabId: number) {
   chrome.tabs.sendMessage(tabId, {message: "RESET_DATA"});
 }
 
-export function getEnabledStatus(callback: GenericCallback) {
-  chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS"}, callback);
+export function getEnabledStatus(tabId:number, callback: GenericCallback) {
+  chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId: tabId }, callback);
 }
 
 export function getRequests(tabId:number, callback: GenericCallback) {
-  chrome.runtime.sendMessage(chrome.runtime.id, {message: "GET_REQUESTS", tabId: tabId }, {}, callback);
+  chrome.runtime.sendMessage({message: "GET_REQUESTS", tabId: tabId }, {}, callback);
 }
-
-export function getEnabledStatusForTab(tabId: number, callback: GenericCallback) {
-  chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId: tabId}, callback);
-}
-
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers

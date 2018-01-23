@@ -110,7 +110,7 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
-  MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
+  MessageService.getEnabledStatus(id, (enabled: boolean) => {
     ReactDOM.render(
       <Popup enabled={enabled} tabId={id} tabUrl={url} />,
       document.getElementById("root")

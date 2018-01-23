@@ -8,6 +8,10 @@ interface Data {
   count: number
 };
 
+interface data {
+  [index: number]: Data;
+}
+
 const DEFAULT_DATA : Data = {
   tabId: -1,
   enabled: false,
@@ -15,76 +19,72 @@ const DEFAULT_DATA : Data = {
   count: 0
 };
 
- class BackgroundWorker {
-  data : Array<Data> = [];
-
-  findItem = (tabId : number) => {
-    // Not using a polyfill because this is supported in Chrome v. > 45. We
-    // might have to add some restriction in manifest related to this
-    const data = this.data.find(item => item.tabId === tabId) || DEFAULT_DATA;
-
-    // Lazy code for object cloning
-    return JSON.parse(JSON.stringify(data));
+class BackgroundWorker {
+  currentTab:number = -1;
+  data = {}
+  constructor() {
+    this.callback = this.callback.bind(this);
+    this.startTrackingRequests = this.startTrackingRequests.bind(this);
+    this.stopTrackingRequests = this.stopTrackingRequests.bind(this);
   }
 
   startMessageListener() {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-      const tabId = request.tabId;
+      this.currentTab = request.tabId;
+      if (!this.data[this.currentTab]) {
+        this.data[this.currentTab] = {
+          enabled: false,
+          requests: [],
+          tabId : -1,
+          count: 0
+        };
+      }
       switch (request.message) {
-        case 'ENABLE_LOGGING':
-          this.startTrackingRequests(tabId);
+        case 'ENABLE_LOGGING': {
+          this.startTrackingRequests();
           break;
+        }
         case 'GET_ENABLED_STATUS': {
-          const data = this.findItem(tabId);
+          const data = this.data[this.currentTab];
           sendResponse(data.enabled);
+          break;
         }
-        break;
+        case 'DISABLE_LOGGING': {
+          this.stopTrackingRequests();
+          break;
+        }
         case 'GET_REQUESTS': {
-          const data = this.findItem(tabId);
-          sendResponse(data);
-
+          sendResponse(this.data[this.currentTab].requests);
+          break;
         }
-        break;
       }
     });
   }
 
-  enabledForTab(tabId: number) {
-    return this.findItem(tabId).enabled;
+  callback(details:object) {
+    const tabRecords = this.data[this.currentTab];
+    if (tabRecords.enabled && this.currentTab === details.tabId) {
+      tabRecords.requests.push(details);
+      this.data[this.currentTab] = tabRecords;
+    }
   }
 
-  startTrackingRequests(tabId: number) {
-    const currentItem = this.findItem(tabId);
-    if (currentItem.tabId === DEFAULT_DATA.tabId) {
-      // This means that this is a new object. In this case, set the tabId to
-      // the current one.
-      currentItem.tabId = tabId;
-      currentItem.enabled = true;
-    }
-
-    // Insert the current object into the main list
-    this.data.push(currentItem);
-    
-
-    chrome.webRequest.onHeadersReceived.addListener(
-      (details) => {
-        // Since this is a closure, the currentItem object when modified, will
-        // get reflected in the Array, thanks to JS.
-        currentItem.count += 1;
-        console.log(details.responseHeaders)
-        currentItem.requests.push(details.responseHeaders);
-        chrome.browserAction.setBadgeText({
-          text: `${currentItem.count}`,
-          tabId
-        });
-      },
+  startTrackingRequests() {
+    this.data[this.currentTab].enabled = true;
+    chrome.webRequest.onBeforeRequest.addListener(
+      this.callback, 
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"],
-        tabId: tabId
       },
-      ["blocking", "responseHeaders"]
+      ["requestBody"]
     );
+  }
+
+  stopTrackingRequests() {
+    const tabRecords = this.data[this.currentTab];
+    tabRecords.enabled = false;
+    this.data[this.currentTab] = tabRecords;
   }
 }
 
