@@ -49,26 +49,19 @@ class Popup extends React.Component<PopupProps, PopupState> {
     const willBeEnabled = !isEnabled;
     const label = willBeEnabled ? "Stop Listening" : "Start Listening";
     const { tabId, tabUrl } = this.props;
-
-    if (this.isUrlInValid(tabUrl)) {
-      this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
-      return;
-    }
-
-    const newState: PopupState = {
-      enabled: willBeEnabled,
-      label,
-      errorMessage: "",
-      requests : []
-    };
-
-    this.setState(newState, () => {
+    MessageService.getRequests(this.props.tabId, requests => {
       if (isEnabled) {
         MessageService.disableLogging(tabUrl, tabId);
       } else {
         MessageService.enableLogging(tabUrl, tabId);
       }
+      this.setState({ enabled: willBeEnabled, label, errorMessage: "", requests });
     });
+
+    if (this.isUrlInValid(tabUrl)) {
+      this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
+      return;
+    }
   };
 
   render() {
