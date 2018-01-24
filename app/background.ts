@@ -56,7 +56,7 @@ class BackgroundWorker {
           break;
         }
         case 'GET_COUNT' : {
-          sendResponse(this.data[this.currentTab].tabId);
+          sendResponse(this.data[this.currentTab].count);
           break
         }
       }
