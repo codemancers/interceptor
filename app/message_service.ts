@@ -3,15 +3,15 @@ type GenericCallback = (_: any) => void;
 
 // Outgoing
 export function enableLogging(url: string, tabId: number) {
-  chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url: url, tabId: tabId });
+  chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url, tabId});
 }
 
 export function disableLogging(url: string, tabId: number) {
-  chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url: url, tabId: tabId });
+  chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url, tabId});
 }
 
 export function logRequest(tabId: number, request: RequestObj) {
-  chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request: request});
+  chrome.tabs.sendMessage(tabId, {message: "LOG_REQUEST", request});
 }
 
 export function resetData(tabId: number) {
@@ -19,11 +19,11 @@ export function resetData(tabId: number) {
 }
 
 export function getEnabledStatus(tabId:number, callback: GenericCallback) {
-  chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId: tabId }, callback);
+  chrome.runtime.sendMessage({message: "GET_ENABLED_STATUS", tabId}, callback);
 }
 
 export function getRequests(tabId:number, callback: GenericCallback) {
-  chrome.runtime.sendMessage({message: "GET_REQUESTS", tabId: tabId }, {}, callback);
+  chrome.runtime.sendMessage({message: "GET_REQUESTS", tabId }, {}, callback);
 }
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers

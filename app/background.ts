@@ -12,17 +12,11 @@ interface data {
   [index: number]: Data;
 }
 
-const DEFAULT_DATA : Data = {
-  tabId: -1,
-  enabled: false,
-  requests: [],
-  count: 0
-};
-
 class BackgroundWorker {
-  currentTab:number = -1;
-  data = {}
+  currentTab:number = -1
+  data:data
   constructor() {
+    this.data = {};
     this.callback = this.callback.bind(this);
     this.startTrackingRequests = this.startTrackingRequests.bind(this);
     this.stopTrackingRequests = this.stopTrackingRequests.bind(this);
@@ -61,7 +55,7 @@ class BackgroundWorker {
     });
   }
 
-  callback(details:object) {
+  callback(details:any) {
     const tabRecords = this.data[this.currentTab];
     if (tabRecords.enabled && this.currentTab === details.tabId) {
       tabRecords.requests.push(details);
