@@ -23,6 +23,10 @@ class BackgroundWorker {
   }
 
   startMessageListener() {
+    chrome.browserAction.setBadgeText({
+      text: `${this.data[this.currentTab].count}`,
+      tabId : this.data[this.currentTab].tabId
+    });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
@@ -51,6 +55,10 @@ class BackgroundWorker {
           sendResponse(this.data[this.currentTab].requests);
           break;
         }
+        case 'GET_COUNT' : {
+          sendResponse(this.data[this.currentTab].tabId);
+          break
+        }
       }
     });
   }
@@ -59,6 +67,7 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     if (tabRecords.enabled && this.currentTab === details.tabId) {
       tabRecords.requests.push(details);
+      tabRecords.count += 1 
       this.data[this.currentTab] = tabRecords;
     }
   }

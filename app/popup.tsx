@@ -103,6 +103,13 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
+  MessageService.getCount(id, (count) => {
+  chrome.browserAction.setBadgeText({
+      text: `${count}`,
+      tabId : id
+    });
+  })
+
   MessageService.getEnabledStatus(id, (enabled: boolean) => {
     ReactDOM.render(
       <Popup enabled={enabled} tabId={id} tabUrl={url} />,

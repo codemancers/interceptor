@@ -25,5 +25,8 @@ export function getEnabledStatus(tabId:number, callback: GenericCallback) {
 export function getRequests(tabId:number, callback: GenericCallback) {
   chrome.runtime.sendMessage({message: "GET_REQUESTS", tabId }, {}, callback);
 }
+export function getCount(tabId:number, callback: GenericCallback){
+  chrome.runtime.sendMessage({message : "GET_COUNT", tabId}, {}, callback)
+}
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers
