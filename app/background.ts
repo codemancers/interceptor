@@ -1,15 +1,14 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import { RequestObj } from './request_list'
 
-interface Data {
+interface TabRecord {
   tabId: number,
   enabled: boolean,
   requests: Array<RequestObj>
-  count: number
 };
 
-interface data {
-  [index: number]: Data;
+interface Recordings {
+  [index: number]: TabRecord;
 }
 
 class BackgroundWorker {
@@ -23,10 +22,6 @@ class BackgroundWorker {
   }
 
   startMessageListener() {
-    chrome.browserAction.setBadgeText({
-      text: `${this.data[this.currentTab].count}`,
-      tabId : this.data[this.currentTab].tabId
-    });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
@@ -34,7 +29,6 @@ class BackgroundWorker {
           enabled: false,
           requests: [],
           tabId : -1,
-          count: 0
         };
       }
       switch (request.message) {
@@ -56,7 +50,7 @@ class BackgroundWorker {
           break;
         }
         case 'GET_COUNT' : {
-          sendResponse(this.data[this.currentTab].count);
+          sendResponse(this.data[this.currentTab].requests.length);
           break
         }
       }
@@ -67,9 +61,12 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     if (tabRecords.enabled && this.currentTab === details.tabId) {
       tabRecords.requests.push(details);
-      tabRecords.count = tabRecords.requests.length;
       this.data[this.currentTab] = tabRecords;
     }
+    chrome.browserAction.setBadgeText({
+      text: `${tabRecords.requests.length}`,
+      tabId : details.tabId,
+    });
   }
 
   startTrackingRequests() {
