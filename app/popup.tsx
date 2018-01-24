@@ -34,7 +34,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
       this.setState({ requests });
     });
