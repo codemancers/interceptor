@@ -19,8 +19,8 @@ interface PopupProps {
 interface PopupState {
   enabled: boolean;
   label: ButtonLabel;
-  errorMessage?: string;
-  requests: Array<[]>;
+  errorMessage: string;
+  requests: Array<Object>;
 }
 
 class Popup extends React.Component<PopupProps, PopupState> {
@@ -49,25 +49,19 @@ class Popup extends React.Component<PopupProps, PopupState> {
     const willBeEnabled = !isEnabled;
     const label = willBeEnabled ? "Stop Listening" : "Start Listening";
     const { tabId, tabUrl } = this.props;
-
-    if (this.isUrlInValid(tabUrl)) {
-      this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
-      return;
-    }
-
-    const newState: PopupState = {
-      enabled: willBeEnabled,
-      label,
-      errorMessage: ""
-    };
-
-    this.setState(newState, () => {
+    MessageService.getRequests(this.props.tabId, requests => {
       if (isEnabled) {
         MessageService.disableLogging(tabUrl, tabId);
       } else {
         MessageService.enableLogging(tabUrl, tabId);
       }
+      this.setState({ enabled: willBeEnabled, label, errorMessage: "", requests });
     });
+
+    if (this.isUrlInValid(tabUrl)) {
+      this.setState({ errorMessage: `Cannot start listening on ${tabUrl}` });
+      return;
+    }
   };
 
   render() {
@@ -109,7 +103,7 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
-  MessageService.getEnabledStatusForTab(id, (enabled: boolean) => {
+  MessageService.getEnabledStatus(id, (enabled: boolean) => {
     ReactDOM.render(
       <Popup enabled={enabled} tabId={id} tabUrl={url} />,
       document.getElementById("root")
