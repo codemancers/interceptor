@@ -67,7 +67,7 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     if (tabRecords.enabled && this.currentTab === details.tabId) {
       tabRecords.requests.push(details);
-      tabRecords.count += 1 
+      tabRecords.count = tabRecords.requests.length;
       this.data[this.currentTab] = tabRecords;
     }
   }
