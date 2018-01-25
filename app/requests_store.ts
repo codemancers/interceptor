@@ -4,6 +4,7 @@ import { RequestObj } from './request_list'
 interface Action {
   type: string
   request?: RequestObj
+  status ?: string,
 }
 
 const INITIAL_STATE : Array<RequestObj> = [];

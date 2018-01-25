@@ -13,7 +13,7 @@ interface Recordings {
 
 class BackgroundWorker {
   currentTab:number = -1
-  data:data
+  data:Recordings
   constructor() {
     this.data = {};
     this.callback = this.callback.bind(this);

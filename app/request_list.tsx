@@ -7,8 +7,8 @@ export type RequestObj = chrome.webRequest.WebRequestBodyDetails;
 const renderRequests = (requests: Array<RequestObj>) => {
   return requests.map((request, index) => {
     return( <tr key= {index}> 
-      <td>{request.url}</td> 
-      <td>{request.method}</td> 
+      <td className="url">{request.url}</td> 
+      <td className="method">{request.method}</td> 
     </tr>
     )
   });
