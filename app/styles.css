@@ -50,3 +50,13 @@
 .button-stop-listening {
   background: #8bc34a;
 }
+.btn-clear {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 10px;
+  overflow: hidden;
+}
+.btn-clear:hover::before, .btn-clear:hover::after {
+  background: #1ebcc5;
+}

@@ -1,38 +1,26 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { createLogger } from 'redux-logger'
-const logger = createLogger();
+import { Middleware } from 'react-redux/node_modules/redux';
+
+import {reducer}  from './modules/recordings';
 
 export interface PopUpInterface {
   enabled: boolean;
-  errorMessage: string;
+  errorMessage ?: string;
   requests: Array<Object>;
 }
 
-interface Action {
-  enabled: boolean;
-  label: string;
-  errorMessage: string;
-  requests: Array<Object>,
-  type : string,
-  url : string
+const logger:Middleware = createLogger();
+
+const middlewares = applyMiddleware(logger);
+const enhancer = compose(
+  middlewares
+);
+
+export default function (initalState: PopUpInterface ) {
+  return createStore(reducer , initalState, enhancer);
 }
 
-const INITIAL_POPUP_STATE : PopUpInterface = { enabled: false , errorMessage: "",requests: []}
 
-const popupReducer  = (state = INITIAL_POPUP_STATE, action: Action) : function  => {
-  switch (action.type) {
-    case 'START_LISTENING':
-      return {...state, enabled : true, requests : action.requests}
-    case 'STOP_LISTENING': 
-      return {...state, enabled: false, requests : action.requests};
-    case 'ERROR': 
-      return {...state, errorMessage : action.errorMessage }
-    default:
-      return state;
-  }
-}
-
-export const initializeStore = (popupState: PopUpInterface) =>
-  createStore(popupReducer, popupState, applyMiddleware(logger));
 
 

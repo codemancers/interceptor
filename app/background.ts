@@ -47,6 +47,7 @@ class BackgroundWorker {
         }
         case 'GET_REQUESTS': {
           sendResponse(this.data[this.currentTab].requests);
+          console.log(this.data[this.currentTab].requests);
           break;
         }
         case 'GET_COUNT' : {

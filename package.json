@@ -12,19 +12,24 @@
     "webpack-dev-server": "1.14.1",
     "copy-webpack-plugin": "^4.0.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code-mancers/interceptor.git"
+  },
   "scripts": {
     "start": "webpack-dev-server --config --hot --progress --colors --inline --content-base dist",
     "build": "./build",
     "watch": "webpack --progress --colors --watch"
   },
-  "lock": false,
   "dependencies": {
     "@types/chrome": "0.0.46",
     "@types/classnames": "^0.0.32",
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^5.0.14",
+    "@types/redux-logger": "^3.0.5",
     "classnames": "^2.2.5",
-    "react-redux": "^5.0.6"
+    "react-redux": "^5.0.6",
+    "redux-logger": "^3.0.6"
   }
 }
