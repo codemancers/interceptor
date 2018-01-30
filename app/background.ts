@@ -32,6 +32,10 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
+        case 'CLEAR_DATA' : {
+          this.clearData();
+          break
+        }
         case 'ENABLE_LOGGING': {
           this.startTrackingRequests();
           break;
@@ -90,6 +94,10 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     tabRecords.enabled = false;
     this.data[this.currentTab] = tabRecords;
+  }
+  clearData(){
+    const requestsLength = this.data[this.currentTab].requests.length;
+    this.data[this.currentTab].requests.splice(0, requestsLength)
   }
 }
 

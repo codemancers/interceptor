@@ -36,25 +36,25 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   };
 
   handleClick = (_: React.MouseEvent<{}>) : void => { 
-    const isEnabled = this.props.enabled;
-    const { tabId, tabUrl } = this.props;
-    if(isEnabled) {
-      MessageService.disableLogging(tabUrl, tabId);
+    console.log("this.props", this.props)
+    if(this.props.enabled) {
+      MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField('enabled', false);
     } else {
-      MessageService.getRequests(tabId, requests => {
-        MessageService.enableLogging(tabUrl, tabId);
+      MessageService.getRequests(this.props.tabId, requests => {
+        MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
         this.props.updateFields({ enabled: true, requests })  
       });
     }
     
-    if (this.isUrlInValid(tabUrl)) {
-      this.props.errorNotify(`Cannot Start Listening on ${tabUrl}`);
+    if (this.isUrlInValid(this.props.tabUrl)) {
+      this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
       return;
     }
   };
 
   clearRequests = (_: React.MouseEvent<{}>) : void => {
+    MessageService.clearData(this.props.tabId)
     this.props.clearFields();
   }
 
@@ -105,7 +105,7 @@ chrome.tabs.query(queryParams, tabs => {
     const requests:Array<any> = []
     render(
       <Provider store={store({enabled, requests})}>
-         <ConnectedPopup tabUrl={url} tabId={id} />
+         <ConnectedPopup enabled={enabled} tabUrl={url} tabId={id} />
       </Provider>,
       document.getElementById("root") as HTMLElement
     );

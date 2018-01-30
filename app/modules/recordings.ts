@@ -5,7 +5,6 @@ const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "",req
 import * as actionType from "../actions"
 
 export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
-  console.log(action)
   switch (action.type) {
     case actionType.START_LISTENING:
       return {...state, enabled : true}

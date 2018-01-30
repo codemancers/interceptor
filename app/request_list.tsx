@@ -2,8 +2,8 @@
 import * as React from 'react';
 
 
-const renderRequests = (requests: Array<chrome.webRequest.WebRequestDetails> = []) => {
-  return requests.map((request:chrome.webRequest.WebRequestDetails, index:number) => {
+const renderRequests = (requests: Array<RequestObj> = []) => {
+  return requests.map((request, index:number) => {
     return( <tr key= {index}> 
       <td className="url">{request.url}</td> 
       <td className="method">{request.method}</td> 
@@ -12,9 +12,9 @@ const renderRequests = (requests: Array<chrome.webRequest.WebRequestDetails> = [
   });
 }
 
-export interface RequestListProps { requests: Array<any> }
+export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails> }
 
-const RequestList = (props: any) => {
+const RequestList = (props: RequestObj) => {
   return(
     <table>
       <thead>
