@@ -10,8 +10,7 @@ export const  UPDATE_FIELD = "UPDATE_FIELD";
 export const  UPDATE_FIELDS = "UPDATE_FIELDS";
 
 // Action Creators
-
-export function startListening (enabledStatus:PopUpState["enabled"]){
+export function startListening (enabledStatus:boolean){
   return {type : START_LISTENING, enabled : enabledStatus}
 }
 export function updateField (name:string, value:any) {
@@ -20,7 +19,7 @@ export function updateField (name:string, value:any) {
 export function updateFields (payload:object) {
   return {type : UPDATE_FIELDS, payload  }
 }
-export function stopListening (enabledStatus:PopUpState["enabled"]){ 
+export function stopListening (enabledStatus:boolean){ 
   return { type : STOP_LISTENING, enabled: enabledStatus}
  }
 export function errorNotify (errorMessage:string) {

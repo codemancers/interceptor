@@ -63,7 +63,6 @@ class BackgroundWorker {
 
   callback(details:any) {
     const tabRecords = this.data[this.currentTab];
-    tabRecords.requests.slice(0)  //possible fix for displaying proper badge text 
     chrome.browserAction.setBadgeText({
       text: `${tabRecords.requests.length}`,
       tabId : details.tabId,
@@ -80,13 +79,13 @@ class BackgroundWorker {
 
   startTrackingRequests() {
     this.data[this.currentTab].enabled = true;
-    chrome.webRequest.onBeforeRequest.addListener(
+    chrome.webRequest.onBeforeRequest.addListener(//For getting responses : use onHeadersReceived Event
       this.callback, 
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"],
       },
-      ["requestBody"]
+      ["requestBody"]// For response event use ["blocking", "responseHeaders"] filters and return {responseHeaders: details.responseHeaders}; to block and modify requests
     );
   }
 
@@ -96,8 +95,7 @@ class BackgroundWorker {
     this.data[this.currentTab] = tabRecords;
   }
   clearData(){
-    const requestsLength = this.data[this.currentTab].requests.length;
-    this.data[this.currentTab].requests.splice(0, requestsLength)
+    this.data[this.currentTab].requests = [];
   }
 }
 

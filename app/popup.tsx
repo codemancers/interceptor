@@ -36,7 +36,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   };
 
   handleClick = (_: React.MouseEvent<{}>) : void => { 
-    console.log("this.props", this.props)
     if(this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField('enabled', false);

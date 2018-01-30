@@ -1,5 +1,5 @@
 import {RequestObj} from './../request_list'
-export type POPUP_PROPS = {
+export interface POPUP_PROPS {
   tabId : number,
   tabUrl : string,
   enabled : boolean,
@@ -15,8 +15,8 @@ export interface PopUpState {
 }
 
 export interface Action extends PopUpState{
-  name : string
-  value : any
+  name ?: string
+  value ?: any
   type: string
   payload ?:object
 }
