@@ -47,7 +47,6 @@ class BackgroundWorker {
         }
         case 'GET_REQUESTS': {
           sendResponse(this.data[this.currentTab].requests);
-          console.log(this.data[this.currentTab].requests);
           break;
         }
         case 'GET_COUNT' : {
@@ -60,14 +59,19 @@ class BackgroundWorker {
 
   callback(details:any) {
     const tabRecords = this.data[this.currentTab];
-    if (tabRecords.enabled && this.currentTab === details.tabId) {
-      tabRecords.requests.push(details);
-      this.data[this.currentTab] = tabRecords;
-    }
+    tabRecords.requests.slice(0)  //possible fix for displaying proper badge text 
     chrome.browserAction.setBadgeText({
       text: `${tabRecords.requests.length}`,
       tabId : details.tabId,
     });
+    if (tabRecords.enabled && this.currentTab === details.tabId) {
+      tabRecords.requests.push(details);
+      this.data[this.currentTab] = tabRecords;
+      chrome.browserAction.setBadgeText({
+        text: `${tabRecords.requests.length}`,
+        tabId : details.tabId,
+      });
+    }
   }
 
   startTrackingRequests() {

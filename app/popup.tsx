@@ -6,14 +6,15 @@ import RequestList from "./request_list";
 import { Provider, connect } from 'react-redux';
 import store from './popup_store'
 import {POPUP_PROPS} from './types'
-import {startListening, stopListening, errorNotify, updateField, clearFields } from './actions'
+import {startListening, stopListening, errorNotify, updateField, clearFields, updateFields } from './actions'
 
 interface DispatchProps{
   startListening: typeof startListening,
   stopListening : typeof stopListening,
   errorNotify : typeof errorNotify,
-  updateField : typeof updateField
-  clearFields : typeof clearFields
+  updateField : typeof updateField,
+  clearFields : typeof clearFields,
+  updateFields : typeof updateFields
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -26,7 +27,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
 
   componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
-      this.props.updateField({ requests });
+      this.props.updateField('requests', requests);
     });
   }
 
@@ -37,20 +38,18 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   handleClick = (_: React.MouseEvent<{}>) : void => { 
     const isEnabled = this.props.enabled;
     const { tabId, tabUrl } = this.props;
-    MessageService.getRequests(tabId, requests => {
-      if (isEnabled) {
-        MessageService.disableLogging(tabUrl, tabId);
-        this.props.stopListening(isEnabled);
-      } else {
+    if(isEnabled) {
+      MessageService.disableLogging(tabUrl, tabId);
+      this.props.updateField('enabled', false);
+    } else {
+      MessageService.getRequests(tabId, requests => {
         MessageService.enableLogging(tabUrl, tabId);
-        this.props.startListening(isEnabled);
-        this.props.updateField(requests);
-      }
-      // this.setState({ enabled: willBeEnabled, errorMessage: "", requests });      
-    });
-
+        this.props.updateFields({ enabled: true, requests })  
+      });
+    }
+    
     if (this.isUrlInValid(tabUrl)) {
-      this.props.errorNotify(tabUrl);
+      this.props.errorNotify(`Cannot Start Listening on ${tabUrl}`);
       return;
     }
   };
@@ -60,20 +59,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   }
 
   render() {
-    const props = this.props
-    const { requests ,enabled, errorMessage } = props;
-
-    const isListening = enabled;
-    const buttonClass = cx("button", { "button-start-listening": !isListening, "button-stop-listening": isListening });
-
+    const buttonClass = cx("button", { "button-start-listening": !this.props.enabled, "button-stop-listening": this.props.enabled });
     return (
       <div className="popup">
-        {errorMessage ? ( <p className="popup-error-message popup-error"> {errorMessage} </p> ) : null}
+        {this.props.errorMessage ? ( <p className="popup-error-message popup-error"> {this.props.errorMessage} </p> ) : null}
         <button type="button" onClick={this.handleClick} className={buttonClass}>
-          {isListening ? "Stop Listening" : "Start Listening"}
+          {this.props.enabled ? "Stop Listening" : "Start Listening"}
         </button>
         <button type="button" onClick={this.clearRequests} className="btn-clear">CLEAR</button>
-        <RequestList requests={requests.requests} />
+        <RequestList requests={this.props.requests} />
       </div>
     );
   }
@@ -91,6 +85,7 @@ const mapDispatchToProps:DispatchProps = {
   stopListening, 
   errorNotify, 
   updateField,
+  updateFields,
   clearFields
 };
 

@@ -11,25 +11,14 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       return {...state, enabled : true}
     case actionType.UPDATE_FIELD:
       return {...state, requests : action.requests };
+    case actionType.UPDATE_FIELDS:
+      return {...state, ...action.requests };
     case actionType.STOP_LISTENING: 
       return {...state, enabled: false};
     case actionType.ERROR: 
-      return {...state, errorMessage : action.errorMessage }
-    case actionType.CLEAR_REQUESTS : return {...state, requests: clearRequestsArray (state) }
-    case actionType.RELOAD_REQUESTS : reloadDataReducer (state, action)
-      return
+      return {...state, errorMessage: action.errorMessage }
+    case actionType.CLEAR_REQUESTS : return {...state, requests: [] }
     default:
       return state;
   }
 }
-const clearRequestsArray = (state:PopUpState) => {
-  const clonedArray = state.requests.requests.slice(0)
-  return clonedArray
-}
-const reloadDataReducer = (state:PopUpState, action:Action) => {
-  let incomingRequests:any = [];
-  incomingRequests = action.requests;
-  return {...state, requests : incomingRequests}
-}
-
-
