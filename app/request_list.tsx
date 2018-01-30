@@ -1,22 +1,19 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import * as React from 'react';
 
-// TODO: Find out what type a request is, if possible
-export type RequestObj = chrome.webRequest.WebRequestBodyDetails;
-
-const renderRequests = (requests: Array<RequestObj>) => {
-  return requests.map((request, index) => {
+const renderRequests = (requests: Array<RequestObj> = []) => {
+  return requests.map((request, index:number) => {
     return( <tr key= {index}> 
-      <td>{request.url}</td> 
-      <td>{request.method}</td> 
+      <td className="url">{request.url}</td> 
+      <td className="method">{request.method}</td> 
     </tr>
     )
   });
 }
 
-export interface RequestListProps { requests: Array<RequestObj> }
+export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails> }
 
-const RequestList = (props: RequestListProps) => {
+const RequestList = (props: RequestObj) => {
   return(
     <table>
       <thead>
@@ -30,5 +27,4 @@ const RequestList = (props: RequestListProps) => {
     </table>
   );
 }
-
 export default RequestList

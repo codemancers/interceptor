@@ -13,7 +13,7 @@ interface Recordings {
 
 class BackgroundWorker {
   currentTab:number = -1
-  data:data
+  data:Recordings
   constructor() {
     this.data = {};
     this.callback = this.callback.bind(this);
@@ -32,6 +32,10 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
+        case 'CLEAR_DATA' : {
+          this.clearData();
+          break
+        }
         case 'ENABLE_LOGGING': {
           this.startTrackingRequests();
           break;
@@ -59,25 +63,29 @@ class BackgroundWorker {
 
   callback(details:any) {
     const tabRecords = this.data[this.currentTab];
-    if (tabRecords.enabled && this.currentTab === details.tabId) {
-      tabRecords.requests.push(details);
-      this.data[this.currentTab] = tabRecords;
-    }
     chrome.browserAction.setBadgeText({
       text: `${tabRecords.requests.length}`,
       tabId : details.tabId,
     });
+    if (tabRecords.enabled && this.currentTab === details.tabId) {
+      tabRecords.requests.push(details);
+      this.data[this.currentTab] = tabRecords;
+      chrome.browserAction.setBadgeText({
+        text: `${tabRecords.requests.length}`,
+        tabId : details.tabId,
+      });
+    }
   }
 
   startTrackingRequests() {
     this.data[this.currentTab].enabled = true;
-    chrome.webRequest.onBeforeRequest.addListener(
+    chrome.webRequest.onBeforeRequest.addListener(//For getting responses : use onHeadersReceived Event
       this.callback, 
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"],
       },
-      ["requestBody"]
+      ["requestBody"]// For response event use ["blocking", "responseHeaders"] filters and return {responseHeaders: details.responseHeaders}; to block and modify requests
     );
   }
 
@@ -85,6 +93,9 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     tabRecords.enabled = false;
     this.data[this.currentTab] = tabRecords;
+  }
+  clearData(){
+    this.data[this.currentTab].requests = [];
   }
 }
 
