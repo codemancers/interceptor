@@ -10,9 +10,9 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.START_LISTENING:
       return {...state, enabled : true}
     case actionType.UPDATE_FIELD:
-      return {...state, requests : action.requests };
+      return {...state, ...action};
     case actionType.UPDATE_FIELDS:
-      return {...state, ...action.requests };
+      return {...state,  ...action.payload};
     case actionType.STOP_LISTENING: 
       return {...state, enabled: false};
     case actionType.ERROR: 
