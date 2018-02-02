@@ -1,6 +1,9 @@
 #root {
   min-height: 300px;
   min-width: 500px;
+  color: #494b4d;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .interceptor-container {
@@ -49,6 +52,23 @@
 
 .button-stop-listening {
   background: #8bc34a;
+}
+th {
+ background: #c5c5c5;
+}
+table {
+  border-collapse: collapse;
+  font: normal 12px arial; 
+  width: 100%;
+  vertical-align: top;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td, th { 
+  border: 1px solid #cdcdcd; 
+  padding: 2px;
+  max-width : 70%;
+  text-overflow: ellipsis;
 }
 .btn-clear {
   position: relative;

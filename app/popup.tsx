@@ -35,6 +35,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
     return !tabUrl || isChromeUrl(tabUrl);
   };
 
+  interceptRequests= (url:string, method:string, statusCode:number) =>  {
+    MessageService.interceptRequests(this.props.tabId, url,method,statusCode)
+  }
+
   handleClick = (_: React.MouseEvent<{}>) : void => { 
     if(this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
@@ -66,7 +70,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
           {this.props.enabled ? "Stop Listening" : "Start Listening"}
         </button>
         <button type="button" onClick={this.clearRequests} className="btn-clear">CLEAR</button>
-        <RequestList requests={this.props.requests} />
+        <RequestList requests={this.props.requests} handleIntercept={this.interceptRequests} />
       </div>
     );
   }

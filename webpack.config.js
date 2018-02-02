@@ -33,7 +33,7 @@ module.exports = {
         'NODE_ENV': `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("common.js", ["popup"]),
+    new CommonsChunkPlugin("common.js", ["popup"],"content.js"),
     new CopyWebpackPlugin([
       { from: 'manifest.json' },
       { from: 'index.html' },
