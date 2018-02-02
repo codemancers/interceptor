@@ -92,7 +92,7 @@ const mapDispatchToProps:DispatchProps = {
   clearFields
 };
 
-const ConnectedPopup:React.ComponentClass<POPUP_PROPS & DispatchProps> = connect(
+export const ConnectedPopup:React.ComponentClass<POPUP_PROPS & DispatchProps> = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Popup);
