@@ -1,14 +1,20 @@
 {
-  "manifest_version": 2,
-  "name": "interceptor",
+  "name": "Interceptor",
   "description": "Run web clients without backends by mocking HTTP requests",
   "version": "0.1",
-
+  "manifest_version": 2,
+  "icons": {
+    "16":"images/icon-16.png",
+    "48":"images/icon-48.png",
+    "128":"images/icon-128.png"
+  },
   "background": {
     "scripts": ["background.js"]
   },
   "browser_action": {
-    "default_popup": "index.html"
+    "default_title":"Interceptor",
+    "default_popup": "index.html",
+    "default_icon": "images/icon.png"
   },
   "permissions": [
     "webRequest",
