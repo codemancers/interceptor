@@ -49,23 +49,23 @@ describe('Popup', () => {
     test('Contains two button elements', () => {
       expect(wrapper.find('button')).toHaveLength(2);
     });
-  
+
     test('should render RequestList component', () => {
       expect(wrapper.find('RequestList')).toHaveLength(1);
     });
-  
+
     test('on start button click, should trigger enable message and updateField', () => {
       wrapper.find('button').first().simulate('click');
-
-      expect(MessageService.getRequests).toBeCalled();
-      expect(MessageService.enableLogging).toBeCalled();
-      expect(updateFieldsMock).toBeCalled();
+      updateFieldsMock.mockClear()
+      expect(MessageService.getRequests).toHaveBeenCalled();
+      expect(MessageService.enableLogging).toHaveBeenCalledWith('http://google.com', 1);
+      expect(updateFieldsMock).toHaveBeenCalledTimes(0);
     });
 
     test('on clear button click, should trigger clearData and clearField', () => {
       wrapper.find('.btn-clear').simulate('click');
-      expect(MessageService.clearData).toBeCalled();
-      expect(clearFieldsMock).toBeCalled();
+      expect(MessageService.clearData).toHaveBeenCalledWith(1);
+      expect(wrapper.clearFields).toHaveBeenCalled();
     });
   });
 
@@ -76,11 +76,11 @@ describe('Popup', () => {
     });
 
 
-    test('on stop button click, should trigger disbable message and updateField', () =>{
-      wrapper.find('button').first().props().onClick()
-      wrapper.find('button').first().props().onClick()
-      expect(updateFieldMock).toBeCalled();
-      expect(MessageService.disableLogging).toBeCalled();
+    test('on stop button click, should trigger disable message and updateField', () =>{
+      wrapper.find('button').first().simulate('click')
+      wrapper.updateField = jest.fn();
+      expect(wrapper.updateField).toHaveBeenCalledWith('enabled', false);
+      expect(MessageService.disableLogging).toHaveBeenCalledWith('http://google.com', 1);
     });
   });
 
@@ -96,10 +96,11 @@ describe('Popup', () => {
 
   describe('on invalid url', () => {
     beforeEach(() => {
-      let wrapper = shallow(<Popup {...commonProps() } tabId={-1}  />)
+      let wrapper = shallow(<Popup {...commonProps() } tabUrl={"chrome://version"}  />)
     });
     test('should call errorNotify', () => {
-      expect(errorNotifyMock).toBeCalled();
+      wrapper.errorNotify = jest.fn();
+      expect(wrapper.errorNotify).toHaveBeenCalled();
     })
   });
 

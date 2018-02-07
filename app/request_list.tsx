@@ -8,9 +8,9 @@ interface RowProps {
 }
 
 export const Row = ( props: RowProps) => {
-  return (<tr key={props.key}> 
-      <td className="url">{props.request.url}</td> 
-      <td className="method">{props.request.method}</td> 
+  return (<tr key={props.key}>
+      <td className="url">{props.request.url}</td>
+      <td className="method">{props.request.method}</td>
       <td><button type="button" className="btn-clear" onClick={props.handleIntercept.bind(this, props.request.url, props.request.method, 404)}>Intercept</button></td>
     </tr>);
 }

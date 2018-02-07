@@ -37,17 +37,17 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
     MessageService.interceptRequests(this.props.tabId, url,method,statusCode)
   }
 
-  handleClick = (_: React.MouseEvent<{}>) : void => { 
+  handleClick = (_: React.MouseEvent<{}>) : void => {
     if(this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField('enabled', false);
     } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({ enabled: true, requests })  
+        this.props.updateFields({ enabled: true, requests })
       });
     }
-    
+
     if (this.isUrlInValid(this.props.tabUrl)) {
       this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
       return;
@@ -77,9 +77,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
 const mapStateToProps = (state:POPUP_PROPS) => ({ enabled: state.enabled, requests: state.requests, errorMessage : state.errorMessage })
 
 const mapDispatchToProps:DispatchProps = {
-  startListening, 
-  stopListening, 
-  errorNotify, 
+  startListening,
+  stopListening,
+  errorNotify,
   updateField,
   updateFields,
   clearFields
