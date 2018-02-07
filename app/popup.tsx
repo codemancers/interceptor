@@ -58,15 +58,46 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   }
 
   render() {
-    const buttonClass = cx("button", { "button-start-listening": !this.props.enabled, "button-stop-listening": this.props.enabled });
+    const buttonClass = cx("btn btn-block", { "btn-secondary": !this.props.enabled, "btn-danger": this.props.enabled });
     return (
-      <div className="popup">
-        {this.props.errorMessage ? ( <p className="popup-error-message popup-error"> {this.props.errorMessage} </p> ) : null}
-        <button type="button" onClick={this.handleClick} className={buttonClass}>
-          {this.props.enabled ? "Stop Listening" : "Start Listening"}
-        </button>
-        <button type="button" onClick={this.clearRequests} className="btn-clear">CLEAR</button>
-        <RequestList requests={this.props.requests} />
+      <div>
+        <header>
+          <div className="grid-container">
+            <a className="logo" href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="Interceptor" role="Image"
+                viewBox="0 0 32 32" width="16" height="16">
+                <rect fill="#009688" width="32" height="32" x="0" y="0" />
+                <path fill="#ffffff" d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z" />
+                <path fill="#ffffff" d="m 18.125,13.875 -4.25,4.25 9.03125,9.03125 4.25,-4.25 L 18.125,13.875 z" />
+                <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+                <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+              </svg>
+              <span>INTERCEPTOR</span>
+            </a>
+            <button type="button" onClick={this.handleClick} className={buttonClass}>
+              {this.props.enabled ? "Stop Listening" : "Start Listening"}
+            </button>
+          </div>
+        </header>
+        <section>
+          <div className="container">
+            {this.props.errorMessage ? ( <p className="popup-error-message popup-error"> {this.props.errorMessage} </p> ) : null}
+            <table>
+              <tr>
+                <th />
+                <th>Request URLs</th>
+                <th className="text-right"><button type="button" className="btn btn-sm btn-primary btn-clear" onClick={this.clearRequests}>CLEAR</button></th>
+              </tr>
+            </table>
+            <div className="scroll-container">
+              <table>
+                <RequestList requests={this.props.requests} />
+              </table>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
@@ -80,9 +111,9 @@ const queryParams: chrome.tabs.QueryInfo = {
 const mapStateToProps = (state:POPUP_PROPS) => ({ enabled: state.enabled, requests: state.requests, errorMessage : state.errorMessage })
 
 const mapDispatchToProps:DispatchProps = {
-  startListening, 
-  stopListening, 
-  errorNotify, 
+  startListening,
+  stopListening,
+  errorNotify,
   updateField,
   updateFields,
   clearFields
@@ -104,7 +135,7 @@ chrome.tabs.query(queryParams, tabs => {
     const requests:Array<any> = []
     render(
       <Provider store={store({enabled, requests})}>
-         <ConnectedPopup enabled={enabled} tabUrl={url} tabId={id} />
+        <ConnectedPopup enabled={enabled} tabUrl={url} tabId={id} />
       </Provider>,
       document.getElementById("root") as HTMLElement
     );
