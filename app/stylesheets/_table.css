@@ -1,0 +1,34 @@
+table {
+  width: 100%;
+  border-spacing: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+table tr th:nth-child(1),
+table tr td:nth-child(1) {
+  width: 80px;
+}
+table tr td:nth-child(2) {
+  word-break: break-all;
+}
+td, th {
+  padding: 5px 0;
+}
+td {
+  vertical-align: top;
+}
+th {
+  line-height: 1;
+  padding-bottom: 10px;
+  text-align: left;
+  vertical-align: bottom;
+}
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.scroll-container {
+  height: 375px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
