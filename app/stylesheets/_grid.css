@@ -1,0 +1,11 @@
+.grid-container {
+  display: grid;
+}
+
+header .grid-container {
+  grid-template-columns: auto 180px;
+}
+
+.text-align {
+  text-align: right;
+}
