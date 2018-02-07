@@ -1,10 +1,9 @@
 import * as React from "react";
-import {render} from 'react-dom'
 import * as cx from "classnames";
+import { connect } from 'react-redux';
+
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
-import { Provider, connect } from 'react-redux';
-import store from './popup_store'
 import {POPUP_PROPS} from './types'
 import {startListening, stopListening, errorNotify, updateField, clearFields, updateFields } from './actions'
 
@@ -24,7 +23,6 @@ const isChromeUrl = (url: string) => {
 };
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
-
   componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField('requests', requests);
@@ -76,11 +74,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
   }
 }
 
-const queryParams: chrome.tabs.QueryInfo = {
-  active: true,
-  currentWindow: true
-};
-
 const mapStateToProps = (state:POPUP_PROPS) => ({ enabled: state.enabled, requests: state.requests, errorMessage : state.errorMessage })
 
 const mapDispatchToProps:DispatchProps = {
@@ -92,25 +85,8 @@ const mapDispatchToProps:DispatchProps = {
   clearFields
 };
 
-export const ConnectedPopup:React.ComponentClass<POPUP_PROPS & DispatchProps> = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Popup);
 
-chrome.tabs.query(queryParams, tabs => {
-  const tab = tabs[0];
-  if (!tab) return;
-
-  const { id, url } = tab;
-  if (typeof id === "undefined" || typeof url === "undefined") return;
-
-  MessageService.getEnabledStatus(id, (enabled: boolean) => {
-    const requests:Array<any> = []
-    render(
-      <Provider store={store({enabled, requests})}>
-         <ConnectedPopup enabled={enabled} tabUrl={url} tabId={id} />
-      </Provider>,
-      document.getElementById("root") as HTMLElement
-    );
-  });
-});

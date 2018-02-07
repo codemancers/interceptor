@@ -7,7 +7,7 @@ interface RowProps {
   handleIntercept: React.MouseEventHandler<{}>
 }
 
-const Row = ( props: RowProps) => {
+export const Row = ( props: RowProps) => {
   return (<tr key={props.key}> 
       <td className="url">{props.request.url}</td> 
       <td className="method">{props.request.method}</td> 
@@ -17,7 +17,7 @@ const Row = ( props: RowProps) => {
 
 export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails>, handleIntercept : React.MouseEventHandler<{}> }
 
-const RequestList = (props: RequestObj) => {
+ const RequestList = (props: RequestObj) => {
   return(
     <table>
       <thead>
