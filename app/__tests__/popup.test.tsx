@@ -85,7 +85,10 @@ describe('Popup', () => {
   });
 
   describe('on error', () => {
-    let wrapper = shallow(<Popup {...commonProps() } errorMessage={"Error"}  />)
+    let wrapper
+    beforeEach (() => {
+      wrapper = shallow(<Popup {...commonProps() } errorMessage={"Error"}  />)
+    })
     test('should render error message', () => {
       expect(wrapper.find('.popup-error-message').text()).toEqual(expect.stringMatching("Error"))
     });
