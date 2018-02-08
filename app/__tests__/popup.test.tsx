@@ -16,34 +16,34 @@ jest.mock('../message_service');
 
 const propsMockFn = jest.fn();
 
-const updateFieldsMock = propsMockFn
-const updateFieldMock =  propsMockFn
-const clearFieldsMock = propsMockFn
-const errorNotifyMock = propsMockFn
-const startListeningMock = propsMockFn
-const stopListening = propsMockFn
 
-const commonProps = () => {return {
+const commonProps =  {
   tabUrl: 'http://google.com',
-  updateFields: propsMockFn,
-  updateField: propsMockFn,
-  clearFields : propsMockFn,
-  errorNotify: propsMockFn,
-  startListening : propsMockFn,
-  stopListening : propsMockFn,
+  updateFields: jest.fn(),
+  updateField: jest.fn(),
+  clearFields : jest.fn(),
+  errorNotify: jest.fn(),
+  startListening : jest.fn(),
+  stopListening : jest.fn(),
   tabId : 1,
   enabled : false,
   requests : [],
   errorMessage : ""
-}}
-
+}
 
 describe('Popup', () => {
-  let wrapper:ReactWrapper
+  let wrapper:any
 
   describe('default state', () => {
     beforeEach(() => {
-      wrapper = shallow(<Popup {...commonProps() } />);
+      commonProps.clearFields.mockClear()
+      commonProps.updateFields.mockClear()
+      commonProps.updateField.mockClear()
+      commonProps.clearFields.mockClear()
+      commonProps.errorNotify.mockClear()
+      commonProps.startListening.mockClear()
+      commonProps.stopListening.mockClear()
+      wrapper = shallow(<Popup {...commonProps}  />);
     });
 
     test('Contains two button elements', () => {
@@ -56,51 +56,53 @@ describe('Popup', () => {
 
     test('on start button click, should trigger enable message and updateField', () => {
       wrapper.find('button').first().simulate('click');
-      updateFieldsMock.mockClear()
       expect(MessageService.getRequests).toHaveBeenCalled();
       expect(MessageService.enableLogging).toHaveBeenCalledWith('http://google.com', 1);
-      expect(updateFieldsMock).toHaveBeenCalledTimes(0);
+      expect(commonProps.updateFields).toHaveBeenCalledTimes(1);
     });
 
     test('on clear button click, should trigger clearData and clearField', () => {
       wrapper.find('.btn-clear').simulate('click');
       expect(MessageService.clearData).toHaveBeenCalledWith(1);
-      expect(wrapper.clearFields).toHaveBeenCalled();
+      expect(commonProps.clearFields).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('on enabled', () => {
-
     beforeEach(() => {
-      wrapper = shallow(<Popup {...commonProps() } enabled={true} />);
+      commonProps.clearFields.mockClear()
+      commonProps.updateFields.mockClear()
+      commonProps.updateField.mockClear()
+      commonProps.clearFields.mockClear()
+      commonProps.errorNotify.mockClear()
+      commonProps.startListening.mockClear()
+      commonProps.stopListening.mockClear()
+      wrapper = shallow(<Popup {...commonProps} enabled={true} />);
     });
 
 
     test('on stop button click, should trigger disable message and updateField', () =>{
       wrapper.find('button').first().simulate('click')
-      wrapper.updateField = jest.fn();
-      expect(wrapper.updateField).toHaveBeenCalledWith('enabled', false);
+      expect(commonProps.updateField).toHaveBeenCalledWith('enabled', false);
       expect(MessageService.disableLogging).toHaveBeenCalledWith('http://google.com', 1);
     });
   });
 
   describe('on error', () => {
-    let wrapper
-    beforeEach (() => {
-      wrapper = shallow(<Popup {...commonProps() } errorMessage={"Error"}  />)
-    })
     test('should render error message', () => {
+      wrapper = shallow(<Popup {...commonProps } errorMessage={"Error"}  />)
       expect(wrapper.find('.popup-error-message').text()).toEqual(expect.stringMatching("Error"))
     });
   });
 
   describe('on invalid url', () => {
     beforeEach(() => {
-      let wrapper = shallow(<Popup {...commonProps() } tabUrl={"chrome://version"}  />)
+      commonProps.errorNotify.mockClear()
+      wrapper = shallow(<Popup {...commonProps} tabUrl={"chrome://version"} enabled={false} />)
     });
     test('should call errorNotify', () => {
-      wrapper.errorNotify = jest.fn();
-      expect(wrapper.errorNotify).toHaveBeenCalled();
+      wrapper.find('button').first().simulate('click')
+      expect(commonProps.errorNotify).toHaveBeenCalledWith('Cannot Start Listening on chrome://version');
     })
   });
 
