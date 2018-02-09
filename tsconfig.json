@@ -18,8 +18,12 @@
     "skipLibCheck": true,
 		"lib": [ "es2016", "es2015", "dom", "dom.iterable" ]
 	},
+  "file_exclude_patterns" : ["*.js, *.js.map"],
 	"include": [
 		"./app/**/*"
+  ],
+  "exclude": [
+		"./app/_*"
   ],
   "types": [
     "jasmine"

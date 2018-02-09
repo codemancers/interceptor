@@ -14,6 +14,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: "[name].js"
   },
+  devtool: "source-map",
   resolve: {
     extensions: ["", ".ts", ".tsx", ".js", ".json"]
   },
@@ -38,7 +39,8 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'manifest.json' },
       { from: 'index.html' },
-      { from: 'styles.css' }
+      { from: 'styles.css' },
+      { from: './lib/*' }
     ])
-  ] 
+  ]
 };

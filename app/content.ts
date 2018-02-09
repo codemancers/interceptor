@@ -1,60 +1,69 @@
-import * as sinon from 'sinon'
-import { SinonFakeServer, SinonFakeXMLHttpRequest } from 'sinon';
-
-interface fakeServerInterface{
-  requestDetails : requestDetailInterface,
-  server : object
-}
-interface requestDetailInterface{
-  url :string,
-  method : string,
-  statusCode : number
-}
-class fakeServerWrapper {
-  responseData:string
-  requestDetails:SinonFakeXMLHttpRequest
-  server:SinonFakeServer
+import * as $ from 'jquery'
+class Intercept {
+  requestDetail: object;
   constructor() {
-    this.server = sinon.fakeServer.create();
-    this.StartIntercept = this.StartIntercept.bind(this);
-    this.modifyResponse = this.modifyResponse.bind(this);
-    this.sendResponse = this.sendResponse.bind(this);
-    this.destroyServer = this.destroyServer.bind(this);
+    this.requestDetail = {};
+    this.startMessageListener = this.startMessageListener.bind(this);
+    this.injectScripts = this.injectScripts.bind(this);
+    this.initScript = this.initScript.bind(this);
+    this.injectScripts();
   }
-
-  startMessageListener() {
+  startMessageListener = () => {
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-      this.requestDetails = request.message;
-      switch (request.message) {
-        case 'INTERCEPT_REQUEST' : {
-          this.StartIntercept(request.message);
-          return
-        }
-        case 'STOP_INTERCEPT' : {
-          this.destroyServer();
-          return
-        }
+      if (request.message == "INTERCEPT_REQUEST") {
+        this.initScript(request);
       }
     });
-  }
-  StartIntercept(message:SinonFakeXMLHttpRequest){
-    this.requestDetails = message;
-    this.server.xhr.useFilters = true;
-    this.server.xhr.addFilter((method, url) => {
-      return !(url === message.url); //has to return false
-    }) 
-     this.modifyResponse()
-  }
-  modifyResponse(){
-    this.server.respondWith(this.requestDetails.method , this.requestDetails.url, [this.requestDetails.statusCode, { "Content-Type": "application/json" },JSON.stringify({msg:"Error"})] );
-    this.sendResponse();
-  }
-  sendResponse(){
-    this.server.respond();
-  }
-  destroyServer(){
-    this.server.restore();
-    return this.responseData;
-  }
+  };
+  injectScripts = () => {
+    var jquery = document.createElement("script");
+    jquery.defer = false;
+    jquery.src = chrome.extension.getURL("./lib/jquery.js");
+    (document.head || document.documentElement).appendChild(jquery);
+
+    var sinon = document.createElement("script");
+    sinon.defer = false;
+    sinon.src = chrome.extension.getURL("./lib/sinon.js");
+    (document.head || document.documentElement).appendChild(sinon);
+  };
+  initScript = (request: object) => {
+    var actualCode = `
+    var request = ${JSON.stringify(request)};
+    var sinonServer = sinon.fakeServer.create();
+    //sinonServer.restore();
+
+    sinonServer.respondWith('${request.method}', '${
+      request.url
+    }',[404, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
+
+    sinonServer.respondImmediately = true;
+
+    sinonxhr = sinon.useFakeXMLHttpRequest();
+    // Create an array to store requests
+    var requests = this.requests = [];
+    // Keep references to created requests
+    sinonxhr.onCreate = function (xhr) {
+      requests.push(xhr);
+      console.log(requests)
+    };
+
+    var req = new XMLHttpRequest();
+    req.open("${request.method}", "${request.url}", false);
+    req.send(null);
+    console.log(req.responseText);
+
+     //axios.get('${request.url}').then(function(res){console.log(res)}).catch(function(err){console.log(error)})
+    // $.ajax({
+    //   url: "${request.url}"}).done(function(data) {console.log('success', data)}).fail(function(xhr) { console.log('error', xhr); });
+    //
+    `
+    $("#tmpScript").remove();//remove the earlier script tag if present
+    var script = document.createElement("script");
+    script.defer = true;
+    script.id = 'tmpScript';
+    script.type= 'text/javascript';
+    script.textContent = actualCode;
+    (document.head || document.documentElement).appendChild(script);
+  };
 }
-(new fakeServerWrapper()).startMessageListener();
+new Intercept().startMessageListener();
