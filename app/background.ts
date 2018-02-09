@@ -22,6 +22,11 @@ class BackgroundWorker {
   }
 
   startMessageListener() {
+    //inject jquery and sinon scripts on browserAction clicked
+    chrome.browserAction.onClicked.addListener((tab) => {
+      console.log(tab)
+      chrome.tabs.sendMessage(tab.id, {"message": "INJECT_SCRIPTS"})
+    });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
@@ -80,7 +85,7 @@ class BackgroundWorker {
   startTrackingRequests() {
     this.data[this.currentTab].enabled = true;
     chrome.webRequest.onBeforeRequest.addListener(//For getting responses : use onHeadersReceived Event
-      this.callback, 
+      this.callback,
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"],
