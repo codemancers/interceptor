@@ -3,19 +3,13 @@
 ///<reference path='./../../node_modules/@types/enzyme-adapter-react-15/index.d.ts'/>
 ///<reference path='./../../node_modules/@types/jest/index.d.ts'/>
 import * as React from 'react';
-import { configure } from 'enzyme';
 import { shallow } from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-15';
 import {Popup} from './../popup';
 
 import * as MessageService from '../message_service';
 
-configure({ adapter: new Adapter() });
 
 jest.mock('../message_service');
-
-const propsMockFn = jest.fn();
-
 
 const commonProps =  {
   tabUrl: 'http://google.com',
