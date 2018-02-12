@@ -12,7 +12,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].js"
+    filename: "[name].js",
+    crossOriginLoading: 'anonymous'
   },
   devtool: "source-map",
   resolve: {

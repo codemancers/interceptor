@@ -58,14 +58,14 @@ th {
 }
 table {
   border-collapse: collapse;
-  font: normal 12px arial; 
+  font: normal 12px arial;
   width: 100%;
   vertical-align: top;
   border-collapse: collapse;
   border-spacing: 0;
 }
-td, th { 
-  border: 1px solid #cdcdcd; 
+td, th {
+  border: 1px solid #cdcdcd;
   padding: 2px;
   max-width : 70%;
   text-overflow: ellipsis;
