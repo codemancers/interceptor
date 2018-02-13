@@ -24,7 +24,7 @@ chrome.tabs.query(queryParams, tabs => {
     const requests:Array<any> = []
     render(
       <Provider store={store({enabled, requests})}>
-         <Popup enabled={enabled} tabUrl={url} tabId={id} />
+         <Popup tabUrl={url} tabId={id} />
       </Provider>,
       document.getElementById("root") as HTMLElement
     );

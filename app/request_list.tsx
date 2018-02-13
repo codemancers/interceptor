@@ -1,68 +1,49 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import * as React from 'react';
-import BootstrapTable from 'react-bootstrap-table-next'
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
-import cellEditFactory from 'react-bootstrap-table2-editor';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-
-interface RowProps {
-  request : chrome.webRequest.WebRequestDetails,
-  keyValue : number,
-  handleIntercept: React.MouseEventHandler<{}>
-}
-
+import ReactTable from 'react-table'
+import * as matchSorter from 'match-sorter'
 export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails>, handleIntercept : React.MouseEventHandler<{}> }
-
- const RequestList = (props: RequestObj) => {
-  function timeFormatter(cell, row) {
-    if (row.timeStamp) {
-      return new Date(row.timeStamp).toTimeString()
-    }
-
-    return ({ cell });
-  }
-  function addButton() {
-      return <button onClick={props.handleIntercept}>Intercept</button>
-    }
-  interface methodInterface {
-    GET : string;
-    POST : string;
-    OPTIONS : string;
-    PUT : string
-  }
-  const methodSelectOptions:methodInterface = {
-    'GET' : 'GET',
-    'POST' : 'POST',
-     'OPTIONS': 'OPTIONS',
-    'PUT' : 'PUT'
-  };
-  return(
-    <BootstrapTable
-      keyField='requestId'
-      filter={ filterFactory()}
-      pagination={ paginationFactory() }
-      cellEdit={ cellEditFactory({
-        mode: 'dbclick',
-        blurToSave: true,
-        beforeSaveCell: (oldValue, newValue, row, column) => { console.log("oldValue::", oldValue,"newValue::", newValue, "row::",row, "column::", column)}
-      }) }
-      data={ props.requests}
-      columns = {[
-        {text : 'URLs', dataField : 'url', editable: true,
-         filter : textFilter(),
-         events: {
-          onClick: (e) => {console.log(e)}
-        }},
-        {text : 'Method', dataField : 'method',filter : selectFilter({ options: methodSelectOptions}) },
-        {text : 'Request Id', dataField : 'requestId', filter:textFilter()},
-        {text : 'Time', dataField :'timeStamp', formatter: timeFormatter, sort : true, clickToSelect: true},
-        {text : 'Intercept', dataField : " ", formatter : addButton, editable: false }
-      ]}
-      striped
-      hover
-      condensed
-      handleIntercept={props.handleIntercept}
-      />
-  );
+const RequestList = (props: RequestObj) => {
+  const columns = [{
+    Header: 'Request URL',
+    accessor: 'url',
+    filterable : true,
+    filterMethod: (filter, rows) =>{
+      console.log(rows)
+      return matchSorter(rows, filter.value, { keys: ["url"] , threshold: matchSorter.rankings.CONTAINS})
+    },
+    filterAll: true
+  }, {
+    Header: 'Method',
+    accessor: 'method',
+    filterable : true,
+    filterMethod: (filter, row) => row[filter.id] === filter.value,
+    Filter: ({ filter, onChange }) => <select
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : 'all'}
+      >
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+      <option value="OPTIONS">OPTIONS</option>
+    </select>,
+  }, {
+    id: 'timeStamp', // Required because our accessor is not a string
+    Header: 'Time Stamp',
+    accessor: d => new Date(d.timeStamp).toTimeString() // Custom value accessors!
+  }, {
+    Header: 'Request ID', // Custom header components!
+    accessor: 'requestId',
+    filterable : true
+  }]
+return <ReactTable
+data={props.requests}
+columns={columns}
+showPagination={true}
+showPaginationTop = {false}
+showPaginationBottom = {true}
+pageSize={10}
+handleIntercept={props.handleIntercept}
+/>
 }
 export default RequestList

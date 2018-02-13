@@ -1,4 +1,10 @@
 import * as $ from 'jquery'
+interface requestObject{
+  url:string;
+  method:string;
+  requestId:number,
+  timeStamp:number
+}
 class Intercept {
   requestDetail: object;
   constructor() {
@@ -9,7 +15,7 @@ class Intercept {
     this.injectScripts();
   }
   startMessageListener = () => {
-    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, _, __) => {
       if (request.message == "INTERCEPT_REQUEST") {
         this.initScript(request);
       }
@@ -26,7 +32,7 @@ class Intercept {
     sinon.src = chrome.extension.getURL("./lib/sinon.js");
     (document.head || document.documentElement).appendChild(sinon);
   };
-  initScript = (request: object) => {
+  initScript = (request: requestObject) => {
     var actualCode = `
     var request = ${JSON.stringify(request)};
     var sinonServer = sinon.fakeServer.create();
