@@ -24,7 +24,6 @@ class BackgroundWorker {
   startMessageListener() {
     //inject jquery and sinon scripts on browserAction clicked
     chrome.browserAction.onClicked.addListener((tab) => {
-      console.log(tab)
       chrome.tabs.sendMessage(tab.id, {"message": "INJECT_SCRIPTS"})
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
@@ -72,7 +71,7 @@ class BackgroundWorker {
       text: `${tabRecords.requests.length}`,
       tabId : details.tabId,
     });
-    if (tabRecords.enabled && this.currentTab === details.tabId) {
+    if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
       tabRecords.requests.push(details);
       this.data[this.currentTab] = tabRecords;
       chrome.browserAction.setBadgeText({
@@ -95,9 +94,7 @@ class BackgroundWorker {
   }
 
   stopTrackingRequests() {
-    const tabRecords = this.data[this.currentTab];
-    tabRecords.enabled = false;
-    this.data[this.currentTab] = tabRecords;
+    this.data[this.currentTab].enabled = false;
   }
   clearData(){
     this.data[this.currentTab].requests = [];
