@@ -18,27 +18,24 @@
   },
   "jest": {
     "verbose": true,
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
     "globals": {
       "__DEV__": true,
       "__RCTProfileIsProfiling": false
     },
     "setupTestFrameworkScriptFile": "./app/__tests__/setup.ts",
     "transform": {
-      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "\\.(ts|tsx|js|jsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$"
+    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js|jsx)$"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/code-mancers/interceptor.git"
   },
   "scripts": {
-    "start": "webpack-dev-server --config --hot --progress --colors --inline --content-base dist",
+    "start":
+      "webpack-dev-server --config --hot --progress --colors --inline --content-base dist",
     "build": "./build",
     "watch": "webpack --progress --colors --watch",
     "test": "jest",
