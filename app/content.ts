@@ -3,6 +3,7 @@ interface requestObject {
   method: string;
   requestId: number;
   timeStamp: number;
+  responseText: string;
 }
 class Intercept {
   constructor() {
@@ -28,13 +29,22 @@ class Intercept {
   };
   initScript = (request: requestObject) => {
     var actualCode = `
+    function remove(querySelector) {
+      let elemToRemove = document.getElementById(querySelector);
+      elemToRemove.parentNode.removeChild(elemToRemove);
+    };
+    if (document.getElementById("tmpScript")) {
+      remove("tmpScript");
+    }
     var request = ${JSON.stringify(request)};
     var sinonServer = sinon.fakeServer.create();
     //sinonServer.restore();
 
     sinonServer.respondWith('${request.method}', '${
       request.url
-    }',[200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
+    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(
+      request.responseText
+    )}]']);
     sinonServer.respondImmediately = true;
 
     $.ajax({
@@ -49,10 +59,6 @@ class Intercept {
         console.log('error', xhr);
       });
     `;
-    if (document.getElementById("tmpScript")) {
-      let injectedScript = document.getElementById("tmpScript");
-      injectedScript.parentNode.removeChild(injectedScript);
-    }
     var script = document.createElement("script");
     script.defer = true;
     script.id = "tmpScript";
