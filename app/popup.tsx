@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as cx from "classnames";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
-import { POPUP_PROPS } from "./types";
+import {POPUP_PROPS} from "./types";
 import {
   startListening,
   stopListening,
@@ -40,8 +40,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     return !tabUrl || isChromeUrl(tabUrl);
   };
 
-  interceptRequests = (url: string, method: string, statusCode: number) => {
-    let request = { url, method, statusCode };
+  interceptRequests = (
+    url: string,
+    method: string,
+    responseText: string,
+    statusCode: number
+  ) => {
+    let request = {url, method, responseText, statusCode};
     MessageService.interceptRequests(this.props.tabId, request);
   };
 
@@ -52,7 +57,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({ enabled: true, requests });
+        this.props.updateFields({enabled: true, requests});
+        console.log(requests);
       });
     }
 

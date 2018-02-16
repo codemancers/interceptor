@@ -2,11 +2,41 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
+import * as $ from "jquery";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
 }
 const RequestList = (props: RequestObj) => {
+  const InterceptComponent = props => {
+    let responseText = "{msg:hello}";
+    const handleTextChange = value => {
+      responseText = value;
+    };
+    return (
+      <div>
+        <label>
+          Response:
+          <textarea
+            value={responseText}
+            onChange={event => handleTextChange(event.target.value)}
+          />
+        </label>
+        <button
+          value="Intercept"
+          onClick={props.handleIntercept.bind(
+            this,
+            props.rowProps.row.url,
+            props.rowProps.row.method,
+            responseText,
+            200
+          )}
+        >
+          Intercept
+        </button>
+      </div>
+    );
+  };
   const columns = [
     {
       Header: "Request URL",
@@ -25,31 +55,17 @@ const RequestList = (props: RequestObj) => {
       accessor: "method",
       filterable: true,
       filterMethod: (filter, row) => row[filter.id] === filter.value,
-      Filter: ({ filter, onChange }) => (
+      Filter: ({filter, onChange}) => (
         <select
           onChange={event => onChange(event.target.value)}
-          style={{ width: "100%" }}
+          style={{width: "100%"}}
           value={filter ? filter.value : "all"}
         >
+          <option value="GET">ALL</option>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="OPTIONS">OPTIONS</option>
         </select>
-      )
-    },
-    {
-      Header: "Intercept",
-      filterable: false,
-      Cell: cellInfo => (
-        <button
-          onClick={props.handleIntercept(
-            cellInfo.row.url,
-            cellInfo.row.method,
-            200
-          )}
-        >
-          Intercept
-        </button>
       )
     },
     {
@@ -66,7 +82,12 @@ const RequestList = (props: RequestObj) => {
       showPaginationTop={false}
       showPaginationBottom={true}
       pageSize={10}
-      handleIntercept={props.handleIntercept}
+      SubComponent={row => (
+        <InterceptComponent
+          rowProps={row}
+          handleIntercept={props.handleIntercept}
+        />
+      )}
     />
   );
 };
