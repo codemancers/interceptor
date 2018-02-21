@@ -58,7 +58,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
         this.props.updateFields({enabled: true, requests});
-        console.log(requests);
       });
     }
 
@@ -67,6 +66,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       return;
     }
   };
+
+  handleResponseTextChange = (value) => {
+    this.props.responseText = value
+  }
 
   clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
     MessageService.clearData(this.props.tabId);
@@ -103,6 +106,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <RequestList
           requests={this.props.requests}
           handleIntercept={this.interceptRequests}
+          handleResponseTextChange={this.handleResponseTextChange}
+          handleResponseStatus={this.handleResponseTextChange}
         />
       </div>
     );
@@ -112,7 +117,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
-  errorMessage: state.errorMessage
+  errorMessage: state.errorMessage,
+  responseText : state.responseText,
+  selectStatusCode : state.selectStatusCode
 });
 
 const mapDispatchToProps: DispatchProps = {

@@ -57,6 +57,7 @@ describe("react-table initial state", () => {
         requests={[{ url: "http://www.codemancers.com", method: "GET" }]}
       />
     );
+    console.debug(myWrapper)
     expect(myWrapper.prop("requests")).toHaveLength(1);
   });
 });
