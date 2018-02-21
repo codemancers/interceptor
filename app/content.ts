@@ -17,11 +17,6 @@ class Intercept {
     });
   };
   injectScripts = () => {
-    let jquery = document.createElement("script");
-    jquery.defer = false;
-    jquery.src = chrome.extension.getURL("./lib/jquery.js");
-    (document.head || document.documentElement).appendChild(jquery);
-
     let sinon = document.createElement("script");
     sinon.defer = false;
     sinon.src = chrome.extension.getURL("./lib/sinon.js");
@@ -45,20 +40,7 @@ class Intercept {
     }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(
       request.responseText
     )}]']);
-    sinonServer.respondImmediately = true;
-
-    $.ajax({
-      url: "${request.url}",
-      cache: false,
-      method : "${request.method}"
-    })
-      .done(function(data) {
-        console.log('success', data)
-      })
-      .fail(function(xhr) {
-        console.log('error', xhr);
-      });
-    `;
+    sinonServer.respondImmediately = true;`;
     var script = document.createElement("script");
     script.defer = true;
     script.id = "tmpScript";

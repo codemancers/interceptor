@@ -14,7 +14,7 @@
       "run_at": "document_end"
     }
   ],
-  "web_accessible_resources": ["lib/sinon.js", "lib/jquery.js"],
+  "web_accessible_resources": ["lib/sinon.js"],
   "browser_action": {
     "default_popup": "index.html"
   },
