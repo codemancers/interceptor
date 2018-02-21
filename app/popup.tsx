@@ -58,6 +58,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
         this.props.updateFields({enabled: true, requests});
+<<<<<<< HEAD
+=======
+        console.log(requests);
+>>>>>>> 178c073062c01c58d445c077423add5acf53d9b3
       });
     }
 
@@ -67,10 +71,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
+<<<<<<< HEAD
   handleResponseTextChange = (value) => {
     this.props.responseText = value
   }
 
+=======
+>>>>>>> 178c073062c01c58d445c077423add5acf53d9b3
   clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
     MessageService.clearData(this.props.tabId);
     this.props.clearFields();
@@ -106,8 +113,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <RequestList
           requests={this.props.requests}
           handleIntercept={this.interceptRequests}
+<<<<<<< HEAD
           handleResponseTextChange={this.handleResponseTextChange}
           handleResponseStatus={this.handleResponseTextChange}
+=======
+>>>>>>> 178c073062c01c58d445c077423add5acf53d9b3
         />
       </div>
     );
@@ -117,9 +127,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
+<<<<<<< HEAD
   errorMessage: state.errorMessage,
   responseText : state.responseText,
   selectStatusCode : state.selectStatusCode
+=======
+  errorMessage: state.errorMessage
+>>>>>>> 178c073062c01c58d445c077423add5acf53d9b3
 });
 
 const mapDispatchToProps: DispatchProps = {
