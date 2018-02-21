@@ -32,6 +32,7 @@
     "transform": {
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
+    "setupTestFrameworkScriptFile": "<rootDir>/app/__tests__/setup.ts",
     "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$"
   },
   "repository": {
