@@ -6,8 +6,9 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   context: path.join(__dirname, 'app'),
   entry: {
-    popup: "./popup.tsx",
-    background: "./background.ts"
+    popup: "./app.tsx",
+    background: "./background.ts",
+    content : './content.ts'
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -33,7 +34,7 @@ module.exports = {
         'NODE_ENV': `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("common.js", ["popup"]),
+    new CommonsChunkPlugin("common.js", ["popup"],"content.js"),
     new CopyWebpackPlugin([
       { from: 'manifest.json' },
       { from: 'index.html' },

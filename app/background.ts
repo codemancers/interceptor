@@ -96,6 +96,10 @@ class BackgroundWorker {
   }
   clearData(){
     this.data[this.currentTab].requests = [];
+    chrome.browserAction.setBadgeText({
+      text: `0`,
+      tabId : this.data[this.currentTab].tabId
+    });
   }
 }
 

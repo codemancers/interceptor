@@ -1,28 +1,38 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import * as React from 'react';
 
-const renderRequests = (requests: Array<RequestObj> = []) => {
-  return requests.map((request, index:number) => {
-    return( <tr key= {index}> 
-      <td className="url">{request.url}</td> 
-      <td className="method">{request.method}</td> 
-    </tr>
-    )
-  });
+interface RowProps {
+  request : chrome.webRequest.WebRequestDetails,
+  key : number,
+  handleIntercept: React.MouseEventHandler<{}>
 }
 
-export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails> }
+export const Row = ( props: RowProps) => {
+  return (<tr key={props.key}>
+      <td className="url">{props.request.url}</td>
+      <td className="method">{props.request.method}</td>
+      <td><button type="button" className="btn-clear" onClick={props.handleIntercept.bind(this, props.request.url, props.request.method, 404)}>Intercept</button></td>
+    </tr>);
+}
 
-const RequestList = (props: RequestObj) => {
+export interface RequestObj { requests: Array<chrome.webRequest.WebRequestDetails>, handleIntercept : React.MouseEventHandler<{}> }
+
+ const RequestList = (props: RequestObj) => {
   return(
     <table>
       <thead>
         <tr>
           <th>URLs</th>
+          <th>Method</th>
+          <th>Intercept</th>
         </tr>
       </thead>
       <tbody>
-        {renderRequests(props.requests)}
+        {
+          props.requests.map((requestDetail, index) => {
+            return <Row request={requestDetail} key={index} handleIntercept={props.handleIntercept} />
+          })
+        }
       </tbody>
     </table>
   );

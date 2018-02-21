@@ -31,5 +31,8 @@ export function getCount(tabId:number, callback: GenericCallback){
 export function clearData(tabId : number){
   chrome.runtime.sendMessage({message : "CLEAR_DATA", tabId})
 }
+export function interceptRequests(tabId:number,url:string, method:string, statusCode:number){
+  chrome.tabs.sendMessage(tabId,{message : "INTERCEPT_REQUEST", url, method, statusCode})
+}
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers

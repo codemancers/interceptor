@@ -7,7 +7,15 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "browser_action": {
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at" : "document_idle"
+    }
+  ],
+  "web_accessible_resources": ["lib/sinon.js", "lib/jquery.js"],
+    "browser_action": {
     "default_popup": "index.html"
   },
   "permissions": [
