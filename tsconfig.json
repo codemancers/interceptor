@@ -1,27 +1,24 @@
 {
-	"compilerOptions": {
-		"allowJs": true,
-		"module": "commonjs",
-		"target": "es5",
-		"noImplicitAny": true,
-		"jsx": "react",
-		"outDir": "./dist/",
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitReturns": true,
-		"noImplicitThis": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"pretty": true,
-		"removeComments": true,
-		"strict": true,
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": true,
+    "jsx": "react",
+    "outDir": "./dist/",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "pretty": true,
+    "removeComments": true,
+    "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-		"lib": [ "es2016", "es2015", "dom", "dom.iterable" ]
-	},
-	"include": [
-		"./app/**/*"
-  ],
-  "types": [
-    "jasmine"
-    ]
+    "lib": ["es2016", "es2015", "dom", "dom.iterable"]
+  },
+  "file_exclude_patterns": ["*.js, *.js.map"],
+  "include": ["./app/**/*"],
+  "types": ["jasmine"]
 }

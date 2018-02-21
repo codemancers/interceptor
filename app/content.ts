@@ -1,60 +1,52 @@
-import * as sinon from 'sinon'
-import { SinonFakeServer, SinonFakeXMLHttpRequest } from 'sinon';
-
-interface fakeServerInterface{
-  requestDetails : requestDetailInterface,
-  server : object
+interface requestObject {
+  url: string;
+  method: string;
+  requestId: number;
+  timeStamp: number;
+  responseText: string;
 }
-interface requestDetailInterface{
-  url :string,
-  method : string,
-  statusCode : number
-}
-class fakeServerWrapper {
-  responseData:string
-  requestDetails:SinonFakeXMLHttpRequest
-  server:SinonFakeServer
+class Intercept {
   constructor() {
-    this.server = sinon.fakeServer.create();
-    this.StartIntercept = this.StartIntercept.bind(this);
-    this.modifyResponse = this.modifyResponse.bind(this);
-    this.sendResponse = this.sendResponse.bind(this);
-    this.destroyServer = this.destroyServer.bind(this);
+    this.injectScripts();
   }
-
-  startMessageListener() {
-    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-      this.requestDetails = request.message;
-      switch (request.message) {
-        case 'INTERCEPT_REQUEST' : {
-          this.StartIntercept(request.message);
-          return
-        }
-        case 'STOP_INTERCEPT' : {
-          this.destroyServer();
-          return
-        }
+  startMessageListener = () => {
+    chrome.runtime.onMessage.addListener((request, _, __) => {
+      if (request.message == "INTERCEPT_REQUEST") {
+        this.initScript(request.requestDetail);
       }
     });
-  }
-  StartIntercept(message:SinonFakeXMLHttpRequest){
-    this.requestDetails = message;
-    this.server.xhr.useFilters = true;
-    this.server.xhr.addFilter((method, url) => {
-      return !(url === message.url); //has to return false
-    }) 
-     this.modifyResponse()
-  }
-  modifyResponse(){
-    this.server.respondWith(this.requestDetails.method , this.requestDetails.url, [this.requestDetails.statusCode, { "Content-Type": "application/json" },JSON.stringify({msg:"Error"})] );
-    this.sendResponse();
-  }
-  sendResponse(){
-    this.server.respond();
-  }
-  destroyServer(){
-    this.server.restore();
-    return this.responseData;
-  }
+  };
+  injectScripts = () => {
+    let sinon = document.createElement("script");
+    sinon.defer = false;
+    sinon.src = chrome.extension.getURL("./lib/sinon.js");
+    (document.head || document.documentElement).appendChild(sinon);
+  };
+  initScript = (request: requestObject) => {
+    var actualCode = `
+    function remove(querySelector) {
+      let elemToRemove = document.getElementById(querySelector);
+      elemToRemove.parentNode.removeChild(elemToRemove);
+    };
+    if (document.getElementById("tmpScript")) {
+      remove("tmpScript");
+    }
+    var request = ${JSON.stringify(request)};
+    var sinonServer = sinon.fakeServer.create();
+    //sinonServer.restore();
+
+    sinonServer.respondWith('${request.method}', '${
+      request.url
+    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(
+      request.responseText
+    )}]']);
+    sinonServer.respondImmediately = true;`;
+    var script = document.createElement("script");
+    script.defer = true;
+    script.id = "tmpScript";
+    script.type = "text/javascript";
+    script.textContent = actualCode;
+    (document.head || document.documentElement).appendChild(script);
+  };
 }
-(new fakeServerWrapper()).startMessageListener();
+new Intercept().startMessageListener();

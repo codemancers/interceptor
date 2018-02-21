@@ -1,19 +1,26 @@
 import * as React from "react";
 import * as cx from "classnames";
-import { connect } from 'react-redux';
+import {connect} from "react-redux";
 
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
-import {POPUP_PROPS} from './types'
-import {startListening, stopListening, errorNotify, updateField, clearFields, updateFields } from './actions'
+import {POPUP_PROPS} from "./types";
+import {
+  startListening,
+  stopListening,
+  errorNotify,
+  updateField,
+  clearFields,
+  updateFields
+} from "./actions";
 
-interface DispatchProps{
-  startListening: typeof startListening,
-  stopListening : typeof stopListening,
-  errorNotify : typeof errorNotify,
-  updateField : typeof updateField,
-  clearFields : typeof clearFields,
-  updateFields : typeof updateFields
+interface DispatchProps {
+  startListening: typeof startListening;
+  stopListening: typeof stopListening;
+  errorNotify: typeof errorNotify;
+  updateField: typeof updateField;
+  clearFields: typeof clearFields;
+  updateFields: typeof updateFields;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -22,10 +29,10 @@ const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
 
-export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
+export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
-      this.props.updateField('requests', requests);
+      this.props.updateField("requests", requests);
     });
   }
 
@@ -33,18 +40,25 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
     return !tabUrl || isChromeUrl(tabUrl);
   };
 
-  interceptRequests= (url:string, method:string, statusCode:number) =>  {
-    MessageService.interceptRequests(this.props.tabId, url,method,statusCode)
-  }
+  interceptRequests = (
+    url: string,
+    method: string,
+    responseText: string,
+    statusCode: number
+  ) => {
+    let request = {url, method, responseText, statusCode};
+    MessageService.interceptRequests(this.props.tabId, request);
+  };
 
-  handleClick = (_: React.MouseEvent<{}>) : void => {
-    if(this.props.enabled) {
+  handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
+    if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
-      this.props.updateField('enabled', false);
+      this.props.updateField("enabled", false);
     } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({ enabled: true, requests })
+        this.props.updateFields({enabled: true, requests});
+        console.log(requests);
       });
     }
 
@@ -54,29 +68,54 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}  >{
     }
   };
 
-  clearRequests = (_: React.MouseEvent<{}>) : void => {
-    MessageService.clearData(this.props.tabId)
+  clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
+    MessageService.clearData(this.props.tabId);
     this.props.clearFields();
-  }
+  };
 
   render() {
-    const buttonClass = cx("button", { "button-start-listening": !this.props.enabled, "button-stop-listening": this.props.enabled });
+    const buttonClass = cx("button", {
+      "button-start-listening": !this.props.enabled,
+      "button-stop-listening": this.props.enabled
+    });
     return (
       <div className="popup">
-        {this.props.errorMessage ? ( <p className="popup-error-message popup-error"> {this.props.errorMessage} </p> ) : null}
-        <button type="button" onClick={this.handleClick} className={buttonClass}>
+        {this.props.errorMessage ? (
+          <p className="popup-error-message popup-error">
+            {" "}
+            {this.props.errorMessage}{" "}
+          </p>
+        ) : null}
+        <button
+          type="button"
+          onClick={this.handleClick}
+          className={buttonClass}
+        >
           {this.props.enabled ? "Stop Listening" : "Start Listening"}
         </button>
-        <button type="button" onClick={this.clearRequests} className="btn-clear">CLEAR</button>
-        <RequestList requests={this.props.requests} handleIntercept={this.interceptRequests} />
+        <button
+          type="button"
+          onClick={this.clearRequests}
+          className="btn-clear"
+        >
+          CLEAR
+        </button>
+        <RequestList
+          requests={this.props.requests}
+          handleIntercept={this.interceptRequests}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state:POPUP_PROPS) => ({ enabled: state.enabled, requests: state.requests, errorMessage : state.errorMessage })
+const mapStateToProps = (state: POPUP_PROPS) => ({
+  enabled: state.enabled,
+  requests: state.requests,
+  errorMessage: state.errorMessage
+});
 
-const mapDispatchToProps:DispatchProps = {
+const mapDispatchToProps: DispatchProps = {
   startListening,
   stopListening,
   errorNotify,
@@ -85,8 +124,4 @@ const mapDispatchToProps:DispatchProps = {
   clearFields
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Popup);
-
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);

@@ -1,106 +1,109 @@
 /// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
-import { RequestObj } from './request_list'
+import {RequestObj} from "./request_list";
 
 interface TabRecord {
-  tabId: number,
-  enabled: boolean,
-  requests: Array<RequestObj>
-};
+  tabId: number;
+  enabled: boolean;
+  requests: Array<RequestObj>;
+}
 
 interface Recordings {
   [index: number]: TabRecord;
 }
 
 class BackgroundWorker {
-  currentTab:number = -1
-  data:Recordings
+  currentTab: number = -1;
+  data: Recordings;
   constructor() {
     this.data = {};
-    this.callback = this.callback.bind(this);
-    this.startTrackingRequests = this.startTrackingRequests.bind(this);
-    this.stopTrackingRequests = this.stopTrackingRequests.bind(this);
   }
 
-  startMessageListener() {
+  startMessageListener = () => {
+    //inject jquery and sinon scripts on browserAction clicked
+    chrome.browserAction.onClicked.addListener(tab => {
+      chrome.tabs.sendMessage(tab.id, {message: "INJECT_SCRIPTS"});
+    });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
         this.data[this.currentTab] = {
           enabled: false,
           requests: [],
-          tabId : -1,
+          tabId: -1
         };
       }
       switch (request.message) {
-        case 'CLEAR_DATA' : {
+        case "CLEAR_DATA": {
           this.clearData();
-          break
+          break;
         }
-        case 'ENABLE_LOGGING': {
+        case "ENABLE_LOGGING": {
           this.startTrackingRequests();
           break;
         }
-        case 'GET_ENABLED_STATUS': {
+        case "GET_ENABLED_STATUS": {
           const data = this.data[this.currentTab];
           sendResponse(data.enabled);
           break;
         }
-        case 'DISABLE_LOGGING': {
+        case "DISABLE_LOGGING": {
           this.stopTrackingRequests();
           break;
         }
-        case 'GET_REQUESTS': {
+        case "GET_REQUESTS": {
           sendResponse(this.data[this.currentTab].requests);
           break;
         }
-        case 'GET_COUNT' : {
+        case "GET_COUNT": {
           sendResponse(this.data[this.currentTab].requests.length);
-          break
+          break;
         }
       }
     });
-  }
+  };
 
-  callback(details:any) {
+  callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
     chrome.browserAction.setBadgeText({
       text: `${tabRecords.requests.length}`,
-      tabId : details.tabId,
+      tabId: details.tabId
     });
-    if (tabRecords.enabled && this.currentTab === details.tabId) {
+    if (
+      this.data[this.currentTab].enabled &&
+      this.currentTab === details.tabId
+    ) {
       tabRecords.requests.push(details);
       this.data[this.currentTab] = tabRecords;
       chrome.browserAction.setBadgeText({
         text: `${tabRecords.requests.length}`,
-        tabId : details.tabId,
+        tabId: details.tabId
       });
     }
-  }
+  };
 
-  startTrackingRequests() {
+  startTrackingRequests = () => {
     this.data[this.currentTab].enabled = true;
-    chrome.webRequest.onBeforeRequest.addListener(//For getting responses : use onHeadersReceived Event
-      this.callback, 
+    chrome.webRequest.onHeadersReceived.addListener(
+      //For getting responses : use onHeadersReceived Event
+      this.callback,
       {
         urls: ["<all_urls>"],
-        types: ["xmlhttprequest"],
+        types: ["xmlhttprequest"]
       },
-      ["requestBody"]// For response event use ["blocking", "responseHeaders"] filters and return {responseHeaders: details.responseHeaders}; to block and modify requests
+      ["responseHeaders"] // For response event use ["blocking", "responseHeaders"] filters and return {responseHeaders: details.responseHeaders}; to block and modify requests
     );
-  }
+  };
 
-  stopTrackingRequests() {
-    const tabRecords = this.data[this.currentTab];
-    tabRecords.enabled = false;
-    this.data[this.currentTab] = tabRecords;
-  }
-  clearData(){
+  stopTrackingRequests = () => {
+    this.data[this.currentTab].enabled = false;
+  };
+  clearData = () => {
     this.data[this.currentTab].requests = [];
     chrome.browserAction.setBadgeText({
       text: `0`,
-      tabId : this.data[this.currentTab].tabId
+      tabId: this.data[this.currentTab].tabId
     });
-  }
+  };
 }
 
-(new BackgroundWorker()).startMessageListener();
+new BackgroundWorker().startMessageListener();
