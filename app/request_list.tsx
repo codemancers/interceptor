@@ -2,40 +2,12 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
+import {InterceptForm} from './Intercept_Components'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
 }
 const RequestList = (props: RequestObj) => {
-  const InterceptComponent = props => {
-    let responseText = "{msg:hello}";
-    const handleTextChange = value => {
-      responseText = value;
-    };
-    return (
-      <div>
-        <label>
-          Response:
-          <textarea
-            value={responseText}
-            onChange={event => handleTextChange(event.target.value)}
-          />
-        </label>
-        <button
-          value="Intercept"
-          onClick={props.handleIntercept.bind(
-            this,
-            props.rowProps.row.url,
-            props.rowProps.row.method,
-            responseText,
-            200
-          )}
-        >
-          Intercept
-        </button>
-      </div>
-    );
-  };
   const columns = [
     {
       Header: "Request URL",
@@ -82,7 +54,7 @@ const RequestList = (props: RequestObj) => {
       showPaginationBottom={true}
       pageSize={10}
       SubComponent={row => (
-        <InterceptComponent
+        <InterceptForm
           rowProps={row}
           handleIntercept={props.handleIntercept}
         />
