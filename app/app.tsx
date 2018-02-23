@@ -22,6 +22,7 @@ chrome.tabs.query(queryParams, tabs => {
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
   MessageService.getEnabledStatus(id, (enabled: boolean) => {
+    console.log(INITIAL_POPUP_STATE)
     const createStore = store({...INITIAL_POPUP_STATE, enabled});
     render(
       <Provider store={createStore} >

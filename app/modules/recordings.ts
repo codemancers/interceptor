@@ -1,5 +1,5 @@
 import {PopUpState, Action} from '../types'
-const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], selectedReqIds: [], checked : false}
+export const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], selectedReqIds: [], checked : false}
 
 //ACTION CONSTANTS
 import * as actionType from "../actions"
