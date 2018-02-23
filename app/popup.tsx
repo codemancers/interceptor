@@ -11,7 +11,8 @@ import {
   errorNotify,
   updateField,
   clearFields,
-  updateFields
+  updateFields,
+  handleCheckToggle
 } from "./actions";
 
 interface DispatchProps {
@@ -21,6 +22,7 @@ interface DispatchProps {
   updateField: typeof updateField;
   clearFields: typeof clearFields;
   updateFields: typeof updateFields;
+  handleCheckToggle: typeof handleCheckToggle
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -31,6 +33,9 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
+    MessageService.getEnabledStatus(this.props.tabId, (enabled: boolean) => {
+      this.props.updateField("enabled", enabled)
+    })
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField("requests", requests);
     });
@@ -58,7 +63,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
         this.props.updateFields({enabled: true, requests});
-        console.log(requests);
       });
     }
 
@@ -71,6 +75,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
     MessageService.clearData(this.props.tabId);
     this.props.clearFields();
+  };
+
+  handleCheckToggle = (reqId:number, presentCheckedState:boolean) => {
+    this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
   render() {
@@ -102,7 +110,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         </button>
         <RequestList
           requests={this.props.requests}
+          selectedReqIds={this.props.selectedReqIds}
           handleIntercept={this.interceptRequests}
+          handleCheckToggle={this.handleCheckToggle}
         />
       </div>
     );
@@ -112,7 +122,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
-  errorMessage: state.errorMessage
+  errorMessage: state.errorMessage,
+  selectedReqIds : state.selectedReqIds,
+  checked : state.checked
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -121,7 +133,8 @@ const mapDispatchToProps: DispatchProps = {
   errorNotify,
   updateField,
   updateFields,
-  clearFields
+  clearFields,
+  handleCheckToggle
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

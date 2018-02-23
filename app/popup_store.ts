@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { createLogger } from 'redux-logger'
 import { Middleware } from 'react-redux/node_modules/redux';
 
@@ -7,7 +7,7 @@ import {reducer}  from './modules/recordings';
 export interface PopUpInterface {
   enabled: boolean;
   errorMessage ?: string;
-  requests: Array<Object>;
+  requests?: Array<Object>;
 }
 
 const logger:Middleware = createLogger();

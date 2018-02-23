@@ -21,10 +21,9 @@ chrome.tabs.query(queryParams, tabs => {
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
   MessageService.getEnabledStatus(id, (enabled: boolean) => {
-    const requests:Array<any> = []
     render(
-      <Provider store={store({enabled, requests})}>
-         <Popup tabUrl={url} tabId={id} />
+      <Provider store={store()} >
+         <Popup tabUrl={url} tabId={id}/>
       </Provider>,
       document.getElementById("root") as HTMLElement
     );
