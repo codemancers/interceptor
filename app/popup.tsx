@@ -33,9 +33,6 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
-    MessageService.getEnabledStatus(this.props.tabId, (enabled: boolean) => {
-      this.props.updateField("enabled", enabled)
-    })
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField("requests", requests);
     });
@@ -124,7 +121,6 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   requests: state.requests,
   errorMessage: state.errorMessage,
   selectedReqIds : state.selectedReqIds,
-  checked : state.checked
 });
 
 const mapDispatchToProps: DispatchProps = {
