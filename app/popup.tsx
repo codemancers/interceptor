@@ -80,10 +80,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
-  handleCheckedRequests = (requests:Array<any>, tabId:number) =>{
-    if(tabId){
+  handleCheckedRequests = (requests:Array<any>) =>{
+    const tabId:number = this.props.tabId
     MessageService.interceptChecked(tabId, requests)
-    }
   }
 
   render() {
@@ -118,7 +117,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           handleIntercept={this.interceptRequests}
           handleCheckToggle={this.handleCheckToggle}
           checkedReqs={this.props.checkedReqs}
-          handleCheckedRequests={this.props.handleCheckedRequests}
+          handleCheckedRequests={this.handleCheckedRequests}
         />
       </div>
     );

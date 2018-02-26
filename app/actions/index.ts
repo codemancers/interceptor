@@ -32,6 +32,6 @@ export function clearFields(){
 export function handleCheckToggle(reqId:number, checked:boolean){
   return {type : TOGGLE_CHECKBOX, reqId, checked  }
 }
-export function handleCheckedRequests(requests:Array<any>){
+export function handleCheckedRequests(tabId:number,requests:Array<any>){
   return {type: INTERCEPT_CHECKED , payload : requests}
 }

@@ -75,16 +75,13 @@ const RequestList = (props: RequestObj) => {
       Footer: ({data}) =>(
         <span>
           <button id="intercept-all-btn" onClick={() => {
-            let requestsToSend = [], tabId
-            data.map((requestItem) => {
+            let requestsToSend:Array<any> = []
+            data.map((requestItem:any) => {
               if(props.checkedReqs[requestItem.checkbox.requestId]){
                 requestsToSend.push(requestItem.checkbox)
-                if(!tabId){
-                  tabId = requestItem.checkbox.tabId
-                }
               }
             })
-            props.handleCheckedRequests.bind(this,requestsToSend, tabId )
+            props.handleCheckedRequests(requestsToSend)
           }}>Intercept All</button>
         </span>
       )
