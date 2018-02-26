@@ -22,21 +22,29 @@ class Intercept {
   interceptSelected = (selectedReqs:Array<requestObject>) => {
     var selectedInterceptCode = `
     function remove(querySelector) {
-      let elemToRemove = document.getElementById(querySelector);
+      let elemToRemove = document.querySelector(querySelector);
       elemToRemove.parentNode.removeChild(elemToRemove);
     };
-    if (document.getElementById("tmpScript-2")) {
-      //remove("tmpScript-2");
+    while(document.querySelectorAll("#tmpScript-2").length){
+      remove("#tmpScript-2");
     }
-    var selectedRequests = ${JSON.stringify([...selectedReqs])};
-    var sinonServer = sinon.fakeServer.create();
-    //sinonServer.restore();
-
-    selectedRequests.forEach(function(eachReq){
-      console.log(eachReq)
-      sinonServer.respondWith(eachReq.method, eachReq.url,[200, { "Content-Type": "application/json" },'[${JSON.stringify({"msg": "hello again"})}]']);
-      sinonServer.respondImmediately = true;;
-    })`
+    function sinonHandler(requestsArray){
+      var that = this
+      this.setupServer = function(){
+        this.server = sinon.fakeServer.create({ logger: console.log });
+      },
+      this.selectedReqs = requestsArray,
+      this.interceptRequests = function() {
+        that.selectedReqs.forEach(function(eachReq){
+          that.server.respondWith(eachReq.method, eachReq.url,[200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
+          that.server.respondImmediately = true
+        })
+      }
+    }
+    window.mySinonServer = new sinonHandler(${JSON.stringify([...selectedReqs])})
+    window.mySinonServer.setupServer();
+    window.mySinonServer.interceptRequests()
+    `
 
     let script = document.createElement("script");
     script.defer = true;
@@ -60,9 +68,8 @@ class Intercept {
     if (document.getElementById("tmpScript")) {
       remove("tmpScript");
     }
-    var request = ${JSON.stringify(request)};
-    var sinonServer = sinon.fakeServer.create();
-    //sinonServer.restore();
+    let request = ${JSON.stringify(request)};
+    let sinonServer = sinon.fakeServer.create();
 
     sinonServer.respondWith('${request.method}', '${
       request.url
