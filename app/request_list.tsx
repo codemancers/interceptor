@@ -33,9 +33,9 @@ const RequestList = (props: RequestObj) => {
         <select
           onChange={event => onChange(event.target.value)}
           style={{width: "100%"}}
-          value={filter ? filter.value : "all"}
+          value={filter ? filter.value : ""}
         >
-          <option value="all">ALL</option>
+          <option value="">ALL</option>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="OPTIONS">OPTIONS</option>
