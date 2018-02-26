@@ -25,7 +25,7 @@ chrome.tabs.query(queryParams, tabs => {
     const createStore = store({...INITIAL_POPUP_STATE, enabled});
     render(
       <Provider store={createStore} >
-         <Popup tabUrl={url} tabId={id} enabled={enabled}/>
+         <Popup tabUrl={url} tabId={id} />
       </Provider>,
       document.getElementById("root") as HTMLElement
     );

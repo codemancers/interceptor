@@ -45,26 +45,14 @@ const RequestList = (props: RequestObj) => {
     {
       id: "checkbox",
       accessor: "",
-      Cell: ({original}) => {
-        const presentReqId = (props, rowReqId) => {
-          let RequestId = -1;
-          props.requests.map( (request, index:number) => {
-            if(request.requestId === rowReqId){
-              RequestId = rowReqId
-            }
-          })
-          return RequestId
-        }
+      Cell: ({ original }) => {
         return (
           <input
             type="checkbox"
             className="checkbox"
-            checked={() => {
-              const clickedReqId = presentReqId(props, original.requestId);
-            }}
+            checked={props.checkedReqs[original.requestId]}
             onChange={(e) => {
-              const clickedReqId = presentReqId(props, original.requestId)
-              props.handleCheckToggle(clickedReqId, e.target.checked)}
+              props.handleCheckToggle(original.requestId, e.target.checked)}
             }
           />
         );
@@ -75,13 +63,11 @@ const RequestList = (props: RequestObj) => {
       Footer: ({data}) =>(
         <span>
           <button id="intercept-all-btn" onClick={() => {
-            let requestsToSend:Array<any> = []
-            data.map((requestItem:any) => {
-              if(props.checkedReqs[requestItem.checkbox.requestId]){
-                requestsToSend.push(requestItem.checkbox)
-              }
+            const enabledRequests = data.filter((request) => {
+              return props.checkedReqs[request.checkbox.requestId]
             })
-            props.handleCheckedRequests(requestsToSend)
+            .map(request => request.checkbox);
+            props.handleCheckedRequests(enabledRequests)
           }}>Intercept All</button>
         </span>
       )

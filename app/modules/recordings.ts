@@ -1,5 +1,5 @@
 import {PopUpState, Action} from '../types'
-export const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], selectedReqIds: [], checkedReqs : {}}
+export const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], checkedReqs : {}}
 
 //ACTION CONSTANTS
 import * as actionType from "../actions"
@@ -19,18 +19,10 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.CLEAR_REQUESTS :
       return {...state, requests: [] }
     case actionType.TOGGLE_CHECKBOX:
-      state.checkedReqs[action.reqId] = action.checked
-      if (state.checkedReqs[action.reqId]) {
-        return {...state , , checked : !action.checked }
-      } else {
-        removeReqId(state, action)
-      }
+      return {...state, checkedReqs: { ...state.checkedReqs, [action.reqId]: action.checked } }
     case actionType.INTERCEPT_CHECKED :
       return {...state}
     default:
       return state;
   }
-}
-const removeReqId = (state, action) => {
-  return {...state, checked : !action.checked}
 }
