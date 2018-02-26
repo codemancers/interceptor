@@ -4,8 +4,7 @@ export interface POPUP_PROPS {
   enabled : boolean,
   requests : Array<any>,
   errorMessage : string,
-  selectedReqIds : Array<number>,
-  checked : Array<boolean>
+  checkedReqs : object
 }
 
 export interface selectCheckBoxes{
@@ -17,8 +16,7 @@ export interface PopUpState {
   errorMessage ?: string;
   requests: object;
   tabUrl ?: string
-  selectedReqIds : Array<number>
-  checked :Array<boolean>
+  checkedReqs : object
 }
 
 export interface Action{

@@ -5,9 +5,10 @@ import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./Intercept_Components";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  selectedReqIds:Array<number>
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
+  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>
+  checkedReqs : Array<any>
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -45,47 +46,48 @@ const RequestList = (props: RequestObj) => {
       id: "checkbox",
       accessor: "",
       Cell: ({original}) => {
-        const presentReqId = (props, original) => {
+        const presentReqId = (props, rowReqId) => {
           let RequestId = -1;
           props.requests.map( (request, index:number) => {
-            if(request.requestId === original.requestId){
-              RequestId = original.requestId
+            if(request.requestId === rowReqId){
+              RequestId = rowReqId
             }
           })
           return RequestId
         }
-
-        const checkedBool = (thisrequestId, selectedReqIdArray) => {
-          let checkedBool
-          selectedReqIdArray.map((item) => {
-            if(item === thisrequestId){
-              checkedBool = true
-            }
-          })
-          if(checkedBool) {
-            return true
-          }else{
-            return false
-          }
-
-        }
-
         return (
           <input
             type="checkbox"
             className="checkbox"
-            checked={checkedBool(original.requestId, props.selectedReqIds) || false}
+            checked={() => {
+              const clickedReqId = presentReqId(props, original.requestId);
+            }}
             onChange={(e) => {
-              const clickedReqId = presentReqId(props, original )
-              props.handleCheckToggle(clickedReqId, e.target.checked)}}
+              const clickedReqId = presentReqId(props, original.requestId)
+              props.handleCheckToggle(clickedReqId, e.target.checked)}
+            }
           />
         );
       },
       Header: "Intercept",
       sortable: false,
       width: 45,
-      Footer: (data) => {
-      }
+      Footer: ({data}) =>(
+        <span>
+          <button id="intercept-all-btn" onClick={() => {
+            let requestsToSend = [], tabId
+            data.map((requestItem) => {
+              if(props.checkedReqs[requestItem.checkbox.requestId]){
+                requestsToSend.push(requestItem.checkbox)
+                if(!tabId){
+                  tabId = requestItem.checkbox.tabId
+                }
+              }
+            })
+            props.handleCheckedRequests.bind(this,requestsToSend, tabId )
+          }}>Intercept All</button>
+        </span>
+      )
     }
   ];
   return (

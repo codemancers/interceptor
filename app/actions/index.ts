@@ -8,6 +8,7 @@ export const RELOAD_REQUESTS = "RELOAD_REQUESTS"
 export const  UPDATE_FIELD = "UPDATE_FIELD";
 export const  UPDATE_FIELDS = "UPDATE_FIELDS";
 export const TOGGLE_CHECKBOX = "TOGGLE_CHECKBOX"
+export const INTERCEPT_CHECKED = "INTERCEPT_CHECKED"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -30,4 +31,7 @@ export function clearFields(){
 }
 export function handleCheckToggle(reqId:number, checked:boolean){
   return {type : TOGGLE_CHECKBOX, reqId, checked  }
+}
+export function handleCheckedRequests(requests:Array<any>){
+  return {type: INTERCEPT_CHECKED , payload : requests}
 }

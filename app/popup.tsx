@@ -12,7 +12,8 @@ import {
   updateField,
   clearFields,
   updateFields,
-  handleCheckToggle
+  handleCheckToggle,
+  handleCheckedRequests
 } from "./actions";
 
 interface DispatchProps {
@@ -23,6 +24,7 @@ interface DispatchProps {
   clearFields: typeof clearFields;
   updateFields: typeof updateFields;
   handleCheckToggle: typeof handleCheckToggle
+  handleCheckedRequests : typeof handleCheckedRequests
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -78,6 +80,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
+  handleCheckedRequests = (requests:Array<any>, tabId:number) =>{
+    if(tabId){
+    MessageService.interceptChecked(tabId, requests)
+    }
+  }
+
   render() {
     const buttonClass = cx("button", {
       "button-start-listening": !this.props.enabled,
@@ -107,9 +115,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         </button>
         <RequestList
           requests={this.props.requests}
-          selectedReqIds={this.props.selectedReqIds}
           handleIntercept={this.interceptRequests}
           handleCheckToggle={this.handleCheckToggle}
+          checkedReqs={this.props.checkedReqs}
+          handleCheckedRequests={this.props.handleCheckedRequests}
         />
       </div>
     );
@@ -120,7 +129,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
   errorMessage: state.errorMessage,
-  selectedReqIds : state.selectedReqIds,
+  checkedReqs : state.checkedReqs
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -130,7 +139,8 @@ const mapDispatchToProps: DispatchProps = {
   updateField,
   updateFields,
   clearFields,
-  handleCheckToggle
+  handleCheckToggle,
+  handleCheckedRequests
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
