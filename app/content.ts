@@ -14,37 +14,39 @@ class Intercept {
       if (request.message == "INTERCEPT_REQUEST") {
         this.initScript(request.requestDetail);
       }
-      if(request.message === "INTERCEPT_CHECKED"){
-        this.interceptSelected(request.requestsToIntercept)
+      if (request.message === "INTERCEPT_CHECKED") {
+        this.interceptSelected(request.requestsToIntercept);
       }
     });
   };
-  interceptSelected = (selectedReqs:Array<requestObject>) => {
-    var selectedInterceptCode = `
-    function remove(querySelector) {
-      let elemToRemove = document.querySelector(querySelector);
-      elemToRemove.parentNode.removeChild(elemToRemove);
-    };
-    while(document.querySelectorAll("#tmpScript-2").length){
-      remove("#tmpScript-2");
-    }
-    function sinonHandler(requestsArray){
-      var that = this
-      this.setupServer = function(){
-        this.server = sinon.fakeServer.create({ logger: console.log });
-      },
-      this.selectedReqs = requestsArray,
-      this.interceptRequests = function() {
-        that.selectedReqs.forEach(function(eachReq){
-          that.server.respondWith(eachReq.method, eachReq.url,[200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
-          that.server.respondImmediately = true
-        })
+  interceptSelected = (selectedReqs: Array<requestObject>) => {
+    var selectedInterceptCode =`
+    (function(){
+      console.log('interceptor :: IIFE')
+      function remove(querySelector) {
+        let elemToRemove = document.querySelector(querySelector);
+        elemToRemove.parentNode.removeChild(elemToRemove);
+      };
+      while(document.querySelectorAll("#tmpScript-2").length){
+        remove("#tmpScript-2");
       }
-    }
-    window.mySinonServer = new sinonHandler(${JSON.stringify([...selectedReqs])})
-    window.mySinonServer.setupServer();
-    window.mySinonServer.interceptRequests()
-    `
+
+      function sinonHandler(requestArray) {
+          this.server = sinon.fakeServer.create({ logger: console.log });
+          this.server.autoRespond = true;
+          this.server.xhr.useFilters = true;
+          // If the filter returns true, the request will not be faked - leave original
+          this.server.xhr.addFilter(function(method, url, async, username, password) {
+            return false;
+          });
+          this.server.respondWith((xhr, id) => {
+            console.log(xhr, id);
+            xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]')
+          })
+        }
+        new sinonHandler(${JSON.stringify([...selectedReqs])});
+    })()
+    `;
 
     let script = document.createElement("script");
     script.defer = true;
@@ -52,7 +54,7 @@ class Intercept {
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
-  }
+  };
   injectScripts = () => {
     let sinon = document.createElement("script");
     sinon.defer = false;
