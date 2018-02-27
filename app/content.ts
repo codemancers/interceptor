@@ -20,7 +20,7 @@ class Intercept {
     });
   };
   interceptSelected = (selectedReqs:Array<requestObject>) => {
-    var selectedInterceptCode = `
+    var selectedInterceptCode =`
     function remove(querySelector) {
       let elemToRemove = document.querySelector(querySelector);
       elemToRemove.parentNode.removeChild(elemToRemove);
@@ -28,23 +28,18 @@ class Intercept {
     while(document.querySelectorAll("#tmpScript-2").length){
       remove("#tmpScript-2");
     }
-    function sinonHandler(requestsArray){
-      var that = this
-      this.setupServer = function(){
+
+    function sinonHandler(requestArray) {
         this.server = sinon.fakeServer.create({ logger: console.log });
-      },
-      this.selectedReqs = requestsArray,
-      this.interceptRequests = function() {
-        that.selectedReqs.forEach(function(eachReq){
-          that.server.respondWith(eachReq.method, eachReq.url,[200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
-          that.server.respondImmediately = true
-        })
+        this.interceptRequests = () => {
+          requestArray.forEach( (request) => {
+            this.server.respondWith(request.method, request.url,[200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]']);
+            this.server.respondImmediately = true
+          } )
+        }
       }
-    }
     window.mySinonServer = new sinonHandler(${JSON.stringify([...selectedReqs])})
-    window.mySinonServer.setupServer();
-    window.mySinonServer.interceptRequests()
-    `
+    window.mySinonServer.interceptRequests() `
 
     let script = document.createElement("script");
     script.defer = true;
