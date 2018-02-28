@@ -22,7 +22,6 @@ class Intercept {
   interceptSelected = (selectedReqs: Array<requestObject>) => {
     var selectedInterceptCode =`
     (function(){
-      console.log('interceptor :: IIFE')
       function remove(querySelector) {
         let elemToRemove = document.querySelector(querySelector);
         elemToRemove.parentNode.removeChild(elemToRemove);
@@ -31,22 +30,35 @@ class Intercept {
         remove("#tmpScript-2");
       }
 
-      function sinonHandler(requestArray) {
-          this.server = sinon.fakeServer.create({ logger: console.log });
-          this.server.autoRespond = true;
-          this.server.xhr.useFilters = true;
-          // If the filter returns true, the request will not be faked - leave original
-          this.server.xhr.addFilter(function(method, url, async, username, password) {
-            return false;
-          });
-          this.server.respondWith((xhr, id) => {
-            console.log(xhr, id);
-            xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]')
-          })
-        }
-        new sinonHandler(${JSON.stringify([...selectedReqs])});
-    })()
-    `;
+       let fakeServerWrapper = (requestArray) => {
+          this.data = requestArray;
+          this.init = () => {
+            this.server = sinon.fakeServer.create({logger : console.log})
+            this.server.xhr.useFilters = true;
+            let async = false
+            this.server.xhr.addFilter((method, url, async, username, password) => {
+                  return false
+             });
+            this.data.forEach((request) => {
+              this.register(request.url, request.method)
+            })
+          };
+
+          this.register = (method, url) => {
+            console.log(method, url)
+            this.server.respondWith(method, url, [
+              200,
+              { "Content-Type": "application/json" },
+              '[{ "id": 12, "comment": "Hey there" }]'
+          ]);
+          this.server.respond();
+          }
+          this.init()
+      };
+      window.interceptor = fakeServerWrapper(${JSON.stringify([...selectedReqs])})
+    })()`
+
+
 
     let script = document.createElement("script");
     script.defer = true;
