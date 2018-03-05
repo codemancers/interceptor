@@ -4,8 +4,11 @@ export interface POPUP_PROPS {
   enabled : boolean,
   requests : Array<any>,
   errorMessage : string,
-  responseText : string,
-  selectStatusCode :  string
+  checkedReqs : object
+}
+
+export interface selectCheckBoxes{
+  [index: number]: boolean;
 }
 
 export interface PopUpState {
@@ -13,22 +16,21 @@ export interface PopUpState {
   errorMessage ?: string;
   requests: object;
   tabUrl ?: string
+  checkedReqs : object
 }
 
-export interface Action extends PopUpState{
+export interface Action{
   name ?: string
   value ?: any
   type: string
   payload ?:object
+  checked :boolean
+  reqId :number
 }
 
 export interface requestListProps extends POPUP_PROPS {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export interface requestChangeAction {
-  request : object
-  currentInput : string
+  handleCheckToggle : React.ChangeEventHandler<HTMLInputElement>
 }
 

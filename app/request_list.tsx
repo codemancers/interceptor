@@ -2,10 +2,13 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
-import {InterceptForm} from './Intercept_Components'
+import {InterceptForm} from "./Intercept_Components";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
+  handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
+  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>
+  checkedReqs : Array<any>
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -30,9 +33,9 @@ const RequestList = (props: RequestObj) => {
         <select
           onChange={event => onChange(event.target.value)}
           style={{width: "100%"}}
-          value={filter ? filter.value : "all"}
+          value={filter ? filter.value : ""}
         >
-          <option value="GET">ALL</option>
+          <option value="">ALL</option>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="OPTIONS">OPTIONS</option>
@@ -40,9 +43,34 @@ const RequestList = (props: RequestObj) => {
       )
     },
     {
-      Header: "Request ID",
-      accessor: "requestId",
-      filterable: true
+      id: "checkbox",
+      accessor: "",
+      Cell: ({ original }) => {
+        return (
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={props.checkedReqs[original.requestId]}
+            onChange={(e) => {
+              props.handleCheckToggle(original.requestId, e.target.checked)}
+            }
+          />
+        );
+      },
+      Header: "Intercept",
+      sortable: false,
+      width: 45,
+      Footer: ({data}) =>(
+        <span>
+          <button id="intercept-all-btn" onClick={() => {
+            const enabledRequests = data.filter((request) => {
+              return props.checkedReqs[request.checkbox.requestId]
+            })
+            .map(request => request.checkbox);
+            props.handleCheckedRequests(enabledRequests)
+          }}>Intercept All</button>
+        </span>
+      )
     }
   ];
   return (
@@ -54,10 +82,7 @@ const RequestList = (props: RequestObj) => {
       showPaginationBottom={true}
       pageSize={10}
       SubComponent={row => (
-        <InterceptForm
-          rowProps={row}
-          handleIntercept={props.handleIntercept}
-        />
+        <InterceptForm rowProps={row} handleIntercept={props.handleIntercept} />
       )}
     />
   );
