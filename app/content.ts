@@ -20,7 +20,7 @@ class Intercept {
     });
   };
   interceptSelected = (selectedReqs: Array<requestObject>) => {
-    var selectedInterceptCode =`
+    var selectedInterceptCode = `
     (function(){
       function remove(querySelector) {
         let elemToRemove = document.querySelector(querySelector);
@@ -29,26 +29,26 @@ class Intercept {
       while(document.querySelectorAll("#tmpScript-2").length){
         remove("#tmpScript-2");
       }
+      if (window.interceptor) {
+        window.interceptor.server.xhr.filters = [];
+      }
       function sinonHandler(requestArray) {
           this.server = sinon.fakeServer.create({ logger: console.log });
           this.server.autoRespond = true;
           this.server.xhr.useFilters = true;
           // If the filter returns true, the request will not be faked - leave original
           this.server.xhr.addFilter(function(method, url, async, username, password) {
-            return !requestArray.find((request) => {
+            const result = requestArray.find((request) => {
               return request.url === url;
             })
+            return !result
           });
           this.server.respondWith((xhr, id) => {
-            console.log(xhr, id);
-            xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hey there" }]')
+            xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hello there" }]')
           })
         }
-        new sinonHandler(${JSON.stringify([...selectedReqs])});
-    })()
-    `
-
-
+        window.interceptor = new sinonHandler(${JSON.stringify([...selectedReqs])});
+    })()`;
 
     let script = document.createElement("script");
     script.defer = true;
@@ -77,9 +77,7 @@ class Intercept {
 
     sinonServer.respondWith('${request.method}', '${
       request.url
-    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(
-      request.responseText
-    )}]']);
+    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(request.responseText)}]']);
     sinonServer.respondImmediately = true;`;
     var script = document.createElement("script");
     script.defer = true;
