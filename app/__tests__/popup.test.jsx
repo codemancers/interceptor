@@ -112,7 +112,10 @@ describe("Popup", () => {
       expect(localProps.errorNotify).toHaveBeenCalledWith(
         "Cannot Start Listening on chrome://version"
       );
-      expect(localProps.enabled).toEqual(false)
+      expect(localProps.enabled).toEqual(false);
+      expect(MessageService.enableLogging).toHaveBeenCalledTimes(0)
+      expect(MessageService.disableLogging).toHaveBeenCalledTimes(0)
+      expect(localProps.startListening).toHaveBeenCalledTimes(0);
     });
   });
 });
