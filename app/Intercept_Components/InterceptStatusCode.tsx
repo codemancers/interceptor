@@ -1,10 +1,18 @@
 import * as React from 'react'
 
 export const InterceptStatusCode = props => {
+  const checkValueExists = (index) => {
+    if(props.interceptStatus[index]){
+      return props.interceptStatus[index]
+    }else{
+      return "404"
+    }
+  }
   return (
     <div>
     <select
-      // onChange={event => onChange(event.target.value)}
+      value={checkValueExists(props.rowProps._index)}//props.interceptStatus[props.rowProps._index] ? props.interceptStatus[props.rowProps._index] : "404"}
+      onChange={event => {props.handleStatusCodeChange(event.target.value, props.rowProps._index)}
       style={{width: "100%"}}
     >
       <option value="200">OK</option>

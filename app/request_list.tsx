@@ -7,8 +7,12 @@ export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>
-  checkedReqs : Array<any>
+  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>;
+  handleRespTextChange : React.FormEvent<HTMLInputElement>;
+  handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
+  checkedReqs : Array<any>;
+  ResponseText: Array<any>
+  interceptStatus : Array<any>
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -31,7 +35,7 @@ const RequestList = (props: RequestObj) => {
       filterMethod: (filter, row) => row[filter.id] === filter.value,
       Filter: ({filter, onChange}) => (
         <select
-          onChange={event => onChange(event.target.value)}
+          onChange={event => props.handleRespTextChange(event.target.value)}
           style={{width: "100%"}}
           value={filter ? filter.value : ""}
         >
@@ -82,7 +86,8 @@ const RequestList = (props: RequestObj) => {
       showPaginationBottom={true}
       pageSize={10}
       SubComponent={row => (
-        <InterceptForm rowProps={row} handleIntercept={props.handleIntercept} />
+        <InterceptForm rowProps={row} handleIntercept={props.handleIntercept} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
+        interceptStatus={props.interceptStatus} />
       )}
     />
   );

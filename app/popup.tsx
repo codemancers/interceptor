@@ -13,7 +13,9 @@ import {
   clearFields,
   updateFields,
   handleCheckToggle,
-  handleCheckedRequests
+  handleCheckedRequests,
+  handleRespTextChange,
+  handleStatusCodeChange
 } from "./actions";
 
 interface DispatchProps {
@@ -24,7 +26,9 @@ interface DispatchProps {
   clearFields: typeof clearFields;
   updateFields: typeof updateFields;
   handleCheckToggle: typeof handleCheckToggle
-  handleCheckedRequests : typeof handleCheckedRequests
+  handleCheckedRequests : typeof handleCheckedRequests;
+  handleRespTextChange : typeof handleRespTextChange;
+  handleStatusCodeChange : typeof handleStatusCodeChange
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -80,6 +84,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
+  handleRespTextChange = (value, rowIndex) =>{
+    this.props.handleRespTextChange(value, rowIndex)
+  }
+
+  handleStatusCodeChange = (value, rowIndex) => {
+    this.props.handleStatusCodeChange(value, rowIndex)
+  }
+
   handleCheckedRequests = (requests:Array<any>) =>{
     const tabId:number = this.props.tabId
     MessageService.interceptChecked(tabId, requests)
@@ -118,6 +130,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           handleCheckToggle={this.handleCheckToggle}
           checkedReqs={this.props.checkedReqs}
           handleCheckedRequests={this.handleCheckedRequests}
+          handleRespTextChange={this.handleRespTextChange}
+          handleStatusCodeChange={this.handleStatusCodeChange}
+          ResponseText={this.props.ResponseText}
+          interceptStatus={this.props.interceptStatus}
         />
       </div>
     );
@@ -128,7 +144,9 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
   errorMessage: state.errorMessage,
-  checkedReqs : state.checkedReqs
+  checkedReqs : state.checkedReqs,
+  ResponseText : state.ResponseText,
+  interceptStatus: state.interceptStatus
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -139,7 +157,9 @@ const mapDispatchToProps: DispatchProps = {
   updateFields,
   clearFields,
   handleCheckToggle,
-  handleCheckedRequests
+  handleCheckedRequests,
+  handleStatusCodeChange,
+  handleRespTextChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

@@ -1,5 +1,5 @@
 import {PopUpState, Action} from '../types'
-export const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], checkedReqs : {}}
+export const INITIAL_POPUP_STATE : PopUpState = { enabled: false , errorMessage: "", requests: [], checkedReqs : {}, ResponseText: [], interceptStatus: []}
 
 //ACTION CONSTANTS
 import * as actionType from "../actions"
@@ -22,6 +22,10 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       return {...state, checkedReqs: { ...state.checkedReqs, [action.reqId]: action.checked } }
     case actionType.INTERCEPT_CHECKED :
       return {...state}
+    case actionType.RESP_TEXT_CHANGE:
+      return {...state, ResponseText: {[action.payload.rowIndex] : [...action.payload.value]}}
+      case actionType.STATUSCODE_CHANGE:
+        return {...state, interceptStatus : {[action.payload.rowIndex] : [...action.payload.value]} }
     default:
       return state;
   }
