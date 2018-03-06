@@ -105,6 +105,7 @@ describe("Popup", () => {
         tabUrl: "chrome://version",
       });
       wrapper = shallow(<Popup {...localProps} />);
+      MessageService.getRequests.mockClear()
       wrapper
         .find("button")
         .first()
@@ -112,10 +113,8 @@ describe("Popup", () => {
       expect(localProps.errorNotify).toHaveBeenCalledWith(
         "Cannot Start Listening on chrome://version"
       );
-      expect(localProps.enabled).toEqual(false);
-      expect(MessageService.enableLogging).toHaveBeenCalledTimes(0)
-      expect(MessageService.disableLogging).toHaveBeenCalledTimes(0)
-      expect(localProps.startListening).toHaveBeenCalledTimes(0);
+      expect(MessageService.disableLogging).not.toHaveBeenCalled()
+      expect(MessageService.getRequests).not.toHaveBeenCalled()
     });
   });
 });
