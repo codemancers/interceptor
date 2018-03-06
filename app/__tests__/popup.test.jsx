@@ -100,7 +100,7 @@ describe("Popup", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
-    test("should call errorNotify", () => {
+    test("should call errorNotify and disable interception", () => {
       let localProps = createTestProps({
         tabUrl: "chrome://version",
       });
