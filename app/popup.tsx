@@ -55,13 +55,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
+    if (this.isUrlInValid(this.props.tabUrl)) {
+      this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
+      return;
+    }
     if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField("enabled", false);
-    }
-    else if (this.isUrlInValid(this.props.tabUrl)) {
-      this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
-      return;
     }
     else {
       MessageService.getRequests(this.props.tabId, requests => {

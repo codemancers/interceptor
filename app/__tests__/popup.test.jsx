@@ -103,7 +103,6 @@ describe("Popup", () => {
     test("should call errorNotify", () => {
       let localProps = createTestProps({
         tabUrl: "chrome://version",
-        enabled: false
       });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
@@ -113,6 +112,7 @@ describe("Popup", () => {
       expect(localProps.errorNotify).toHaveBeenCalledWith(
         "Cannot Start Listening on chrome://version"
       );
+      expect(localProps.enabled).toEqual(false)
     });
   });
 });
