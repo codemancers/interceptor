@@ -58,16 +58,16 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField("enabled", false);
-    } else {
+    }
+    else if (this.isUrlInValid(this.props.tabUrl)) {
+      this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
+      return;
+    }
+    else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
         this.props.updateFields({enabled: true, requests});
       });
-    }
-
-    if (this.isUrlInValid(this.props.tabUrl)) {
-      this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
-      return;
     }
   };
 
