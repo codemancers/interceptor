@@ -19,8 +19,8 @@ export interface PopUpState {
   requests: object;
   tabUrl ?: string;
   checkedReqs : object;
-  ResponseText : string;
-  interceptStatus:string;
+  ResponseText : object;
+  interceptStatus:object;
 }
 
 export interface Action{

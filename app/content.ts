@@ -20,7 +20,7 @@ class Intercept {
     });
   };
   interceptSelected = (selectedReqs: Array<requestObject>) => {
-    var selectedInterceptCode = `
+    var selectedInterceptCode =`
     (function(){
       function remove(querySelector) {
         let elemToRemove = document.querySelector(querySelector);
@@ -48,7 +48,7 @@ class Intercept {
           })
         }
         window.interceptor = new sinonHandler(${JSON.stringify([...selectedReqs])});
-    })()`;
+    })();`
 
     let script = document.createElement("script");
     script.defer = true;
@@ -64,21 +64,35 @@ class Intercept {
     (document.head || document.documentElement).appendChild(sinon);
   };
   initScript = (request: requestObject) => {
-    let actualCode = `
+    let actualCode =`
     function remove(querySelector) {
       let elemToRemove = document.getElementById(querySelector);
       elemToRemove.parentNode.removeChild(elemToRemove);
     };
-    if (document.getElementById("tmpScript")) {
+    while(document.getElementById("tmpScript")) {
       remove("tmpScript");
     }
-    let request = ${JSON.stringify(request)};
-    let sinonServer = sinon.fakeServer.create();
+    if (window.interceptor2) {
+      window.interceptor2.server.xhr.filters = [];
+    }
+    function sinonSingleHandler(request) {
+      this.server = sinon.fakeServer.create({ logger: console.log });
+      this.server.autoRespond = true;
+      this.server.xhr.useFilters = true;
+      // If the filter returns true, the request will not be faked - leave original
+      this.server.xhr.addFilter(function(method, url, async, username, password) {
+        const result = (request.url === url)
+        return !result
+      });
+      this.server.respondWith((xhr, id) => {
+        xhr.respond(200, { "Content-Type": "application/json" },'[${JSON.stringify(request.responseText)}]')
+      })
+    }
+    window.interceptor2 = new sinonSingleHandler(${JSON.stringify(request)});
 
-    sinonServer.respondWith('${request.method}', '${
-      request.url
-    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(request.responseText)}]']);
-    sinonServer.respondImmediately = true;`;
+    // this.server.respondWith( (xhr, id) => {
+    // });
+    `
     var script = document.createElement("script");
     script.defer = true;
     script.id = "tmpScript";

@@ -14,16 +14,16 @@ export const InterceptTextBox = props => {
       <input
       name="responseText"
       type="text"
-      value={ checkValueExists(props.rowProps._index)}// props.interceptStatus[props.rowProps._index] ? props.interceptStatus[props.rowProps._index] : responseText}
+      value={ checkValueExists(props.rowProps._index)}
       onChange={event => props.handleRespTextChange(event.target.value, props.rowProps._index)}
     />
       <button
         value="Intercept"
-        onClick={props.handleIntercept(
+        onClick={props.handleIntercept.bind(
           this,
           props.rowProps.url,
           props.rowProps.method,
-          responseText,
+          checkValueExists(props.rowProps._index),
           200
         )}
       >
