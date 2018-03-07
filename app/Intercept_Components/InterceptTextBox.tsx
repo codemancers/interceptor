@@ -25,7 +25,8 @@ export const InterceptTextBox = props => {
           props.rowProps.method,
           checkValueExists(props.rowProps._index),
           200
-        )}
+        )
+      }
       >
         Intercept
       </button>

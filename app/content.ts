@@ -89,9 +89,6 @@ class Intercept {
       })
     }
     window.interceptor2 = new sinonSingleHandler(${JSON.stringify(request)});
-
-    // this.server.respondWith( (xhr, id) => {
-    // });
     `
     var script = document.createElement("script");
     script.defer = true;
