@@ -100,12 +100,12 @@ describe("Popup", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
-    test("should call errorNotify", () => {
+    test("should call errorNotify and disable interception", () => {
       let localProps = createTestProps({
         tabUrl: "chrome://version",
-        enabled: false
       });
       wrapper = shallow(<Popup {...localProps} />);
+      MessageService.getRequests.mockClear()
       wrapper
         .find("button")
         .first()
@@ -113,6 +113,8 @@ describe("Popup", () => {
       expect(localProps.errorNotify).toHaveBeenCalledWith(
         "Cannot Start Listening on chrome://version"
       );
+      expect(MessageService.disableLogging).not.toHaveBeenCalled()
+      expect(MessageService.getRequests).not.toHaveBeenCalled()
     });
   });
 });

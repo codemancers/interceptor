@@ -15,7 +15,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.STOP_LISTENING:
       return {...state, enabled: false};
     case actionType.ERROR:
-      return {...state, errorMessage: action.errorMessage }
+      return {...state, errorMessage: action.errorMessage, enabled:false }
     case actionType.CLEAR_REQUESTS :
       return {...state, requests: [] }
     case actionType.TOGGLE_CHECKBOX:
