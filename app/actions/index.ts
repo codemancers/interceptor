@@ -37,9 +37,9 @@ export function handleCheckToggle(reqId:number, checked:boolean){
 export function handleCheckedRequests(tabId:number,requests:Array<any>){
   return {type: INTERCEPT_CHECKED , payload : requests}
 }
-export function handleStatusCodeChange(value:string, rowIndex:number){
-  return {type: STATUSCODE_CHANGE , payload : {value, rowIndex} }
+export function handleStatusCodeChange(value:string, requestId:number){
+  return {type: STATUSCODE_CHANGE , payload : {value, requestId} }
 }
-export function handleRespTextChange(value:string, rowIndex:number){
-  return {type: RESP_TEXT_CHANGE , payload : {value, rowIndex} }
+export function handleRespTextChange(value:string, requestId:number){
+  return {type: RESP_TEXT_CHANGE , payload : {value, requestId} }
 }
