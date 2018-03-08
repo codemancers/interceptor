@@ -84,12 +84,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
-  handleRespTextChange = (value, rowIndex) =>{
-    this.props.handleRespTextChange(value, rowIndex)
+  handleRespTextChange = (value, requestId) =>{
+    this.props.handleRespTextChange(value, requestId)
   }
 
-  handleStatusCodeChange = (value, rowIndex) => {
-    this.props.handleStatusCodeChange(value, rowIndex)
+  handleStatusCodeChange = (value, requestId) => {
+    this.props.handleStatusCodeChange(value, requestId)
   }
 
   handleCheckedRequests = (requests:Array<any>) =>{

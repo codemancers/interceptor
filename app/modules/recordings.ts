@@ -23,9 +23,9 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.INTERCEPT_CHECKED :
       return {...state}
     case actionType.RESP_TEXT_CHANGE:
-      return {...state, ResponseText: {...state.ResponseText, [action.payload.rowIndex] : action.payload.value}}
+      return {...state, ResponseText: {...state.ResponseText, [action.payload.requestId] : action.payload.value}}
     case actionType.STATUSCODE_CHANGE:
-        return {...state, interceptStatus : {...state.interceptStatus, [action.payload.rowIndex] : action.payload.value} }
+        return {...state, interceptStatus : {...state.interceptStatus, [action.payload.requestId] : action.payload.value} }
     default:
       return state;
   }

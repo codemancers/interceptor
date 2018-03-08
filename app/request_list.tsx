@@ -85,7 +85,7 @@ const RequestList = (props: RequestObj) => {
       showPaginationTop={false}
       showPaginationBottom={true}
       pageSize={10}
-      freezeWhenExpanded={true}
+      freezeWhenExpanded
       SubComponent={row => (
         <InterceptForm freezeWhenExpanded={true} rowProps={row} handleIntercept={props.handleIntercept} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
         interceptStatus={props.interceptStatus} />

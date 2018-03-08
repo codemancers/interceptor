@@ -2,17 +2,17 @@ import * as React from 'react'
 
 export const InterceptTextBox = props => {
   let responseText = "{msg:hello}";
-  const checkResponseExists = (index) => {
-    if(props.ResponseText[index]){
-      return props.ResponseText[index]
+  const checkResponseExists = (requestId) => {
+    if(props.ResponseText[requestId]){
+      return props.ResponseText[requestId]
     }else{
       return responseText
     }
   }
-  const checkStatusCode = (index) => {
+  const checkStatusCode = (requestId) => {
     let defaultStatusCode = "200"
-    if(props.interceptStatus[index]){
-      return props.interceptStatus[index]
+    if(props.interceptStatus[requestId]){
+      return props.interceptStatus[requestId]
     }else{
       return defaultStatusCode
     }
