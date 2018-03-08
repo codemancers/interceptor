@@ -28,7 +28,7 @@ export const InterceptTextBox = props => {
         <div>
     <select
       value={checkStatusCode(props.rowProps.checkbox.requestId)}//use props.rowProps._index for index
-      onChange={event => {props.handleStatusCodeChange(event.target.value, props.rowProps.checkbox.requestId)}>
+      onChange={event => {props.handleStatusCodeChange(event.target.value, props.rowProps.checkbox.requestId)}}>
       <option value="200">OK</option>
       <option value="404">404</option>
       <option value="500">500</option>
