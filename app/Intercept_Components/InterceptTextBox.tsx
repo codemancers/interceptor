@@ -1,33 +1,22 @@
 import * as React from 'react'
 
 export const InterceptTextBox = props => {
-  let responseText = "{msg:hello}";
-  const checkResponseExists = (requestId) => {
-    if(props.ResponseText[requestId]){
-      return props.ResponseText[requestId]
-    }else{
-      return responseText
-    }
-  }
-  const checkStatusCode = (requestId) => {
-    let defaultStatusCode = "200"
-    if(props.interceptStatus[requestId]){
-      return props.interceptStatus[requestId]
-    }else{
-      return defaultStatusCode
-    }
-  }
+  const defaultResponseText = "{msg:hello}";
+  const defaultStatusCode = "200"
+  const responseTextValue = props.ResponseText[props.rowProps.checkbox.requestId] || defaultResponseText
+  const statusCodeValue = props.interceptStatus[props.rowProps.checkbox.requestId] || defaultStatusCode
+
   return (
     <div>
       <input
       name="responseText"
       type="text"
-      value={ checkResponseExists(props.rowProps.checkbox.requestId)}
+      value={responseTextValue}
       onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
     />
         <div>
     <select
-      value={checkStatusCode(props.rowProps.checkbox.requestId)}//use props.rowProps._index for index
+      value={statusCodeValue}
       onChange={event => {props.handleStatusCodeChange(event.target.value, props.rowProps.checkbox.requestId)}}>
       <option value="200">OK</option>
       <option value="404">404</option>
@@ -42,8 +31,8 @@ export const InterceptTextBox = props => {
           this,
           props.rowProps.url,
           props.rowProps.method,
-          checkResponseExists(props.rowProps.checkbox.requestId),
-          checkStatusCode(props.rowProps.checkbox.requestId)
+          responseTextValue,
+          statusCodeValue
         )
       }
       >
