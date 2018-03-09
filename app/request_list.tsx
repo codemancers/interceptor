@@ -13,6 +13,8 @@ export interface RequestObj {
   checkedReqs : Array<any>;
   ResponseText: Array<any>
   interceptStatus : Array<any>
+  handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
+  contentType:Array<any>;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -88,7 +90,7 @@ const RequestList = (props: RequestObj) => {
       freezeWhenExpanded
       SubComponent={row => (
         <InterceptForm freezeWhenExpanded={true} rowProps={row} handleIntercept={props.handleIntercept} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
-        interceptStatus={props.interceptStatus} />
+        interceptStatus={props.interceptStatus} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
       )}
     />
   );

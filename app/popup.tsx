@@ -15,7 +15,8 @@ import {
   handleCheckToggle,
   handleCheckedRequests,
   handleRespTextChange,
-  handleStatusCodeChange
+  handleStatusCodeChange,
+  handleContentTypeChange
 } from "./actions";
 
 interface DispatchProps {
@@ -28,7 +29,8 @@ interface DispatchProps {
   handleCheckToggle: typeof handleCheckToggle
   handleCheckedRequests : typeof handleCheckedRequests;
   handleRespTextChange : typeof handleRespTextChange;
-  handleStatusCodeChange : typeof handleStatusCodeChange
+  handleStatusCodeChange : typeof handleStatusCodeChange;
+  handleContentTypeChange: typeof handleContentTypeChange;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -52,9 +54,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     url: string,
     method: string,
     responseText: string,
-    statusCode: number
+    statusCode: number,
+    contentTypeValue: string
   ) => {
-    let request = {url, method, responseText, statusCode};
+    let request = {url, method, responseText, statusCode, contentTypeValue};
     MessageService.interceptRequests(this.props.tabId, request);
   };
 
@@ -84,12 +87,16 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
-  handleRespTextChange = (value, requestId) =>{
+  handleRespTextChange = (value:string, requestId:number) =>{
     this.props.handleRespTextChange(value, requestId)
   }
 
-  handleStatusCodeChange = (value, requestId) => {
+  handleStatusCodeChange = (value:string, requestId:number) => {
     this.props.handleStatusCodeChange(value, requestId)
+  }
+
+  handleContentTypeChange = (value:string, requestId:number) => {
+    this.props.handleContentTypeChange(value, requestId)
   }
 
   handleCheckedRequests = (requests:Array<any>) =>{
@@ -133,6 +140,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           handleStatusCodeChange={this.handleStatusCodeChange}
           ResponseText={this.props.ResponseText}
           interceptStatus={this.props.interceptStatus}
+          handleContentTypeChange={this.props.handleContentTypeChange}
+          contentType={this.props.contentType}
         />
       </div>
     );
@@ -145,7 +154,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   errorMessage: state.errorMessage,
   checkedReqs : state.checkedReqs,
   ResponseText : state.ResponseText,
-  interceptStatus: state.interceptStatus
+  interceptStatus: state.interceptStatus,
+  contentType : state.contentType
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -158,7 +168,8 @@ const mapDispatchToProps: DispatchProps = {
   handleCheckToggle,
   handleCheckedRequests,
   handleStatusCodeChange,
-  handleRespTextChange
+  handleRespTextChange,
+  handleContentTypeChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

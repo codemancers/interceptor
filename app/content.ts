@@ -103,7 +103,7 @@ class Intercept {
         return !result
       });
       this.server.respondWith((xhr, id) => {
-        xhr.respond(${request.statusCode}, { "Content-Type": "application/json" },'[${JSON.stringify(request.responseText)}]')
+        xhr.respond(${request.statusCode}, { "Content-Type": "${request.contentTypeValue}" },'[${JSON.stringify(request.responseText)}]')
       })
     }
     window.interceptor2 = new sinonSingleHandler(${JSON.stringify(request)});

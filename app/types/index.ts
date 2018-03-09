@@ -7,6 +7,7 @@ export interface POPUP_PROPS {
   checkedReqs : object,
   interceptStatus: Array<any>
   ResponseText: Array<any>
+  contentType:Array<any>
 }
 
 export interface selectCheckBoxes{
