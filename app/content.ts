@@ -34,7 +34,6 @@ class Intercept {
         statusCodes[req.requestId] = defaultStatusCodes
       } )
     }
-    console.log(selectedReqs)
 
     var selectedInterceptCode =`
      (function(){
@@ -49,6 +48,7 @@ class Intercept {
          window.interceptor.server.xhr.filters = [];
        }
        function sinonHandler(requestArray) {
+        console.log(requestArray)
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
            this.server.xhr.useFilters = true;
@@ -65,7 +65,7 @@ class Intercept {
              xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hello there" }]')
            })
          }
-         window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs.requestsToIntercept)});
+         window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
      })();`
 
     let script = document.createElement("script");
