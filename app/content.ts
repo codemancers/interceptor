@@ -11,9 +11,6 @@ class Intercept {
   }
   startMessageListener = () => {
     chrome.runtime.onMessage.addListener((request, _, __) => {
-      if (request.message == "INTERCEPT_REQUEST") {
-        this.initScript(request.requestDetail);
-      }
       if (request.message === "INTERCEPT_CHECKED") {
         this.interceptSelected(request);
       }

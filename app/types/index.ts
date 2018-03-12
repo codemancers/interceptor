@@ -35,7 +35,6 @@ export interface Action{
 
 export interface requestListProps extends POPUP_PROPS {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle : React.ChangeEventHandler<HTMLInputElement>
 }
 
