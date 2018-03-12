@@ -5,7 +5,6 @@ import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./Intercept_Components";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
   handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>;
   handleRespTextChange : React.FormEvent<HTMLInputElement>;
@@ -89,7 +88,7 @@ const RequestList = (props: RequestObj) => {
       pageSize={10}
       freezeWhenExpanded
       SubComponent={row => (
-        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleIntercept={props.handleIntercept} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
+        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
         interceptStatus={props.interceptStatus} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
       )}
     />

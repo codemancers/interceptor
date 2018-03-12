@@ -90,39 +90,5 @@ class Intercept {
     sinon.src = chrome.extension.getURL("./lib/sinon.js");
     (document.head || document.documentElement).appendChild(sinon);
   };
-  initScript = (request: requestObject) => {
-    let actualCode =`
-    function remove(querySelector) {
-      let elemToRemove = document.getElementById(querySelector);
-      elemToRemove.parentNode.removeChild(elemToRemove);
-    };
-    while(document.getElementById("tmpScript")) {
-      remove("tmpScript");
-    }
-    if (window.interceptor2) {
-      window.interceptor2.server.xhr.filters = [];
-    }
-    function sinonSingleHandler(request) {
-      this.server = sinon.fakeServer.create({ logger: console.log });
-      this.server.autoRespond = true;
-      this.server.xhr.useFilters = true;
-      // If the filter returns true, the request will not be faked - leave original
-      this.server.xhr.addFilter(function(method, url, async, username, password) {
-        const result = (request.url === url)
-        return !result
-      });
-      this.server.respondWith((xhr, id) => {
-        xhr.respond(${request.statusCode}, { "Content-Type": "${request.contentTypeValue}" },'[${JSON.stringify(request.responseText)}]')
-      })
-    }
-    window.interceptor2 = new sinonSingleHandler(${JSON.stringify(request)});
-    `
-    var script = document.createElement("script");
-    script.defer = true;
-    script.id = "tmpScript";
-    script.type = "text/javascript";
-    script.textContent = actualCode;
-    (document.head || document.documentElement).appendChild(script);
-  };
 }
 new Intercept().startMessageListener();

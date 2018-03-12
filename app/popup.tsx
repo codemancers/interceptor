@@ -50,17 +50,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     return !tabUrl || isChromeUrl(tabUrl);
   };
 
-  interceptRequests = (
-    url: string,
-    method: string,
-    responseText: string,
-    statusCode: number,
-    contentTypeValue: string
-  ) => {
-    let request = {url, method, responseText, statusCode, contentTypeValue};
-    MessageService.interceptRequests(this.props.tabId, request);
-  };
-
   handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
     if (this.isUrlInValid(this.props.tabUrl)) {
       this.props.errorNotify(`Cannot Start Listening on ${this.props.tabUrl}`);
@@ -132,7 +121,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         </button>
         <RequestList
           requests={this.props.requests}
-          handleIntercept={this.interceptRequests}
           handleCheckToggle={this.handleCheckToggle}
           checkedReqs={this.props.checkedReqs}
           handleCheckedRequests={this.handleCheckedRequests}
