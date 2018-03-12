@@ -12,6 +12,7 @@ export const InterceptTextBox = props => {
     <div>
       <input
         name="responseText"
+        id="responseText"
         type="text"
         value={responseTextValue}
         onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
@@ -46,20 +47,6 @@ export const InterceptTextBox = props => {
           <option value="application/pdf">application/pdf</option>
         </select>
       </div>
-
-      <button
-        value="Intercept"
-        onClick={props.handleIntercept.bind(
-          this,
-          props.rowProps.url,
-          props.rowProps.method,
-          responseTextValue,
-          statusCodeValue,
-          contentTypeValue
-        )}
-      >
-        Intercept
-      </button>
     </div>
   );
 };

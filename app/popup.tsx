@@ -100,7 +100,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   }
 
   handleCheckedRequests = (requests:Array<any>) =>{
-    MessageService.interceptChecked(this.props.tabId, requests, this.props.ResponseText, this.props.interceptStatus)
+    MessageService.interceptChecked(this.props.tabId, requests, this.props.ResponseText, this.props.interceptStatus, this.props.contentType)
   }
 
   render() {
