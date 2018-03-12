@@ -5,10 +5,15 @@ import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./Intercept_Components";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>
-  checkedReqs : Array<any>
+  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>;
+  handleRespTextChange : React.FormEvent<HTMLInputElement>;
+  handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
+  checkedReqs : Array<any>;
+  ResponseText: Array<any>
+  interceptStatus : Array<any>
+  handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
+  contentType:Array<any>;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -31,7 +36,7 @@ const RequestList = (props: RequestObj) => {
       filterMethod: (filter, row) => row[filter.id] === filter.value,
       Filter: ({filter, onChange}) => (
         <select
-          onChange={event => onChange(event.target.value)}
+          onChange={event => props.handleRespTextChange(event.target.value)}
           style={{width: "100%"}}
           value={filter ? filter.value : ""}
         >
@@ -81,8 +86,10 @@ const RequestList = (props: RequestObj) => {
       showPaginationTop={false}
       showPaginationBottom={true}
       pageSize={10}
+      freezeWhenExpanded
       SubComponent={row => (
-        <InterceptForm rowProps={row} handleIntercept={props.handleIntercept} />
+        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
+        interceptStatus={props.interceptStatus} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
       )}
     />
   );

@@ -15,40 +15,67 @@ class Intercept {
         this.initScript(request.requestDetail);
       }
       if (request.message === "INTERCEPT_CHECKED") {
-        this.interceptSelected(request.requestsToIntercept);
+        this.interceptSelected(request);
       }
     });
   };
   interceptSelected = (selectedReqs: Array<requestObject>) => {
-    var selectedInterceptCode = `
-    (function(){
-      function remove(querySelector) {
-        let elemToRemove = document.querySelector(querySelector);
-        elemToRemove.parentNode.removeChild(elemToRemove);
-      };
-      while(document.querySelectorAll("#tmpScript-2").length){
-        remove("#tmpScript-2");
-      }
-      if (window.interceptor) {
-        window.interceptor.server.xhr.filters = [];
-      }
-      function sinonHandler(requestArray) {
-          this.server = sinon.fakeServer.create({ logger: console.log });
-          this.server.autoRespond = true;
-          this.server.xhr.useFilters = true;
-          // If the filter returns true, the request will not be faked - leave original
-          this.server.xhr.addFilter(function(method, url, async, username, password) {
-            const result = requestArray.find((request) => {
-              return request.url === url;
-            })
-            return !result
-          });
-          this.server.respondWith((xhr, id) => {
-            xhr.respond(200, { "Content-Type": "application/json" },'[{ "id": 12, "comment": "Hello there" }]')
-          })
-        }
-        window.interceptor = new sinonHandler(${JSON.stringify([...selectedReqs])});
-    })()`;
+    let responseTexts = selectedReqs.responseText || {};
+    let statusCodes = selectedReqs.statusCodes || {}
+    let contentType = selectedReqs.contentType || {}
+    const defaultResponseText = `{msg : "hello"}`
+    const defaultStatusCode = "200"
+    const defaultContentType= "application/json"
+    if(Object.keys(responseTexts).length === 0 && responseTexts.constructor === Object){
+      responseTexts = selectedReqs.requestsToIntercept.map( (req) => {
+         responseTexts[req.requestId] = defaultResponseText
+      } )
+    }
+    if(Object.keys(statusCodes).length === 0 && statusCodes.constructor === Object){
+      statusCodes = selectedReqs.requestsToIntercept.map( (req) => {
+        statusCodes[req.requestId] = defaultStatusCode
+      } )
+    }
+    if(Object.keys(contentType).length === 0 && contentType.constructor === Object){
+      contentType = selectedReqs.requestsToIntercept.map( (req) => {
+        contentType[req.requestId] = defaultContentType
+      } )
+    }
+
+    var selectedInterceptCode =`
+     (function(){
+       function remove(querySelector) {
+         let elemToRemove = document.querySelector(querySelector);
+         elemToRemove.parentNode.removeChild(elemToRemove);
+       };
+       while(document.querySelectorAll("#tmpScript-2").length){
+         remove("#tmpScript-2");
+       }
+       if (window.interceptor) {
+         window.interceptor.server.xhr.filters = [];
+       }
+       function sinonHandler(requestArray) {
+           this.server = sinon.fakeServer.create({ logger: console.log });
+           this.server.autoRespond = true;
+           this.server.xhr.useFilters = true;
+            //If the filter returns true, the request will not be faked - leave original
+           this.server.xhr.addFilter(function(method, url, async, username, password) {
+             const result = requestArray.requestsToIntercept.find((request) => {
+               return request.url === url;
+             })
+             return !result
+           });
+           this.server.respondWith((xhr, id) => {
+             const respondUrl = requestArray.requestsToIntercept.find((request) => {
+              if(xhr.url === request.url){
+                console.log(requestArray.statusCodes[request.requestId])
+                xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+              }
+             })
+           })
+         }
+         window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
+     })();`
 
     let script = document.createElement("script");
     script.defer = true;
@@ -56,35 +83,12 @@ class Intercept {
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
-  };
+  }
   injectScripts = () => {
     let sinon = document.createElement("script");
     sinon.defer = false;
     sinon.src = chrome.extension.getURL("./lib/sinon.js");
     (document.head || document.documentElement).appendChild(sinon);
-  };
-  initScript = (request: requestObject) => {
-    let actualCode = `
-    function remove(querySelector) {
-      let elemToRemove = document.getElementById(querySelector);
-      elemToRemove.parentNode.removeChild(elemToRemove);
-    };
-    if (document.getElementById("tmpScript")) {
-      remove("tmpScript");
-    }
-    let request = ${JSON.stringify(request)};
-    let sinonServer = sinon.fakeServer.create();
-
-    sinonServer.respondWith('${request.method}', '${
-      request.url
-    }',[200, { "Content-Type": "application/json" },'[${JSON.stringify(request.responseText)}]']);
-    sinonServer.respondImmediately = true;`;
-    var script = document.createElement("script");
-    script.defer = true;
-    script.id = "tmpScript";
-    script.type = "text/javascript";
-    script.textContent = actualCode;
-    (document.head || document.documentElement).appendChild(script);
   };
 }
 new Intercept().startMessageListener();

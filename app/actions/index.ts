@@ -9,6 +9,9 @@ export const  UPDATE_FIELD = "UPDATE_FIELD";
 export const  UPDATE_FIELDS = "UPDATE_FIELDS";
 export const TOGGLE_CHECKBOX = "TOGGLE_CHECKBOX"
 export const INTERCEPT_CHECKED = "INTERCEPT_CHECKED"
+export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE"
+export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
+export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -34,4 +37,13 @@ export function handleCheckToggle(reqId:number, checked:boolean){
 }
 export function handleCheckedRequests(tabId:number,requests:Array<any>){
   return {type: INTERCEPT_CHECKED , payload : requests}
+}
+export function handleStatusCodeChange(value:string, requestId:number){
+  return {type: STATUSCODE_CHANGE , payload : {value, requestId} }
+}
+export function handleRespTextChange(value:string, requestId:number){
+  return {type: RESP_TEXT_CHANGE , payload : {value, requestId} }
+}
+export function handleContentTypeChange(value:string, requestId:number){
+  return {type : CONTENT_TYPE_CHANGE, payload : {value, requestId}}
 }

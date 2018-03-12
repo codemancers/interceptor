@@ -13,7 +13,10 @@ import {
   clearFields,
   updateFields,
   handleCheckToggle,
-  handleCheckedRequests
+  handleCheckedRequests,
+  handleRespTextChange,
+  handleStatusCodeChange,
+  handleContentTypeChange
 } from "./actions";
 
 interface DispatchProps {
@@ -24,7 +27,10 @@ interface DispatchProps {
   clearFields: typeof clearFields;
   updateFields: typeof updateFields;
   handleCheckToggle: typeof handleCheckToggle
-  handleCheckedRequests : typeof handleCheckedRequests
+  handleCheckedRequests : typeof handleCheckedRequests;
+  handleRespTextChange : typeof handleRespTextChange;
+  handleStatusCodeChange : typeof handleStatusCodeChange;
+  handleContentTypeChange: typeof handleContentTypeChange;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -42,16 +48,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
   isUrlInValid = (tabUrl: string) => {
     return !tabUrl || isChromeUrl(tabUrl);
-  };
-
-  interceptRequests = (
-    url: string,
-    method: string,
-    responseText: string,
-    statusCode: number
-  ) => {
-    let request = {url, method, responseText, statusCode};
-    MessageService.interceptRequests(this.props.tabId, request);
   };
 
   handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
@@ -80,9 +76,20 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleCheckToggle(reqId, presentCheckedState)
   };
 
+  handleRespTextChange = (value:string, requestId:number) =>{
+    this.props.handleRespTextChange(value, requestId)
+  }
+
+  handleStatusCodeChange = (value:string, requestId:number) => {
+    this.props.handleStatusCodeChange(value, requestId)
+  }
+
+  handleContentTypeChange = (value:string, requestId:number) => {
+    this.props.handleContentTypeChange(value, requestId)
+  }
+
   handleCheckedRequests = (requests:Array<any>) =>{
-    const tabId:number = this.props.tabId
-    MessageService.interceptChecked(tabId, requests)
+    MessageService.interceptChecked(this.props.tabId, requests, this.props.ResponseText, this.props.interceptStatus, this.props.contentType)
   }
 
   render() {
@@ -114,10 +121,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         </button>
         <RequestList
           requests={this.props.requests}
-          handleIntercept={this.interceptRequests}
           handleCheckToggle={this.handleCheckToggle}
           checkedReqs={this.props.checkedReqs}
           handleCheckedRequests={this.handleCheckedRequests}
+          handleRespTextChange={this.handleRespTextChange}
+          handleStatusCodeChange={this.handleStatusCodeChange}
+          ResponseText={this.props.ResponseText}
+          interceptStatus={this.props.interceptStatus}
+          handleContentTypeChange={this.props.handleContentTypeChange}
+          contentType={this.props.contentType}
         />
       </div>
     );
@@ -128,7 +140,10 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
   errorMessage: state.errorMessage,
-  checkedReqs : state.checkedReqs
+  checkedReqs : state.checkedReqs,
+  ResponseText : state.ResponseText,
+  interceptStatus: state.interceptStatus,
+  contentType : state.contentType
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -139,7 +154,10 @@ const mapDispatchToProps: DispatchProps = {
   updateFields,
   clearFields,
   handleCheckToggle,
-  handleCheckedRequests
+  handleCheckedRequests,
+  handleStatusCodeChange,
+  handleRespTextChange,
+  handleContentTypeChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
