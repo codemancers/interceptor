@@ -1,84 +1,81 @@
 import * as React from "react";
 import {shallow} from "enzyme";
-import { InterceptTextBox } from './../Intercept_Components/InterceptTextBox';
+import {InterceptTextBox} from "./../Intercept_Components/InterceptTextBox";
 
-const createTestProps = props => ({
+const createTestProps = (props = {}) => ({
   // common props
   handleIntercept: jest.fn(),
   handleRespTextChange: jest.fn(),
   handleStatusCodeChange: jest.fn(),
   handleContentTypeChange: jest.fn(),
-  rowProps : {
-    checkbox :{
-      requestId : 123
+  rowProps: {
+    checkbox: {
+      requestId: 123
     }
   },
-  ResponseText: [],
-  interceptStatus: [],
-  contentType: [],
   // allow to override common props
   ...props
 });
 
-describe("Intercept fields", () => {
+describe("Input and select Field tests", () => {
   let wrapper, props;
-
   describe("Default State", () => {
-    beforeEach( () => {
+    beforeEach(() => {
       jest.clearAllMocks();
       props = createTestProps();
-      wrapper = shallow(<InterceptTextBox {...props} />)
-    })
+      wrapper = shallow(<InterceptTextBox {...props} />);
+    });
 
     test("it renders without crashing", () => {
       expect(wrapper).toBeDefined();
       expect(wrapper.props).toBeDefined();
-    })
-  })
+    });
+    test("it contains one input element", () => {
+      expect(wrapper.find(".responseText")).toHaveLength(1);
+    });
+    test("It containts a select element to change status", () => {
+      expect(wrapper.find(".select-status")).toHaveLength(1);
+    });
+    test("It contains a select element to change content-type", () => {
+      expect(wrapper.find(".content-type-select")).toHaveLength(1);
+    });
+  });
 
-describe("Show default values for response, status and content-type", ()=>{
-  let wrapper, props
-  beforeEach( ()=> {
-    jest.clearAllMocks()
-    props = createTestProps()
-    wrapper = shallow(<InterceptTextBox {...props} />)
-  })
-
-  test("default value for response text", ()=> {
-    expect(wrapper.find(".responseText").props().value).toEqual("{msg:hello}")
-  })
-  test("default value for status text", ()=> {
-    expect(wrapper.find(".select-status").props().value).toEqual("200")
-  })
-  test("default value for status text", ()=> {
-    expect(wrapper.find(".content-type-select").props().value).toEqual("application/json")
-  })
-})
-
-  describe("onChange events", ()=> {
-    let wrapper, props
-    beforeEach( () => {
+  describe("Show default values for response, status and content-type", () => {
+    beforeEach(() => {
       jest.clearAllMocks();
       props = createTestProps();
-      wrapper = shallow(<InterceptTextBox {...props} /> )
-    })
-    test("handleRespTextChange should be called on response field change", () =>{
-      wrapper.find(".responseText").first().simulate('change', { target: { value: 'h' } })
-      expect(props.handleRespTextChange).toHaveBeenCalledTimes(1)
-      expect(props.handleRespTextChange).toHaveBeenCalledWith('h', 123)
-    })
+      wrapper = shallow(<InterceptTextBox {...props} />);
+    });
 
-    test("handleStatusCodeChange should be called on status field change", () =>{
-      wrapper.find(".select-status").first().simulate('change', { target: { value: '404' } })
-      expect(props.handleStatusCodeChange).toHaveBeenCalledTimes(1)
-      expect(props.handleStatusCodeChange).toHaveBeenCalledWith("404", 123)
-    })
+    test("default value for response text", () => {
+      expect(wrapper.find(".responseText").props().value).toEqual("{msg:hello}");
+    });
+    test("default value for status text", () => {
+      expect(wrapper.find(".select-status").props().value).toEqual("200");
+    });
+    test("default value for status text", () => {
+      expect(wrapper.find(".content-type-select").props().value).toEqual("application/json");
+    });
+  });
 
-    test("handleContentTypeChange should be called on content-type field change", () =>{
-      wrapper.find(".content-type-select").first().simulate('change', { target: { value: 'text/html' } })
-      expect(props.handleContentTypeChange).toHaveBeenCalledTimes(1);
-      expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123)
-    })
-  })
-
-})
+  describe("onChange events", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      props = createTestProps();
+      wrapper = shallow(<InterceptTextBox {...props} />);
+    });
+    test("handleRespTextChange should be called on response field change", () => {
+      wrapper.find(".responseText").simulate("change", {target: {value: "h"}});
+      expect(props.handleRespTextChange).toHaveBeenCalledWith("h", 123);
+    });
+    test("handleStatusCodeChange should be called on status field change", () => {
+      wrapper.find(".select-status").simulate("change", {target: {value: "404"}});
+      expect(props.handleStatusCodeChange).toHaveBeenCalledWith("404", 123);
+    });
+    test("handleContentTypeChange should be called on content-type field change", () => {
+      wrapper.find(".content-type-select").simulate("change", {target: {value: "text/html"}});
+      expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123);
+    });
+  });
+});

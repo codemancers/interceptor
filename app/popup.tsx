@@ -89,7 +89,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   }
 
   handleCheckedRequests = (requests:Array<any>) =>{
-    MessageService.interceptChecked(this.props.tabId, requests, this.props.ResponseText, this.props.interceptStatus, this.props.contentType)
+    MessageService.interceptChecked(this.props.tabId, requests, this.props.responseText, this.props.interceptStatus, this.props.contentType)
   }
 
   render() {
@@ -126,7 +126,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           handleCheckedRequests={this.handleCheckedRequests}
           handleRespTextChange={this.handleRespTextChange}
           handleStatusCodeChange={this.handleStatusCodeChange}
-          ResponseText={this.props.ResponseText}
+          responseText={this.props.responseText}
           interceptStatus={this.props.interceptStatus}
           handleContentTypeChange={this.props.handleContentTypeChange}
           contentType={this.props.contentType}
@@ -141,7 +141,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   requests: state.requests,
   errorMessage: state.errorMessage,
   checkedReqs : state.checkedReqs,
-  ResponseText : state.ResponseText,
+  responseText : state.responseText,
   interceptStatus: state.interceptStatus,
   contentType : state.contentType
 });

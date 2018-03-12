@@ -10,7 +10,7 @@ export interface RequestObj {
   handleRespTextChange : React.FormEvent<HTMLInputElement>;
   handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
   checkedReqs : Array<any>;
-  ResponseText: Array<any>
+  responseText: Array<any>
   interceptStatus : Array<any>
   handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
   contentType:Array<any>;
@@ -88,7 +88,7 @@ const RequestList = (props: RequestObj) => {
       pageSize={10}
       freezeWhenExpanded
       SubComponent={row => (
-        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} ResponseText={props.ResponseText}
+        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} responseText={props.responseText}
         interceptStatus={props.interceptStatus} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
       )}
     />

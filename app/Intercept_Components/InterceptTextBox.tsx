@@ -3,10 +3,10 @@ import * as React from "react";
 export const InterceptTextBox = props => {
   const defaultResponseText = "{msg:hello}";
   const defaultStatusCode = "200";
-  const defaultContentType = "application/json"
-  const responseTextValue = props.ResponseText[props.rowProps.checkbox.requestId] || defaultResponseText;
+  const defaultContentType = "application/json";
+  const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;
   const statusCodeValue = props.interceptStatus[props.rowProps.checkbox.requestId] || defaultStatusCode;
-  const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType
+  const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
 
   return (
     <div>
@@ -51,4 +51,10 @@ export const InterceptTextBox = props => {
       </div>
     </div>
   );
+};
+
+InterceptTextBox.defaultProps = {
+  responseText: [],
+  interceptStatus: [],
+  contentType: []
 };
