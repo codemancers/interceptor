@@ -64,20 +64,19 @@ class BackgroundWorker {
 
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
-    chrome.browserAction.setBadgeText({
-      text: `${tabRecords.requests.length}`,
-      tabId: details.tabId
-    });
     if (
       this.data[this.currentTab].enabled &&
       this.currentTab === details.tabId
     ) {
-      tabRecords.requests.push(details);
-      this.data[this.currentTab] = tabRecords;
-      chrome.browserAction.setBadgeText({
-        text: `${tabRecords.requests.length}`,
-        tabId: details.tabId
-      });
+        if (tabRecords.requests.filter((req) => req.requestId === details.requestId).length > 0) {
+          return
+        }
+        tabRecords.requests.push(details);
+        this.data[this.currentTab] = tabRecords;
+        chrome.browserAction.setBadgeText({
+          text: `${tabRecords.requests.length}`,
+          tabId: details.tabId
+        });
     }
   };
 
