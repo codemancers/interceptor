@@ -64,10 +64,6 @@ class BackgroundWorker {
 
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
-    chrome.browserAction.setBadgeText({
-      text: `${tabRecords.requests.length}`,
-      tabId: details.tabId
-    });
     if (
       this.data[this.currentTab].enabled &&
       this.currentTab === details.tabId
