@@ -3,16 +3,16 @@ import * as React from "react";
 export const InterceptTextBox = props => {
   const defaultResponseText = "{msg:hello}";
   const defaultStatusCode = "200";
-  const defaultContentType = "application/json"
-  const responseTextValue = props.ResponseText[props.rowProps.checkbox.requestId] || defaultResponseText;
+  const defaultContentType = "application/json";
+  const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;
   const statusCodeValue = props.interceptStatus[props.rowProps.checkbox.requestId] || defaultStatusCode;
-  const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType
+  const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
 
   return (
     <div>
       <input
         name="responseText"
-        id="responseText"
+        className="responseText"
         type="text"
         value={responseTextValue}
         onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
@@ -20,6 +20,7 @@ export const InterceptTextBox = props => {
       <div>
         <select
           value={statusCodeValue}
+          className="select-status"
           onChange={event => {
             props.handleStatusCodeChange(event.target.value, props.rowProps.checkbox.requestId);
           }}
@@ -27,13 +28,14 @@ export const InterceptTextBox = props => {
           <option value="200">OK</option>
           <option value="404">404</option>
           <option value="500">500</option>
-          <option value="300">300 Redirect</option>
+          <option value="300">300</option>
         </select>
       </div>
 
       <div>
         <select
           value={contentTypeValue}
+          className="content-type-select"
           onChange={event => {
             props.handleContentTypeChange(event.target.value, props.rowProps.checkbox.requestId);
           }}
@@ -49,4 +51,10 @@ export const InterceptTextBox = props => {
       </div>
     </div>
   );
+};
+
+InterceptTextBox.defaultProps = {
+  responseText: [],
+  interceptStatus: [],
+  contentType: []
 };

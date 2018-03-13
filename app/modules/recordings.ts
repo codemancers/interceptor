@@ -1,5 +1,5 @@
 import {POPUP_PROPS, Action} from '../types'
-export const INITIAL_POPUP_STATE : POPUP_PROPS = { enabled: false , errorMessage: "", requests: [], checkedReqs : {}, ResponseText: {}, interceptStatus: {}, contentType: {}}
+export const INITIAL_POPUP_STATE : POPUP_PROPS = { enabled: false , errorMessage: "", requests: [], checkedReqs : {}, responseText: {}, interceptStatus: {}, contentType: {}}
 
 //ACTION CONSTANTS
 import * as actionType from "../actions"
@@ -23,7 +23,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.INTERCEPT_CHECKED :
       return {...state}
     case actionType.RESP_TEXT_CHANGE:
-      return {...state, ResponseText: {...state.ResponseText, [action.payload.requestId] : action.payload.value}}
+      return {...state, responseText: {...state.responseText, [action.payload.requestId] : action.payload.value}}
     case actionType.STATUSCODE_CHANGE:
         return {...state, interceptStatus : {...state.interceptStatus, [action.payload.requestId] : action.payload.value} }
     case actionType.CONTENT_TYPE_CHANGE:

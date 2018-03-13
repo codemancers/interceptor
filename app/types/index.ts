@@ -6,7 +6,7 @@ export interface POPUP_PROPS {
   errorMessage : string,
   checkedReqs : object,
   interceptStatus: Array<any>
-  ResponseText: Array<any>
+  responseText: Array<any>
   contentType:Array<any>
 }
 
@@ -20,7 +20,7 @@ export interface PopUpState {
   requests: object;
   tabUrl ?: string;
   checkedReqs : object;
-  ResponseText : object;
+  responseText : object;
   interceptStatus:object;
 }
 
@@ -35,7 +35,6 @@ export interface Action{
 
 export interface requestListProps extends POPUP_PROPS {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  handleIntercept: React.MouseEventHandler<HTMLButtonElement>;
   handleCheckToggle : React.ChangeEventHandler<HTMLInputElement>
 }
 
