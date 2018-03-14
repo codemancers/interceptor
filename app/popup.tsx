@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as cx from "classnames";
 import {connect} from "react-redux";
-import {Store} from 'react-chrome-redux'
+import {Store} from "react-chrome-redux";
 
-import {INITIAL_POPUP_STATE} from './modules/recordings'
+import {INITIAL_POPUP_STATE} from "./modules/recordings";
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
 import {POPUP_PROPS} from "./types";
@@ -28,10 +28,10 @@ interface DispatchProps {
   updateField: typeof updateField;
   clearFields: typeof clearFields;
   updateFields: typeof updateFields;
-  handleCheckToggle: typeof handleCheckToggle
-  handleCheckedRequests : typeof handleCheckedRequests;
-  handleRespTextChange : typeof handleRespTextChange;
-  handleStatusCodeChange : typeof handleStatusCodeChange;
+  handleCheckToggle: typeof handleCheckToggle;
+  handleCheckedRequests: typeof handleCheckedRequests;
+  handleRespTextChange: typeof handleRespTextChange;
+  handleStatusCodeChange: typeof handleStatusCodeChange;
   handleContentTypeChange: typeof handleContentTypeChange;
 }
 
@@ -46,6 +46,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField("requests", requests);
     });
+    if (!this.isUrlInValid(this.props.tabUrl)) {
+      this.props.updateField("errorMessage", "");
+      return;
+    }
   }
 
   isUrlInValid = (tabUrl: string) => {
@@ -60,11 +64,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField("enabled", false);
-    }
-    else {
+    } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        console.log("GOT REQUESTS", requests)
+        console.log("GOT REQUESTS", requests);
         this.props.updateFields({enabled: true, requests});
       });
     }
@@ -75,25 +78,31 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.clearFields();
   };
 
-  handleCheckToggle = (reqId:number, presentCheckedState:boolean) => {
-    this.props.handleCheckToggle(reqId, presentCheckedState)
+  handleCheckToggle = (reqId: number, presentCheckedState: boolean) => {
+    this.props.handleCheckToggle(reqId, presentCheckedState);
   };
 
-  handleRespTextChange = (value:string, requestId:number) =>{
-    this.props.handleRespTextChange(value, requestId)
-  }
+  handleRespTextChange = (value: string, requestId: number) => {
+    this.props.handleRespTextChange(value, requestId);
+  };
 
-  handleStatusCodeChange = (value:string, requestId:number) => {
-    this.props.handleStatusCodeChange(value, requestId)
-  }
+  handleStatusCodeChange = (value: string, requestId: number) => {
+    this.props.handleStatusCodeChange(value, requestId);
+  };
 
-  handleContentTypeChange = (value:string, requestId:number) => {
-    this.props.handleContentTypeChange(value, requestId)
-  }
+  handleContentTypeChange = (value: string, requestId: number) => {
+    this.props.handleContentTypeChange(value, requestId);
+  };
 
-  handleCheckedRequests = (requests:Array<any>) =>{
-    MessageService.interceptChecked(this.props.tabId, requests, this.props.responseText, this.props.interceptStatus, this.props.contentType)
-  }
+  handleCheckedRequests = (requests: Array<any>) => {
+    MessageService.interceptChecked(
+      this.props.tabId,
+      requests,
+      this.props.responseText,
+      this.props.interceptStatus,
+      this.props.contentType
+    );
+  };
 
   render() {
     const buttonClass = cx("button", {
@@ -102,24 +111,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     });
     return (
       <div className="popup">
-        {this.props.errorMessage ? (
-          <p className="popup-error-message popup-error">
-            {" "}
-            {this.props.errorMessage}{" "}
-          </p>
-        ) : null}
-        <button
-          type="button"
-          onClick={this.handleClick}
-          className={buttonClass}
-        >
+        {this.props.errorMessage ? <p className="popup-error-message popup-error"> {this.props.errorMessage} </p> : null}
+        <button type="button" onClick={this.handleClick} className={buttonClass}>
           {this.props.enabled ? "Stop Listening" : "Start Listening"}
         </button>
-        <button
-          type="button"
-          onClick={this.clearRequests}
-          className="btn-clear"
-        >
+        <button type="button" onClick={this.clearRequests} className="btn-clear">
           CLEAR
         </button>
         <RequestList
@@ -143,10 +139,10 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   enabled: state.enabled,
   requests: state.requests,
   errorMessage: state.errorMessage,
-  checkedReqs : state.checkedReqs,
-  responseText : state.responseText,
+  checkedReqs: state.checkedReqs,
+  responseText: state.responseText,
   interceptStatus: state.interceptStatus,
-  contentType : state.contentType
+  contentType: state.contentType
 });
 
 const mapDispatchToProps: DispatchProps = {

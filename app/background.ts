@@ -24,8 +24,8 @@ class BackgroundWorker {
       chrome.tabs.sendMessage(tab.id, {message: "INJECT_SCRIPTS"});
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-      if(!request.tabId){
-        return
+      if (!request.tabId) {
+        return;
       }
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
@@ -67,19 +67,20 @@ class BackgroundWorker {
 
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
-    if (
-      this.data[this.currentTab].enabled &&
-      this.currentTab === details.tabId
-    ) {
-        if (tabRecords.requests.filter((req) => req.requestId === details.requestId).length > 0) {
-          return
-        }
-        tabRecords.requests.push(details);
-        this.data[this.currentTab] = tabRecords;
-        chrome.browserAction.setBadgeText({
-          text: `${tabRecords.requests.length}`,
-          tabId: details.tabId
-        });
+    const updateBadgeText = () => {
+      chrome.browserAction.setBadgeText({
+        text: `${tabRecords.requests.length}`,
+        tabId: details.tabId
+      });
+    };
+    if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
+      updateBadgeText();
+      if (tabRecords.requests.filter(req => req.requestId === details.requestId || req.url === details.url).length > 0) {
+        return;
+      }
+      tabRecords.requests.push(details);
+      updateBadgeText();
+      this.data[this.currentTab] = tabRecords;
     }
   };
 
