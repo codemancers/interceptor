@@ -5,7 +5,7 @@
   "version": "0.1",
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js", "./redux_bg.js"]
   },
   "content_scripts": [
     {

@@ -15,16 +15,16 @@ export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
-  return {type : START_LISTENING, enabled : enabledStatus}
+  return {type : START_LISTENING, payload : enabledStatus}
 }
 export function updateField (name:string, value:any) {
-  return {type : UPDATE_FIELD, name, value }
+  return {type : UPDATE_FIELD, payload : {name, value} }
 }
 export function updateFields (payload:object) {
   return {type : UPDATE_FIELDS, payload  }
 }
 export function stopListening (enabledStatus:boolean){
-  return { type : STOP_LISTENING, enabled: enabledStatus}
+  return { type : STOP_LISTENING, payload: enabledStatus}
  }
 export function errorNotify (errorMessage:string) {
   return { type : ERROR ,  errorMessage}

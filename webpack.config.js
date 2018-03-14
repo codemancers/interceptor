@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     popup: "./app.tsx",
     background: "./background.ts",
+    redux_bg: "./redux_bg.ts",
     content: "./content.ts"
   },
   output: {

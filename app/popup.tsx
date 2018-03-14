@@ -1,7 +1,9 @@
 import * as React from "react";
 import * as cx from "classnames";
 import {connect} from "react-redux";
+import {Store} from 'react-chrome-redux'
 
+import {INITIAL_POPUP_STATE} from './modules/recordings'
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
 import {POPUP_PROPS} from "./types";
@@ -42,7 +44,8 @@ const isChromeUrl = (url: string) => {
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
-      this.props.updateField("requests", requests);
+      const requestss = [{url : "www.github.com", requestId : 123, tabId : 12}]
+      this.props.updateField("requests", requestss);
     });
   }
 
@@ -57,12 +60,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
     if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
-      this.props.updateField("enabled", false);
+      this.props.startListening(false)
     }
     else {
       MessageService.getRequests(this.props.tabId, requests => {
+        console.log(requests)
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({enabled: true, requests});
+        this.props.stopListening(true)
       });
     }
   };
