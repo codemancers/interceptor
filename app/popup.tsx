@@ -44,8 +44,7 @@ const isChromeUrl = (url: string) => {
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     MessageService.getRequests(this.props.tabId, requests => {
-      const requestss = [{url : "www.github.com", requestId : 123, tabId : 12}]
-      this.props.updateField("requests", requestss);
+      this.props.updateField("requests", requests);
     });
   }
 
@@ -60,13 +59,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
     if (this.props.enabled) {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
-      this.props.startListening(false)
+      this.props.updateField("enabled", false);
     }
     else {
       MessageService.getRequests(this.props.tabId, requests => {
-        console.log(requests)
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.stopListening(true)
+        console.log("GOT REQUESTS", requests)
+        this.props.updateFields({enabled: true, requests});
       });
     }
   };

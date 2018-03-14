@@ -24,6 +24,9 @@ class BackgroundWorker {
       chrome.tabs.sendMessage(tab.id, {message: "INJECT_SCRIPTS"});
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+      if(!request.tabId){
+        return
+      }
       this.currentTab = request.tabId;
       if (!this.data[this.currentTab]) {
         this.data[this.currentTab] = {
