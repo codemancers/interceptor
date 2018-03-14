@@ -1,9 +1,7 @@
 import * as React from "react";
 import * as cx from "classnames";
 import {connect} from "react-redux";
-import {Store} from "react-chrome-redux";
 
-import {INITIAL_POPUP_STATE} from "./modules/recordings";
 import * as MessageService from "./message_service";
 import RequestList from "./request_list";
 import {POPUP_PROPS} from "./types";
@@ -46,7 +44,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField("requests", requests);
     });
-    if (!this.isUrlInValid(this.props.tabUrl)) {
+
+    MessageService.getEnabledStatus(this.props.tabId, (enabledStatus:boolean) =>{
+      this.props.updateField("enabled", enabledStatus)
+    })
+
+    if (!(this.isUrlInValid(this.props.tabUrl))) {
       this.props.updateField("errorMessage", "");
       return;
     }
@@ -67,7 +70,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        console.log("GOT REQUESTS", requests);
         this.props.updateFields({enabled: true, requests});
       });
     }
