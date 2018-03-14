@@ -65,21 +65,22 @@ class BackgroundWorker {
     });
   };
 
+   updateBadgeText = (noOfRequests:number) => {
+    chrome.browserAction.setBadgeText({
+      text: `${noOfRequests}`,
+      tabId: this.currentTab
+    });
+  };
+
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
-    const updateBadgeText = () => {
-      chrome.browserAction.setBadgeText({
-        text: `${tabRecords.requests.length}`,
-        tabId: details.tabId
-      });
-    };
     if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
-      updateBadgeText();
+      this.updateBadgeText(this.data[this.currentTab].requests.length);
       if (tabRecords.requests.filter(req => req.requestId === details.requestId || req.url === details.url).length > 0) {
         return;
       }
       tabRecords.requests.push(details);
-      updateBadgeText();
+      this.updateBadgeText(this.data[this.currentTab].requests.length);
       this.data[this.currentTab] = tabRecords;
     }
   };
@@ -102,10 +103,7 @@ class BackgroundWorker {
   };
   clearData = () => {
     this.data[this.currentTab].requests = [];
-    chrome.browserAction.setBadgeText({
-      text: `0`,
-      tabId: this.data[this.currentTab].tabId
-    });
+    this.updateBadgeText(0)
   };
 }
 
