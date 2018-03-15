@@ -48,11 +48,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.getEnabledStatus(this.props.tabId, (enabledStatus:boolean) =>{
       this.props.updateField("enabled", enabledStatus)
     })
-
-    if (!(this.isUrlInValid(this.props.tabUrl))) {
       this.props.updateField("errorMessage", "");
-      return;
-    }
   }
 
   isUrlInValid = (tabUrl: string) => {
