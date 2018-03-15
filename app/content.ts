@@ -58,14 +58,13 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               return request.url === url;
+               return (request.url === url || request.requestId)
              })
              return !result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
               if(xhr.url === request.url){
-                console.log(requestArray.statusCodes[request.requestId])
                 xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
               }
              })

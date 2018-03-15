@@ -7,13 +7,13 @@ import * as actionType from "../actions"
 export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
   switch (action.type) {
     case actionType.START_LISTENING:
-      return {...state, enabled : true}
+      return {...state, enabled : action.payload}
     case actionType.UPDATE_FIELD:
-      return {...state, [action.name]: action.value };
+      return {...state, [action.payload.name]: action.payload.value };
     case actionType.UPDATE_FIELDS:
       return {...state,  ...action.payload};
     case actionType.STOP_LISTENING:
-      return {...state, enabled: false};
+      return {...state, enabled: action.payload};
     case actionType.ERROR:
       return {...state, errorMessage: action.errorMessage, enabled:false }
     case actionType.CLEAR_REQUESTS :

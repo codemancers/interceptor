@@ -1,10 +1,8 @@
 import * as React from 'react'
 import {render} from 'react-dom'
 import { Provider } from 'react-redux';
+import {Store} from 'react-chrome-redux'
 
-import store from './popup_store'
-import * as MessageService from './message_service'
-import {INITIAL_POPUP_STATE} from './modules/recordings'
 
 // components
 import Popup from './popup'
@@ -21,10 +19,14 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
-  MessageService.getEnabledStatus(id, (enabled: boolean) => {
-    const createStore = store({...INITIAL_POPUP_STATE, enabled});
+  const store = new Store({
+    state : {},
+    portName: 'INTERCEPTOR',
+  })
+
+  store.ready().then(() => {
     render(
-      <Provider store={createStore} >
+      <Provider store={store} >
          <Popup tabUrl={url} tabId={id} />
       </Provider>,
       document.getElementById("root") as HTMLElement
