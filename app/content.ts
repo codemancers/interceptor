@@ -80,7 +80,9 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
+
                return (request.url === url && request.tabId === requestArray.tabId)
+
              })
              return !result
            });
