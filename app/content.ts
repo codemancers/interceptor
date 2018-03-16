@@ -36,7 +36,7 @@ class Intercept {
     });
   };
   interceptSelected = (selectedReqs: Array<requestObject>) => {
-    if (selectedReqs.requestsToIntercept.length < 1) {
+    if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
     let responseTexts = selectedReqs.responseText || {};
