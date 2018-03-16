@@ -20,7 +20,6 @@ class Intercept {
         this.interceptSelected(request);
       } else if (request.message === "PAGE_REFRESHED") {
         const presentState = bg_store.getState();
-        console.log("Present tabId", request.tabId)
         const checkedReqs = presentState.requests.filter(req => {
           return presentState.checkedReqs[req.requestId] && request.tabId;
         });
@@ -81,11 +80,8 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               console.log("present Tabid", requestArray.tabId)
-               console.log("Tabid in InputRequests", request.tabId)
                return (request.url === url && request.tabId === requestArray.tabId)
              })
-             console.log(!result)
              return !result
            });
            this.server.respondWith((xhr, id) => {
