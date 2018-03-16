@@ -23,6 +23,13 @@ class BackgroundWorker {
     chrome.browserAction.onClicked.addListener(tab => {
       chrome.tabs.sendMessage(tab.id, {message: "INJECT_SCRIPTS"});
     });
+    //Send a message to content-script on when a page reloads
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      if(changeInfo.status === "complete"){
+        console.log(tab)
+        chrome.tabs.sendMessage(tab.id, {message : "PAGE_REFRESHED", tabId})
+      }
+    });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       if (!request.tabId) {
         return;
