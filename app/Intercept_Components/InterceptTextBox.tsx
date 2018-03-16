@@ -5,7 +5,7 @@ export const InterceptTextBox = props => {
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
   const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;
-  const statusCodeValue = props.interceptStatus[props.rowProps.checkbox.requestId] || defaultStatusCode;
+  const statusCodeValue = props.statusCodes[props.rowProps.checkbox.requestId] || defaultStatusCode;
   const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
 
   return (
@@ -55,6 +55,6 @@ export const InterceptTextBox = props => {
 
 InterceptTextBox.defaultProps = {
   responseText: [],
-  interceptStatus: [],
+  statusCodes: [],
   contentType: []
 };
