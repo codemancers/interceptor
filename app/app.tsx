@@ -24,6 +24,7 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
+
   store.ready().then(() => {
     const state = store.getState();
     render(
