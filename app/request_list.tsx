@@ -11,7 +11,7 @@ export interface RequestObj {
   handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
   checkedReqs : Array<any>;
   responseText: Array<any>
-  interceptStatus : Array<any>
+  statusCodes : Array<any>
   handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
   contentType:Array<any>;
 }
@@ -89,7 +89,7 @@ const RequestList = (props: RequestObj) => {
       freezeWhenExpanded
       SubComponent={row => (
         <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} responseText={props.responseText}
-        interceptStatus={props.interceptStatus} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
+        statusCodes={props.statusCodes} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
       )}
     />
   );

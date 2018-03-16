@@ -97,7 +97,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       this.props.tabId,
       requests,
       this.props.responseText,
-      this.props.interceptStatus,
+      this.props.statusCodes,
       this.props.contentType
     );
   };
@@ -124,7 +124,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           handleRespTextChange={this.handleRespTextChange}
           handleStatusCodeChange={this.handleStatusCodeChange}
           responseText={this.props.responseText}
-          interceptStatus={this.props.interceptStatus}
+          statusCodes={this.props.statusCodes}
           handleContentTypeChange={this.props.handleContentTypeChange}
           contentType={this.props.contentType}
         />
@@ -139,7 +139,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   errorMessage: state.errorMessage,
   checkedReqs: state.checkedReqs,
   responseText: state.responseText,
-  interceptStatus: state.interceptStatus,
+  statusCodes: state.statusCodes,
   contentType: state.contentType
 });
 

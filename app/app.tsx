@@ -12,6 +12,11 @@ const queryParams: chrome.tabs.QueryInfo = {
   currentWindow: true
 };
 
+const store = new Store({
+  state : {},
+  portName: 'INTERCEPTOR',
+})
+
 chrome.tabs.query(queryParams, tabs => {
   const tab = tabs[0];
   if (!tab) return;
@@ -19,12 +24,8 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
-  const store = new Store({
-    state : {},
-    portName: 'INTERCEPTOR',
-  })
-
   store.ready().then(() => {
+    const state = store.getState();
     render(
       <Provider store={store} >
          <Popup tabUrl={url} tabId={id} />

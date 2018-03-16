@@ -5,7 +5,7 @@ export interface POPUP_PROPS {
   requests : Array<any>,
   errorMessage : string,
   checkedReqs : object,
-  interceptStatus: Array<any>
+  statusCodes: Array<any>
   responseText: Array<any>
   contentType:Array<any>
 }
@@ -21,7 +21,7 @@ export interface PopUpState {
   tabUrl ?: string;
   checkedReqs : object;
   responseText : object;
-  interceptStatus:object;
+  statusCodes:object;
 }
 
 export interface Action{

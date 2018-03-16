@@ -23,6 +23,8 @@
     "tabs",
     "webRequestBlocking",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "storage",
+    "webNavigation"
   ]
 }
