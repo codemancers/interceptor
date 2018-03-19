@@ -15,28 +15,30 @@ class Intercept {
       portName: "INTERCEPTOR"
     });
 
-    chrome.runtime.onMessage.addListener((request, _, __) => {
-      if (request.message === "INTERCEPT_CHECKED") {
-        this.interceptSelected(request);
-      } else if (request.message === "PAGE_REFRESHED") {
-        const presentState = bg_store.getState();
-        const checkedReqs = presentState.requests.filter(req => {
-          return presentState.checkedReqs[req.requestId] && request.tabId;
-        });
-        const requestObj = {
-          message: "INTERCEPT_ON_REFRESH",
-          requestsToIntercept: checkedReqs,
-          responseText: presentState.responseText,
-          statusCodes: presentState.statusCodes,
-          contentType: presentState.contentType,
-          tabId: request.tabId
-        };
-        this.interceptSelected(requestObj);
-      }
-    });
+    bg_store.ready().then( () => {
+      chrome.runtime.onMessage.addListener((request, _, __) => {
+        if (request.message === "INTERCEPT_CHECKED") {
+          this.interceptSelected(request);
+        } else if (request.message === "PAGE_REFRESHED") {
+          const presentState = bg_store.getState();
+          const checkedReqs = presentState.requests.filter(req => {
+            return presentState.checkedReqs[req.requestId] && request.tabId;
+          });
+          const requestObj = {
+            message: "INTERCEPT_ON_REFRESH",
+            requestsToIntercept: checkedReqs,
+            responseText: presentState.responseText,
+            statusCodes: presentState.statusCodes,
+            contentType: presentState.contentType,
+            tabId: request.tabId
+          };
+          this.interceptSelected(requestObj);
+        }
+      });
+    })
   };
   interceptSelected = (selectedReqs: Array<requestObject>) => {
-    if (selectedReqs.requestsToIntercept.length < 1) {
+    if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
     let responseTexts = selectedReqs.responseText || {};
