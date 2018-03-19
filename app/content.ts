@@ -7,9 +7,6 @@ interface requestObject {
   responseText: string;
 }
 class Intercept {
-  constructor() {
-    this.injectScripts();
-  }
   startMessageListener = () => {
     const bg_store = new Store({
       portName: "INTERCEPTOR"
@@ -41,6 +38,7 @@ class Intercept {
     if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
+    this.injectScripts();
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -110,7 +108,11 @@ class Intercept {
     let sinon = document.createElement("script");
     sinon.defer = false;
     sinon.src = chrome.extension.getURL("./lib/sinon.js");
-    (document.head || document.documentElement).appendChild(sinon);
+    sinon.type="text/javascript";
+    sinon.id="interceptor-sinon";
+    if(!document.getElementById("interceptor-sinon")){
+      (document.head || document.documentElement).appendChild(sinon);
+    }
   };
 }
 new Intercept().startMessageListener();
