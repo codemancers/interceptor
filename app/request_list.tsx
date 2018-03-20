@@ -18,7 +18,6 @@ export interface RequestObj {
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
-  renderIntercept : any
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
