@@ -4,7 +4,18 @@ import RequestList from "./../request_list";
 
 const commonProps = {
   handleIntercept: jest.fn(),
-  requests: []
+  requests: [],
+  PageDetails : {
+    100 : {
+      currentPageNumber : 0,
+      currentRowSize : 10
+    },
+    101 : {
+      currentPageNumber : 1,
+      currentRowSize : 5
+    }
+  },
+  tabId : 100
 };
 let wrapper;
 let RowComponent;
