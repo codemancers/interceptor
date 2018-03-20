@@ -12,6 +12,8 @@ export const INTERCEPT_CHECKED = "INTERCEPT_CHECKED"
 export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE"
 export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
+export const PAGE_NO_CHANGE = "PAGE_NO_CHANGE"
+export const ROW_SIZE_CHANGE = "ROW_SIZE_CHANGE"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -46,4 +48,10 @@ export function handleRespTextChange(value:string, requestId:number){
 }
 export function handleContentTypeChange(value:string, requestId:number){
   return {type : CONTENT_TYPE_CHANGE, payload : {value, requestId}}
+}
+export function handlePageNumberChange(currentPageNumber: string, tabId:number) {
+  return {type: PAGE_NO_CHANGE, payload: {currentPageNumber, tabId}};
+}
+export function handleRowSizeChange(currentRowSize: string, tabId:number) {
+  return {type: ROW_SIZE_CHANGE, payload: {currentRowSize, tabId}};
 }

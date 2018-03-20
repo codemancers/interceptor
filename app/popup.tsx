@@ -16,7 +16,9 @@ import {
   handleCheckedRequests,
   handleRespTextChange,
   handleStatusCodeChange,
-  handleContentTypeChange
+  handleContentTypeChange,
+  handlePageNumberChange,
+  handleRowSizeChange
 } from "./actions";
 
 interface DispatchProps {
@@ -31,6 +33,8 @@ interface DispatchProps {
   handleRespTextChange: typeof handleRespTextChange;
   handleStatusCodeChange: typeof handleStatusCodeChange;
   handleContentTypeChange: typeof handleContentTypeChange;
+  handlePageNumberChange : typeof handlePageNumberChange;
+  handleRowSizeChange : typeof handleRowSizeChange;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -41,6 +45,8 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
+    this.props.updateField("tabId", this.props.tabId);
+    this.props.updateField("tabUrl", this.props.tabUrl);
     MessageService.getRequests(this.props.tabId, requests => {
       this.props.updateField("requests", requests);
     });
@@ -102,6 +108,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     );
   };
 
+  handlePageNumberChange = (newPageNo:string, tabId : number) => {
+    this.props.handlePageNumberChange(newPageNo, tabId)
+  }
+
+  handleRowSizeChange = (newPageSize:string,  tabId: number) => {
+    this.props.handleRowSizeChange(newPageSize, tabId)
+  }
+
   render() {
     const buttonClass = cx("button", {
       "button-start-listening": !this.props.enabled,
@@ -127,6 +141,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           statusCodes={this.props.statusCodes}
           handleContentTypeChange={this.props.handleContentTypeChange}
           contentType={this.props.contentType}
+          handlePageNumberChange = {this.props.handlePageNumberChange}
+          handleRowSizeChange = {this.props.handleRowSizeChange}
+          PageDetails = {this.props.PageDetails}
+          tabId = {this.props.tabId}
         />
       </div>
     );
@@ -140,7 +158,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   checkedReqs: state.checkedReqs,
   responseText: state.responseText,
   statusCodes: state.statusCodes,
-  contentType: state.contentType
+  contentType: state.contentType,
+  PageDetails : state.PageDetails,
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -154,7 +173,9 @@ const mapDispatchToProps: DispatchProps = {
   handleCheckedRequests,
   handleStatusCodeChange,
   handleRespTextChange,
-  handleContentTypeChange
+  handleContentTypeChange,
+  handlePageNumberChange,
+  handleRowSizeChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

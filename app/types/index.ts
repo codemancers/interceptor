@@ -1,13 +1,14 @@
 export interface POPUP_PROPS {
-  tabId : number,
-  tabUrl : string,
-  enabled : boolean,
-  requests : Array<any>,
-  errorMessage : string,
-  checkedReqs : object,
-  statusCodes: Array<any>
-  responseText: Array<any>
-  contentType:Array<any>
+  tabId : number
+  tabUrl : string
+  enabled : boolean
+  requests : Array<any>
+  errorMessage : string
+  checkedReqs : object
+  statusCodes: object
+  responseText: object
+  contentType: object
+  PageDetails : object
 }
 
 export interface selectCheckBoxes{
@@ -24,7 +25,7 @@ export interface PopUpState {
   statusCodes:object;
 }
 
-export interface Action{
+export interface Action extends POPUP_PROPS{
   name ?: string
   value ?: any
   type: string
