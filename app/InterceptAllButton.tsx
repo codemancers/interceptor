@@ -1,16 +1,12 @@
 import * as React from "react";
 
 export const InterceptAllButton = props => {
-  const enabledRequests = props.requests
-  .filter(request => {
-    return props.checkedReqs[request.requestId];
-  })
   return (
     <button
     id="intercept-all-btn"
-    disabled={!enabledRequests.length}
+    disabled={!props.enabledRequests.length}
     onClick={() => {
-      props.handleCheckedRequests(enabledRequests);
+      props.handleCheckedRequests(props.enabledRequests);
     }}
   >
     Intercept All
@@ -19,6 +15,5 @@ export const InterceptAllButton = props => {
 };
 
 InterceptAllButton.defaultProps = {
-  requests: [],
-  checkedReqs: {}
+  enabledRequests: []
 };
