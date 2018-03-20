@@ -48,25 +48,14 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         ...state,
         contentType: {...state.contentType, [action.payload.requestId]: action.payload.value}
       };
-    case actionType.PAGE_NO_CHANGE:
+    case actionType.PAGINATION_CHANGE:
       return {
         ...state,
         PageDetails: {
           ...state.PageDetails,
           [action.payload.tabId]: {
             ...state.PageDetails[action.payload.tabId],
-            currentPageNumber: action.payload.currentPageNumber
-          }
-        }
-      };
-    case actionType.ROW_SIZE_CHANGE:
-      return {
-        ...state,
-        PageDetails: {
-          ...state.PageDetails,
-          [action.payload.tabId]: {
-            ...state.PageDetails[action.payload.tabId],
-            currentRowSize: action.payload.currentRowSize
+            [action.payload.field]: action.payload.value
           }
         }
       };

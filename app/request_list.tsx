@@ -15,8 +15,7 @@ export interface RequestObj {
   handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
   contentType: object;
   PageDetails: object;
-  handlePageNumberChange: React.MouseEvent<HTMLButtonElement>;
-  handleRowSizeChange: React.MouseEvent<HTMLSelectElement>;
+  handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
 }
 const RequestList = (props: RequestObj) => {
@@ -98,8 +97,8 @@ const RequestList = (props: RequestObj) => {
       defaultPageSize={10}
       page={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentPageNumber : 0}
       pageSize={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentRowSize : 10}
-      onPageChange={changedPageNo => props.handlePageNumberChange(changedPageNo, props.tabId)}
-      onPageSizeChange={changedRowSize => props.handleRowSizeChange(changedRowSize, props.tabId)}
+      onPageChange={changedPageNo => props.handlePaginationChange(changedPageNo, props.tabId, "currentPageNumber")}
+      onPageSizeChange={changedRowSize => props.handlePaginationChange(changedRowSize, props.tabId, "currentRowSize")}
       freezeWhenExpanded={true}
       SubComponent={row => (
         <InterceptForm

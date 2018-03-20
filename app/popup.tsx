@@ -17,8 +17,7 @@ import {
   handleRespTextChange,
   handleStatusCodeChange,
   handleContentTypeChange,
-  handlePageNumberChange,
-  handleRowSizeChange
+  handlePaginationChange
 } from "./actions";
 
 interface DispatchProps {
@@ -33,8 +32,7 @@ interface DispatchProps {
   handleRespTextChange: typeof handleRespTextChange;
   handleStatusCodeChange: typeof handleStatusCodeChange;
   handleContentTypeChange: typeof handleContentTypeChange;
-  handlePageNumberChange : typeof handlePageNumberChange;
-  handleRowSizeChange : typeof handleRowSizeChange;
+  handlePaginationChange: typeof handlePaginationChange
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -108,12 +106,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     );
   };
 
-  handlePageNumberChange = (newPageNo:string, tabId : number) => {
-    this.props.handlePageNumberChange(newPageNo, tabId)
-  }
-
-  handleRowSizeChange = (newPageSize:string,  tabId: number) => {
-    this.props.handleRowSizeChange(newPageSize, tabId)
+  handlePaginationChange = (newPageNo_rowSize:string, tabId : number, field:string) => {
+    this.props.handlePaginationChange(newPageNo_rowSize, tabId, field)
   }
 
   render() {
@@ -141,8 +135,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           statusCodes={this.props.statusCodes}
           handleContentTypeChange={this.props.handleContentTypeChange}
           contentType={this.props.contentType}
-          handlePageNumberChange = {this.props.handlePageNumberChange}
-          handleRowSizeChange = {this.props.handleRowSizeChange}
+          handlePaginationChange = {this.props.handlePaginationChange}
           PageDetails = {this.props.PageDetails}
           tabId = {this.props.tabId}
         />
@@ -174,8 +167,7 @@ const mapDispatchToProps: DispatchProps = {
   handleStatusCodeChange,
   handleRespTextChange,
   handleContentTypeChange,
-  handlePageNumberChange,
-  handleRowSizeChange
+  handlePaginationChange
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
