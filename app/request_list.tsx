@@ -6,14 +6,17 @@ import {InterceptForm} from "./Intercept_Components";
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests:React.MouseEventHandler<HTMLButtonElement>;
-  handleRespTextChange : React.FormEvent<HTMLInputElement>;
+  handleCheckedRequests: React.MouseEventHandler<HTMLButtonElement>;
+  handleRespTextChange: React.FormEvent<HTMLInputElement>;
   handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
-  checkedReqs : Array<any>;
-  responseText: Array<any>
-  statusCodes : Array<any>
+  checkedReqs: object;
+  responseText: object;
+  statusCodes: object;
   handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
-  contentType:Array<any>;
+  contentType: object;
+  PageDetails: object;
+  handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
+  tabId: number;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -50,30 +53,36 @@ const RequestList = (props: RequestObj) => {
     {
       id: "checkbox",
       accessor: "",
-      Cell: ({ original }) => {
+      Cell: ({original}) => {
         return (
           <input
             type="checkbox"
             className="checkbox"
             checked={props.checkedReqs[original.requestId]}
-            onChange={(e) => {
-              props.handleCheckToggle(original.requestId, e.target.checked)}
-            }
+            onChange={e => {
+              props.handleCheckToggle(original.requestId, e.target.checked);
+            }}
           />
         );
       },
       Header: "Intercept",
       sortable: false,
       width: 45,
-      Footer: ({data}) =>(
+      Footer: ({data}) => (
         <span>
-          <button id="intercept-all-btn" onClick={() => {
-            const enabledRequests = data.filter((request) => {
-              return props.checkedReqs[request.checkbox.requestId]
-            })
-            .map(request => request.checkbox);
-            props.handleCheckedRequests(enabledRequests)
-          }}>Intercept All</button>
+          <button
+            id="intercept-all-btn"
+            onClick={() => {
+              const enabledRequests = data
+                .filter(request => {
+                  return props.checkedReqs[request.checkbox.requestId];
+                })
+                .map(request => request.checkbox);
+              props.handleCheckedRequests(enabledRequests);
+            }}
+          >
+            Intercept All
+          </button>
         </span>
       )
     }
@@ -85,11 +94,23 @@ const RequestList = (props: RequestObj) => {
       showPagination={true}
       showPaginationTop={false}
       showPaginationBottom={true}
-      pageSize={10}
-      freezeWhenExpanded
+      defaultPageSize={10}
+      page={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentPageNumber : 0}
+      pageSize={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentRowSize : 10}
+      onPageChange={changedPageNo => props.handlePaginationChange(changedPageNo, props.tabId, "currentPageNumber")}
+      onPageSizeChange={changedRowSize => props.handlePaginationChange(changedRowSize, props.tabId, "currentRowSize")}
+      freezeWhenExpanded={true}
       SubComponent={row => (
-        <InterceptForm freezeWhenExpanded={true} rowProps={row} handleStatusCodeChange={props.handleStatusCodeChange} handleRespTextChange={props.handleRespTextChange} responseText={props.responseText}
-        statusCodes={props.statusCodes} handleContentTypeChange={props.handleContentTypeChange} contentType={props.contentType} />
+        <InterceptForm
+          freezeWhenExpanded={true}
+          rowProps={row}
+          handleStatusCodeChange={props.handleStatusCodeChange}
+          handleRespTextChange={props.handleRespTextChange}
+          responseText={props.responseText}
+          statusCodes={props.statusCodes}
+          handleContentTypeChange={props.handleContentTypeChange}
+          contentType={props.contentType}
+        />
       )}
     />
   );

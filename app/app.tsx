@@ -26,7 +26,6 @@ chrome.tabs.query(queryParams, tabs => {
 
 
   store.ready().then(() => {
-    const state = store.getState();
     render(
       <Provider store={store} >
          <Popup tabUrl={url} tabId={id} />
