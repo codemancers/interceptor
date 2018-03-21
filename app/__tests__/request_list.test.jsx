@@ -4,6 +4,7 @@ import RequestList from "./../request_list";
 
 const commonProps = {
   handleIntercept: jest.fn(),
+  handleCheckedRequests : jest.fn(),
   requests: [],
   PageDetails : {
     100 : {
@@ -31,7 +32,11 @@ describe("RequestList initial state", () => {
 
   test("Only one ReactTable component should be present", () => {
     wrapper = shallow(<RequestList {...commonProps} />);
-
     expect(wrapper.find("ReactTable")).toHaveLength(1);
+  });
+
+  test("One InterceptButton component should be present", () => {
+    wrapper = shallow(<RequestList {...commonProps} />);
+    expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
   });
 });
