@@ -3,6 +3,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./Intercept_Components";
+import {InterceptAllButton} from './InterceptAllButton'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
@@ -67,27 +68,22 @@ const RequestList = (props: RequestObj) => {
       },
       Header: "Intercept",
       sortable: false,
-      width: 45,
-      Footer: ({data}) => (
-        <span>
-          <button
-            id="intercept-all-btn"
-            onClick={() => {
-              const enabledRequests = data
-                .filter(request => {
-                  return props.checkedReqs[request.checkbox.requestId];
-                })
-                .map(request => request.checkbox);
-              props.handleCheckedRequests(enabledRequests);
-            }}
-          >
-            Intercept All
-          </button>
-        </span>
-      )
+      width: 45
     }
   ];
+
+  const enabledRequests = props.requests.filter(request => {
+      return props.checkedReqs[request.requestId];
+    })
+
   return (
+    <div>
+    <InterceptAllButton
+    disabled={!enabledRequests.length}
+    handleCheckedRequests={() => {
+      return props.handleCheckedRequests(enabledRequests);
+    }}
+    />
     <ReactTable
       data={props.requests}
       columns={columns}
@@ -113,6 +109,7 @@ const RequestList = (props: RequestObj) => {
         />
       )}
     />
+    </div>
   );
 };
 export default RequestList;
