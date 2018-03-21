@@ -38,9 +38,7 @@ class Intercept {
     if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
-    this.injectScripts();
-    let sinonScript = document.getElementById("interceptor-sinon")
-    sinonScript.onload  = () => {
+    const runInterceptor  = () => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -82,9 +80,7 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-
                return (request.url === url && request.tabId === requestArray.tabId)
-
              })
              return !result
            });
@@ -106,16 +102,18 @@ class Intercept {
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
     }
+  this.injectScripts(runInterceptor);
   };
-  injectScripts = () => {
-    let sinon = document.createElement("script");
-    sinon.defer = false;
-    sinon.src = chrome.extension.getURL("./lib/sinon.js");
-    sinon.type="text/javascript";
-    sinon.id="interceptor-sinon";
+  injectScripts = (callback) => {
+    let sinonScript = document.createElement("script");
+    sinonScript.defer = false;
+    sinonScript.src = chrome.extension.getURL("./lib/sinon.js");
+    sinonScript.type="text/javascript";
+    sinonScript.id="interceptor-sinon";
     if(!document.getElementById("interceptor-sinon")){
-      (document.head || document.documentElement).appendChild(sinon);
+      (document.head || document.documentElement).appendChild(sinonScript);
     }
+    sinonScript.onload = callback;
   };
 }
 new Intercept().startMessageListener();
