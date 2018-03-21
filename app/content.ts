@@ -39,6 +39,8 @@ class Intercept {
       return;
     }
     this.injectScripts();
+    let sinonScript = document.getElementById("interceptor-sinon")
+    sinonScript.onload  = () => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -103,6 +105,7 @@ class Intercept {
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
+    }
   };
   injectScripts = () => {
     let sinon = document.createElement("script");
