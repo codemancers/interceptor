@@ -80,7 +80,9 @@ const RequestList = (props: RequestObj) => {
     <div>
     <InterceptAllButton
     disabled={!enabledRequests.length}
-    handleCheckedRequests={props.handleCheckedRequests(enabledRequests)}
+    handleCheckedRequests={() => {
+      return props.handleCheckedRequests(enabledRequests);
+    }}
     />
     <ReactTable
       data={props.requests}
