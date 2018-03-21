@@ -19,6 +19,7 @@ const createTestProps = props => ({
   enabled: false,
   requests: [],
   errorMessage: "",
+  interceptData: {},
   // allow to override common props
   ...props
 });
@@ -115,6 +116,22 @@ describe("Popup", () => {
       );
       expect(MessageService.disableLogging).not.toHaveBeenCalled()
       expect(MessageService.getRequests).not.toHaveBeenCalled()
+    });
+  });
+
+  describe("on intercept success", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+    test("Should display Success message", () => {
+      let localProps = createTestProps({
+        interceptData: {
+          101 : "INTERCEPT_SUCCESS"
+        },
+        tabId : 101
+      });
+      wrapper = shallow(<Popup {...localProps} />);
+      expect(wrapper.find("#success-msg")).toHaveLength(1)
     });
   });
 });

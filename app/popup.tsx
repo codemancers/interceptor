@@ -113,7 +113,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   displayInterceptMessage = () => {
    return Object.keys(this.props.interceptData).map( tabId =>
      this.props.tabId === Number(tabId) && this.props.interceptData[this.props.tabId] === "INTERCEPT_SUCCESS" ?
-    <a>Intercept Success</a> :
+    <a id="success-msg">Intercept Success</a> :
     ""
   )}
 
