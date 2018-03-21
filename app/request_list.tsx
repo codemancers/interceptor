@@ -72,17 +72,15 @@ const RequestList = (props: RequestObj) => {
     }
   ];
 
-  const getCheckedRequests = (requests) => {
-    return requests.filter(request => {
+  const enabledRequests = props.requests.filter(request => {
       return props.checkedReqs[request.requestId];
     })
-  }
 
   return (
     <div>
     <InterceptAllButton
-    enabledRequests={getCheckedRequests(props.requests)}
-    handleCheckedRequests={props.handleCheckedRequests}
+    disabled={!enabledRequests.length}
+    handleCheckedRequests={props.handleCheckedRequests(enabledRequests)}
     />
     <ReactTable
       data={props.requests}

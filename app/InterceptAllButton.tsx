@@ -4,9 +4,9 @@ export const InterceptAllButton = props => {
   return (
     <button
     id="intercept-all-btn"
-    disabled={!props.enabledRequests.length}
+    disabled={props.disabled}
     onClick={() => {
-      props.handleCheckedRequests(props.enabledRequests);
+      props.handleCheckedRequests
     }}
   >
     Intercept All
@@ -15,5 +15,5 @@ export const InterceptAllButton = props => {
 };
 
 InterceptAllButton.defaultProps = {
-  enabledRequests: []
+  disabled: true
 };
