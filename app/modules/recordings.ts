@@ -9,7 +9,8 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   responseText: {},
   statusCodes: {},
   contentType: {},
-  PageDetails: {}
+  PageDetails: {},
+  interceptData : {}
 };
 
 //ACTION CONSTANTS
@@ -59,6 +60,9 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
           }
         }
       };
+      case actionType.INTERCEPT_SUCCESS:{
+        return {...state, interceptData : {...state.interceptData, [action.payload.tabId] : action.type }}
+      }
     default:
       return state;
   }

@@ -110,6 +110,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field)
   }
 
+  displayInterceptMessage = () => {
+   return Object.keys(this.props.interceptData).map( tabId =>
+     this.props.tabId === Number(tabId) && this.props.interceptData[this.props.tabId] === "INTERCEPT_SUCCESS" ?
+    <a>Intercept Success</a> :
+    ""
+  )}
+
   render() {
     const buttonClass = cx("button", {
       "button-start-listening": !this.props.enabled,
@@ -124,6 +131,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <button type="button" onClick={this.clearRequests} className="btn-clear">
           CLEAR
         </button>
+        {this.displayInterceptMessage()}
         <RequestList
           requests={this.props.requests}
           handleCheckToggle={this.handleCheckToggle}
@@ -153,6 +161,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails : state.PageDetails,
+  interceptData: state.interceptData
 });
 
 const mapDispatchToProps: DispatchProps = {

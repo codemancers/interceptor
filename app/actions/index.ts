@@ -13,6 +13,7 @@ export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE"
 export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 export const PAGINATION_CHANGE = "PAGINATION_CHANGE"
+export const INTERCEPT_SUCCESS = "INTERCEPT_SUCCESS"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){

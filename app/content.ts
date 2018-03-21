@@ -6,15 +6,14 @@ interface requestObject {
   timeStamp: number;
   responseText: string;
 }
+const bg_store = new Store({
+  portName: "INTERCEPTOR"
+});
+
 class Intercept {
   startMessageListener = () => {
-    const bg_store = new Store({
-      portName: "INTERCEPTOR"
-    });
-
     bg_store.ready().then( () => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
-        console.log(request)
         if (request.message === "INTERCEPT_CHECKED") {
           this.interceptSelected(request);
         } else if (request.message === "PAGE_REFRESHED") {
@@ -40,7 +39,6 @@ class Intercept {
       return;
     }
     const runInterceptor  = () => {
-    console.log("INTERCEPTION SUCCESS")
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -104,7 +102,8 @@ class Intercept {
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
     }
-  this.injectScripts(runInterceptor);
+    this.injectScripts(runInterceptor);
+    bg_store.dispatch({type : "INTERCEPT_SUCCESS", payload : { tabId : selectedReqs.tabId } })
   };
   injectScripts = (callback) => {
     let sinonScript = document.createElement("script");
