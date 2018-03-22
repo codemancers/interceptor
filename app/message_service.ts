@@ -1,5 +1,5 @@
 import { RequestObj } from "./request_list";
-type GenericCallback = (_: any) => void;
+export type GenericCallback = (_: any) => void;
 
 // Outgoing
 export function enableLogging(url: string, tabId: number) {

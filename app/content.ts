@@ -1,5 +1,6 @@
 import {Store} from "react-chrome-redux";
 import { sendSuccessMessage } from './actions'
+import { GenericCallback } from "./message_service";
 interface requestObject {
   url: string;
   method: string;
@@ -8,7 +9,13 @@ interface requestObject {
   responseText: string;
 }
 
+interface BgStore{
+  ready(): Promise<void>;
+  getState(): any;
+  dispatch : any;
+}
 class Intercept {
+  store:BgStore
   constructor(){
     this.store = new Store({
       portName: "INTERCEPTOR"
@@ -110,7 +117,7 @@ class Intercept {
     (document.head || document.documentElement).appendChild(script);
     }
 
-  injectScripts = (callback) => {
+  injectScripts = (callback:GenericCallback) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;
     sinonScript.src = chrome.extension.getURL("./lib/sinon.js");
