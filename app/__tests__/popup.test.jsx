@@ -19,7 +19,7 @@ const createTestProps = props => ({
   enabled: false,
   requests: [],
   errorMessage: "",
-  interceptData: {},
+  interceptStatus: "",
   // allow to override common props
   ...props
 });
@@ -125,21 +125,18 @@ describe("Popup", () => {
     });
     test("Should display Success message on successfull intercept", () => {
       let localProps = createTestProps({
-        interceptData: {
-          101 : "INTERCEPT_SUCCESS"
-        },
-        tabId : 101
+        interceptStatus: "INTERCEPT_SUCCESS"
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg")).toHaveLength(1)
+      expect(wrapper.find("#success-msg").text()).toEqual("INTERCEPT_SUCCESS")
     });
 
-    test("Should not display Success message on unsuccesfull intercept", () => {
+    test("Should not display Success message on unsucesfull intercept", () => {
       let localProps = createTestProps({
-        interceptData: {}
+        interceptStatus: ""
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg")).toHaveLength(0)
+      expect(wrapper.find("#success-msg").text()).toEqual("")
     });
   });
-});
+})

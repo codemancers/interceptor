@@ -9,7 +9,7 @@ export interface POPUP_PROPS {
   responseText: object
   contentType: object
   PageDetails : object
-  interceptData : object
+  interceptStatus : string
 }
 
 export interface selectCheckBoxes{

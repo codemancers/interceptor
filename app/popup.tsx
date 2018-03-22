@@ -43,6 +43,7 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
+    this.props.updateField("interceptStatus", "");
     this.props.updateField("tabId", this.props.tabId);
     this.props.updateField("tabUrl", this.props.tabUrl);
     MessageService.getRequests(this.props.tabId, requests => {
@@ -110,13 +111,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field)
   }
 
-  displayInterceptMessage = () => {
-   return Object.keys(this.props.interceptData).map( tabId =>
-     this.props.tabId === Number(tabId) && this.props.interceptData[this.props.tabId] === "INTERCEPT_SUCCESS" ?
-    <a id="success-msg">{this.props.interceptData[this.props.tabId]}</a> :
-    ""
-  )}
-
   render() {
     const buttonClass = cx("button", {
       "button-start-listening": !this.props.enabled,
@@ -131,7 +125,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <button type="button" onClick={this.clearRequests} className="btn-clear">
           CLEAR
         </button>
-        {this.displayInterceptMessage()}
+        <div id="success-msg">{this.props.interceptStatus}</div>
         <RequestList
           requests={this.props.requests}
           handleCheckToggle={this.handleCheckToggle}
@@ -161,7 +155,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails : state.PageDetails,
-  interceptData: state.interceptData
+  interceptStatus: state.interceptStatus
 });
 
 const mapDispatchToProps: DispatchProps = {

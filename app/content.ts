@@ -49,16 +49,16 @@ class Intercept {
       return;
     }
     this.injectScripts(this.runInterceptor(selectedReqs));
-    this.store.dispatch(sendSuccessMessage(selectedReqs.tabId))
+    this.store.dispatch(sendSuccessMessage())
   };
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
-    if (Object.keys(responseField).length === 0 && responseField.constructor === Object) {
-      return responseField = requestsToIntercept.map(req => {
-        responseField[req.requestId] = defaultResponseValue;
+      requestsToIntercept.forEach(req => {
+        if (!(responseField[req.requestId] && responseField[req.requestId].trim())) {
+          responseField[req.requestId] = defaultResponseValue;
+        }
       });
-    }
-    return responseField
+    return responseField;
   }
 
   runInterceptor  = (selectedReqs) => {
