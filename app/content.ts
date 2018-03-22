@@ -1,4 +1,5 @@
 import {Store} from "react-chrome-redux";
+import { sendSuccessMessage } from './actions'
 interface requestObject {
   url: string;
   method: string;
@@ -6,18 +7,20 @@ interface requestObject {
   timeStamp: number;
   responseText: string;
 }
-const bg_store = new Store({
-  portName: "INTERCEPTOR"
-});
 
 class Intercept {
+  constructor(){
+    this.store = new Store({
+      portName: "INTERCEPTOR"
+    });
+  }
   startMessageListener = () => {
-    bg_store.ready().then( () => {
+    this.store.ready().then( () => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
         if (request.message === "INTERCEPT_CHECKED") {
           this.interceptSelected(request);
         } else if (request.message === "PAGE_REFRESHED") {
-          const presentState = bg_store.getState();
+          const presentState = this.store.getState();
           const checkedReqs = presentState.requests.filter(req => {
             return presentState.checkedReqs[req.requestId] && request.tabId;
           });
@@ -38,7 +41,11 @@ class Intercept {
     if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
-    const runInterceptor  = () => {
+    this.injectScripts(this.runInterceptor(selectedReqs));
+    this.store.dispatch(sendSuccessMessage(selectedReqs.tabId))
+  };
+
+  runInterceptor  = (selectedReqs) => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -102,9 +109,7 @@ class Intercept {
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
     }
-    this.injectScripts(runInterceptor);
-    bg_store.dispatch({type : "INTERCEPT_SUCCESS", payload : { tabId : selectedReqs.tabId } })
-  };
+
   injectScripts = (callback) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;

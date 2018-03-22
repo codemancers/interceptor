@@ -52,3 +52,6 @@ export function handleContentTypeChange(value:string, requestId:number){
 export function handlePaginationChange(value: string, tabId:number, field:string) {
   return {type: PAGINATION_CHANGE, payload: {field, value, tabId}};
 }
+export function sendSuccessMessage(tabId:number){
+  return {type : INTERCEPT_SUCCESS , payload : { tabId } }
+}
