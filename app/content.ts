@@ -52,28 +52,22 @@ class Intercept {
     this.store.dispatch(sendSuccessMessage(selectedReqs.tabId))
   };
 
+  setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
+    if (Object.keys(responseField).length === 0 && responseField.constructor === Object) {
+      return responseField = requestsToIntercept.map(req => {
+        responseField[req.requestId] = defaultResponseValue;
+      });
+    }
+    return responseField
+  }
+
   runInterceptor  = (selectedReqs) => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
-    const defaultResponseText = `{msg : "hello"}`;
-    const defaultStatusCode = "200";
-    const defaultContentType = "application/json";
-    if (Object.keys(responseTexts).length === 0 && responseTexts.constructor === Object) {
-      responseTexts = selectedReqs.requestsToIntercept.map(req => {
-        responseTexts[req.requestId] = defaultResponseText;
-      });
-    }
-    if (Object.keys(statusCodes).length === 0 && statusCodes.constructor === Object) {
-      statusCodes = selectedReqs.requestsToIntercept.map(req => {
-        statusCodes[req.requestId] = defaultStatusCode;
-      });
-    }
-    if (Object.keys(contentType).length === 0 && contentType.constructor === Object) {
-      contentType = selectedReqs.requestsToIntercept.map(req => {
-        contentType[req.requestId] = defaultContentType;
-      });
-    }
+    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, `{msg : "hello"}`)
+    this.setDefaultValues(statusCodes,selectedReqs.requestsToIntercept, "200")
+    this.setDefaultValues(contentType,selectedReqs.requestsToIntercept, "application/json")
 
     var selectedInterceptCode = `
      (function(){
