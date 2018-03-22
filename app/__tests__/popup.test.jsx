@@ -119,11 +119,11 @@ describe("Popup", () => {
     });
   });
 
-  describe("on intercept success", () => {
+  describe("Intercept Success Message", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
-    test("Should display Success message", () => {
+    test("Should display Success message on successfull intercept", () => {
       let localProps = createTestProps({
         interceptData: {
           101 : "INTERCEPT_SUCCESS"
@@ -132,6 +132,14 @@ describe("Popup", () => {
       });
       wrapper = shallow(<Popup {...localProps} />);
       expect(wrapper.find("#success-msg")).toHaveLength(1)
+    });
+
+    test("Should not display Success message on unsuccesfull intercept", () => {
+      let localProps = createTestProps({
+        interceptData: {}
+      });
+      wrapper = shallow(<Popup {...localProps} />);
+      expect(wrapper.find("#success-msg")).toHaveLength(0)
     });
   });
 });
