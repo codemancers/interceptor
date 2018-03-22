@@ -125,7 +125,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <button type="button" onClick={this.clearRequests} className="btn-clear">
           CLEAR
         </button>
-        <div id="success-msg">{this.props.interceptStatus}</div>
+        {this.props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
         <RequestList
           requests={this.props.requests}
           handleCheckToggle={this.handleCheckToggle}

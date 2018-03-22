@@ -13,7 +13,7 @@ export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE"
 export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 export const PAGINATION_CHANGE = "PAGINATION_CHANGE"
-export const INTERCEPT_SUCCESS = "INTERCEPT_SUCCESS"
+export const UPDATE_SUCCESS_MESSAGE = "INTERCEPTION IS SUCCESSFULL"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -53,5 +53,5 @@ export function handlePaginationChange(value: string, tabId:number, field:string
   return {type: PAGINATION_CHANGE, payload: {field, value, tabId}};
 }
 export function sendSuccessMessage(){
-  return {type : INTERCEPT_SUCCESS }
+  return {type : UPDATE_SUCCESS_MESSAGE }
 }

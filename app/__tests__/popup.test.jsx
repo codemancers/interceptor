@@ -125,10 +125,10 @@ describe("Popup", () => {
     });
     test("Should display Success message on successfull intercept", () => {
       let localProps = createTestProps({
-        interceptStatus: "INTERCEPT_SUCCESS"
+        interceptStatus: "INTERCEPTION IS SUCCESSFULL"
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg").text()).toEqual("INTERCEPT_SUCCESS")
+      expect(wrapper.find("#success-msg").text()).toEqual("INTERCEPTION IS SUCCESSFULL")
     });
 
     test("Should not display Success message on unsucesfull intercept", () => {
@@ -136,7 +136,7 @@ describe("Popup", () => {
         interceptStatus: ""
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg").text()).toEqual("")
+      expect(wrapper.find("#success-msg").exists()).toBeFalsy()
     });
   });
 })
