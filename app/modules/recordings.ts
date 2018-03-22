@@ -61,7 +61,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         }
       };
       case actionType.UPDATE_SUCCESS_MESSAGE:{
-        return {...state, interceptStatus : action.type }
+        return {...state, interceptStatus : action.message }
       }
     default:
       return state;

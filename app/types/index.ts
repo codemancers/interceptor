@@ -33,6 +33,7 @@ export interface Action extends POPUP_PROPS{
   payload ?:any
   checked :boolean
   reqId :number
+  message: string
 }
 
 export interface requestListProps extends POPUP_PROPS {

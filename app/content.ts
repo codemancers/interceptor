@@ -49,7 +49,7 @@ class Intercept {
       return;
     }
     this.injectScripts(this.runInterceptor(selectedReqs));
-    this.store.dispatch(sendSuccessMessage())
+    this.store.dispatch(sendSuccessMessage("Interception Success!"))
   };
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
