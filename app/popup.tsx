@@ -43,6 +43,7 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
+    this.props.updateField("interceptStatus", "");
     this.props.updateField("tabId", this.props.tabId);
     this.props.updateField("tabUrl", this.props.tabUrl);
     MessageService.getRequests(this.props.tabId, requests => {
@@ -124,6 +125,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <button type="button" onClick={this.clearRequests} className="btn-clear">
           CLEAR
         </button>
+        {this.props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
         <RequestList
           requests={this.props.requests}
           handleCheckToggle={this.handleCheckToggle}
@@ -153,6 +155,7 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails : state.PageDetails,
+  interceptStatus: state.interceptStatus
 });
 
 const mapDispatchToProps: DispatchProps = {

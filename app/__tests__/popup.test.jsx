@@ -19,6 +19,7 @@ const createTestProps = props => ({
   enabled: false,
   requests: [],
   errorMessage: "",
+  interceptStatus: "",
   // allow to override common props
   ...props
 });
@@ -117,4 +118,25 @@ describe("Popup", () => {
       expect(MessageService.getRequests).not.toHaveBeenCalled()
     });
   });
-});
+
+  describe("Intercept Success Message", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+    test("Should display Success message on successfull intercept", () => {
+      let localProps = createTestProps({
+        interceptStatus: "Interception Success!"
+      });
+      wrapper = shallow(<Popup {...localProps} />);
+      expect(wrapper.find("#success-msg").text()).toEqual("Interception Success!")
+    });
+
+    test("Should not display Success message on unsucesfull intercept", () => {
+      let localProps = createTestProps({
+        interceptStatus: ""
+      });
+      wrapper = shallow(<Popup {...localProps} />);
+      expect(wrapper.find("#success-msg").exists()).toBeFalsy()
+    });
+  });
+})

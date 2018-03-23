@@ -9,6 +9,7 @@ export interface POPUP_PROPS {
   responseText: object
   contentType: object
   PageDetails : object
+  interceptStatus : string
 }
 
 export interface selectCheckBoxes{
@@ -32,6 +33,7 @@ export interface Action extends POPUP_PROPS{
   payload ?:any
   checked :boolean
   reqId :number
+  message: string
 }
 
 export interface requestListProps extends POPUP_PROPS {
