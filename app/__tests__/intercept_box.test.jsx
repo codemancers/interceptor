@@ -49,7 +49,7 @@ describe("Input and select Field tests", () => {
     });
 
     test("default value for response text", () => {
-      expect(wrapper.find(".responseText").props().value).toEqual("{msg:hello}");
+      expect(wrapper.find(".responseText").props().defaultValue).toEqual("{msg:hello}");
     });
     test("default value for status text", () => {
       expect(wrapper.find(".select-status").props().value).toEqual("200");
