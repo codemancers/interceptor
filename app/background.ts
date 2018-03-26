@@ -78,7 +78,7 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
       this.updateBadgeText(this.data[this.currentTab].requests.length);
-      if (tabRecords.requests.filter(req => req.requestId === details.requestId || req.url === details.url).length > 0) {
+      if (tabRecords.requests.filter(req => req.requestId === details.requestId || (req.url === details.url && req.method === details.method)).length > 0) {
         return;
       }
       tabRecords.requests.push(details);
