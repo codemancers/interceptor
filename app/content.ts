@@ -48,7 +48,9 @@ class Intercept {
     if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
-    this.injectScripts(this.runInterceptor, selectedReqs);
+    this.injectScripts(() => {
+      this.runInterceptor(selectedReqs);
+    });
     this.store.dispatch(sendSuccessMessage("Interception Success!"))
   };
 
@@ -94,7 +96,7 @@ class Intercept {
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
-              if(xhr.url === request.url && requestArray.responseText[request.requestId] && requestArray.contentType[request.requestId] && requestArray.statusCodes[request.requestId]){
+              if(xhr.url === request.url){
                 xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
               }
              })
@@ -111,7 +113,7 @@ class Intercept {
     (document.head || document.documentElement).appendChild(script);
     }
 
-  injectScripts = (callback:GenericCallback, selectedReqs) => {
+  injectScripts = (callback:GenericCallback) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;
     sinonScript.src = chrome.extension.getURL("./lib/sinon.js");
@@ -120,9 +122,7 @@ class Intercept {
     if(!document.getElementById("interceptor-sinon")){
       (document.head || document.documentElement).appendChild(sinonScript);
     }
-    sinonScript.onload = () => {
-      callback(selectedReqs);
-    };
+    sinonScript.onload = callback;
   };
 }
 new Intercept().startMessageListener();
