@@ -13,7 +13,8 @@ export const InterceptTextBox = props => {
       <textarea
         name="responseText"
         className="responseText"
-        value={responseTextValue}
+        defaultValue={responseTextValue}
+        //value={responseTextValue}
         onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
       />
       <div>
