@@ -48,7 +48,9 @@ class Intercept {
     if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
       return;
     }
-    this.injectScripts(this.runInterceptor(selectedReqs));
+    this.injectScripts(() => {
+      this.runInterceptor(selectedReqs);
+    });
     this.store.dispatch(sendSuccessMessage("Interception Success!"))
   };
 
