@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+@import "_variables.css";
+@import "_reset.css";
+@import "_grid.css";
+@import "_header.css";
+@import "_form.css";
+@import "_table.css";
+
+.popup-error {
+  background: #ef5350;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+.popup-error-message {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.popup {
+  width: 100%;
+}

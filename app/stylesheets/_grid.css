@@ -1,0 +1,32 @@
+.grid-container {
+  display: grid;
+}
+
+header .grid-container {
+  grid-template-columns: auto 180px;
+}
+
+.form {
+  grid-row-gap: 10px;
+  grid-template-rows: 50px auto;
+  grid-column-gap: 10px;
+  grid-template-columns: auto 160px;
+  padding: 5px 10px 15px 40px;
+  background-color: var(--form-bg);
+}
+
+.response {
+  grid-row: 1;
+  margin-bottom: 20px;
+  grid-row-end: 2;
+}
+
+.content {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.status {
+  grid-row: 2;
+  grid-column: 2;
+}

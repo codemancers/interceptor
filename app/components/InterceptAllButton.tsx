@@ -4,10 +4,11 @@ export const InterceptAllButton = props => {
   return (
     <button
     id="intercept-all-btn"
+    className="btn btn-sm btn-primary btn-clear"
     disabled={props.disabled}
     onClick={props.handleCheckedRequests}
   >
-    Intercept All
+    Intercept
   </button>
   );
 };
