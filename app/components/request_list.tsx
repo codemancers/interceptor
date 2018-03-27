@@ -22,6 +22,7 @@ const RequestList = (props: RequestObj) => {
   const columns = [
     {
       Header: "Request URL",
+      className: "url",
       accessor: "url",
       filterable: true,
       filterMethod: (filter, rows) => {
@@ -34,6 +35,7 @@ const RequestList = (props: RequestObj) => {
     },
     {
       Header: "Method",
+      className:"method",
       accessor: "method",
       filterable: true,
       filterMethod: (filter, row) => row[filter.id] === filter.value,
