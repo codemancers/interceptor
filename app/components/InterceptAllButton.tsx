@@ -8,7 +8,7 @@ export const InterceptAllButton = props => {
     disabled={props.disabled}
     onClick={props.handleCheckedRequests}
   >
-    Intercept All
+    Intercept
   </button>
   );
 };
