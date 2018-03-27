@@ -140,15 +140,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           {this.props.errorMessage ? (
             <p className="popup-error-message popup-error"> {this.props.errorMessage} </p>
           ) : null}
-          <div className="text-right">
-            <button
-              type="button"
-              className="btn btn-sm btn-primary btn-clear"
-              onClick={this.clearRequests}
-            >
-              CLEAR
-            </button>
-          </div>
           {
             this.props.interceptStatus &&
             <div id="success-msg">
@@ -170,6 +161,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             handlePaginationChange={this.props.handlePaginationChange}
             PageDetails={this.props.PageDetails}
             tabId={this.props.tabId}
+            clearRequests={this.clearRequests}
           />
         </div>
       </div>

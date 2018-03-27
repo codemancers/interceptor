@@ -17,6 +17,7 @@ export interface RequestObj {
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
+  clearRequests:React.ChangeEvent<HTMLButtonElement>;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -91,6 +92,7 @@ const RequestList = (props: RequestObj) => {
       <button
         type="button"
         className="btn btn-sm btn-primary btn-clear"
+        onClick={props.clearRequests}
       >
         CLEAR
       </button>

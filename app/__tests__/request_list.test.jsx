@@ -5,6 +5,7 @@ import RequestList from "./../components/request_list";
 const commonProps = {
   handleIntercept: jest.fn(),
   handleCheckedRequests : jest.fn(),
+  clearRequests: jest.fn(),
   requests: [],
   PageDetails : {
     100 : {
@@ -38,5 +39,10 @@ describe("RequestList initial state", () => {
   test("One InterceptButton component should be present", () => {
     wrapper = shallow(<RequestList {...commonProps} />);
     expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
+  });
+
+  test("on clear button click, should trigger clearData and clearField", () => {
+    wrapper.find(".btn-clear").first().simulate("click");
+    expect(commonProps.clearRequests).toHaveBeenCalledTimes(1);
   });
 });

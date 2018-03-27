@@ -11,7 +11,6 @@ const createTestProps = props => ({
   tabUrl: "http://google.com",
   updateFields: jest.fn(),
   updateField: jest.fn(),
-  clearFields: jest.fn(),
   errorNotify: jest.fn(),
   startListening: jest.fn(),
   stopListening: jest.fn(),
@@ -38,8 +37,8 @@ describe("Popup", () => {
       expect(wrapper).toBeDefined();
     });
 
-    test("Contains two button elements", () => {
-      expect(wrapper.find("button")).toHaveLength(2);
+    test("Contains one button elements", () => {
+      expect(wrapper.find("button")).toHaveLength(1);
     });
 
     test("should render RequestList component", () => {
@@ -57,12 +56,6 @@ describe("Popup", () => {
         1
       );
       expect(props.updateFields).toHaveBeenCalledTimes(1);
-    });
-
-    test("on clear button click, should trigger clearData and clearField", () => {
-      wrapper.find(".btn-clear").simulate("click");
-      expect(MessageService.clearData).toHaveBeenCalledWith(1);
-      expect(props.clearFields).toHaveBeenCalledTimes(1);
     });
   });
 
