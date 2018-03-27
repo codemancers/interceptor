@@ -139,8 +139,6 @@ input[type="text"],
 input[type="search"], textarea {
   display: block;
   width: 100%;
-  min-height: calc(var(--bh) - 2px);
-  line-height: calc(var(--bh) - 2px);
   padding: 0 12px;
   color: var(--primary-text-color);
   background-color: var(--primary-color-text);
@@ -157,6 +155,7 @@ textarea {
 fieldset {
   border: none
 }
+
 .control-group {
   margin-bottom: 15px;
 }
