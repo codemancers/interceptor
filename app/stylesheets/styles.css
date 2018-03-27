@@ -23,3 +23,7 @@
 .popup {
   width: 100%;
 }
+.url{
+  flex: 100px 0 auto;
+  width: 100px
+}
