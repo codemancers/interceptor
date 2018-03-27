@@ -82,7 +82,7 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
-    <div className="text-right">
+    <div className="response-action text-right">
       <InterceptAllButton
       disabled={!enabledRequests.length}
       handleCheckedRequests={() => {

@@ -145,6 +145,7 @@
   -ms-flex-direction: column;
   flex-direction: column;
   overflow: auto;
+  min-height: 339px;
 }
 .ReactTable .rt-tbody .rt-tr-group {
   border-bottom: solid 1px rgba(0, 0, 0, 0.05);

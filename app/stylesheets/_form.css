@@ -151,7 +151,7 @@ input[type="search"], textarea {
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 textarea {
-  max-height: 150px;
+  min-height: 85px;
 }
 
 fieldset {
@@ -160,18 +160,21 @@ fieldset {
 .control-group {
   margin-bottom: 15px;
 }
+
 label {
   font-weight: bold;
   margin-bottom: 5px;
   display: block;
 }
+
 .text-right {
   text-align: right;
 }
+
 .text-center {
   text-align: center;
 }
 
-.form {
-  padding: 10px 75px 20px 34px;
+.response-action {
+  margin: 10px 15px;
 }
