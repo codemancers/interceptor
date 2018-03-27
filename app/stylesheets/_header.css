@@ -1,0 +1,31 @@
+header {
+  padding: 10px 15px;
+  background-color: var(--primary-color);
+}
+  header .grid-container {
+    z-index: 1;
+    position: relative;
+  }
+
+.logo {
+  color: var(--primary-color);
+  display: inline-block;
+  font-size: 0;
+  position: relative;
+  text-decoration: none;
+  vertical-align: middle;
+  z-index: 1;
+}
+  .logo svg {
+    display: inline-block;
+    height: 32px;
+    margin-right: 10px;
+    vertical-align: middle;
+    width: 32px;
+  }
+  .logo span {
+    color: #fff;
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+  }

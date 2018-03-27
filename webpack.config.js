@@ -9,7 +9,8 @@ module.exports = {
     popup: "./containers/app.tsx",
     background: "./background/background.ts",
     redux_bg: "./background/redux_bg.ts",
-    content: "./content/content.ts"
+    content: "./content/content.ts",
+    utils: "./utils/utils.ts"
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -39,8 +40,9 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
-      { from: "styles/styles.css" },
-      { from: "./lib/*" }
+      { from: "./lib/*" },
+      { from: 'stylesheets/*' },
+      { from: 'images/*' }
     ])
   ]
 };

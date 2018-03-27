@@ -17,6 +17,7 @@ export interface RequestObj {
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
+  clearRequests:React.ChangeEvent<HTMLButtonElement>;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -34,7 +35,9 @@ const RequestList = (props: RequestObj) => {
     },
     {
       Header: "Method",
+      className:"method",
       accessor: "method",
+      width: 100,
       filterable: true,
       filterMethod: (filter, row) => row[filter.id] === filter.value,
       Filter: ({filter, onChange}) => (
@@ -67,7 +70,8 @@ const RequestList = (props: RequestObj) => {
       },
       Header: "Intercept",
       sortable: false,
-      width: 45
+      width: 75,
+      className: 'text-center'
     }
   ];
 
@@ -77,12 +81,22 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
-    <InterceptAllButton
-    disabled={!enabledRequests.length}
-    handleCheckedRequests={() => {
-      return props.handleCheckedRequests(enabledRequests);
-    }}
-    />
+    <div className="response-action text-right">
+      <InterceptAllButton
+      disabled={!enabledRequests.length}
+      handleCheckedRequests={() => {
+        return props.handleCheckedRequests(enabledRequests);
+      }}
+      />
+      <button
+        type="button"
+        className="btn btn-sm btn-primary btn-clear"
+        onClick={props.clearRequests}
+      >
+        CLEAR
+      </button>
+    </div>
+
     <ReactTable
       data={props.requests}
       columns={columns}
