@@ -1,9 +1,8 @@
-/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import * as React from "react";
 import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
-import {InterceptForm} from "./Intercept_Components";
-import {InterceptAllButton} from './InterceptAllButton'
+import {InterceptForm} from "./../components/Intercept_Components/index";
+import {InterceptAllButton} from './../components/InterceptAllButton'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;

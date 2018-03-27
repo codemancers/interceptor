@@ -1,6 +1,6 @@
 import * as React from "react";
 import {shallow} from "enzyme";
-import {Popup} from "./../popup";
+import {Popup} from "./../containers/popup";
 
 import * as MessageService from "../message_service";
 

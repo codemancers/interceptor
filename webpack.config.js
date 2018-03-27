@@ -6,10 +6,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   context: path.join(__dirname, "app"),
   entry: {
-    popup: "./app.tsx",
-    background: "./background.ts",
-    redux_bg: "./redux_bg.ts",
-    content: "./content.ts"
+    popup: "./containers/app.tsx",
+    background: "./background/background.ts",
+    redux_bg: "./background/redux_bg.ts",
+    content: "./content/content.ts"
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -39,7 +39,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
-      { from: "styles.css" },
+      { from: "styles/styles.css" },
       { from: "./lib/*" }
     ])
   ]

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {shallow} from "enzyme";
-import {InterceptTextBox} from "./../Intercept_Components/InterceptTextBox";
+import {InterceptTextBox} from "./../components/Intercept_Components/InterceptTextBox";
 
 const createTestProps = (props = {}) => ({
   // common props

@@ -1,4 +1,5 @@
-import { RequestObj } from "./request_list";
+/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
+import { RequestObj } from "./components/request_list";
 export type GenericCallback = (_: any) => void;
 
 // Outgoing

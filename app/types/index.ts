@@ -20,7 +20,7 @@ export interface PopUpState {
   enabled: boolean;
   errorMessage ?: string;
   requests: object;
-  tabUrl ?: string;
+  tabUrl : string;
   checkedReqs : object;
   responseText : object;
   statusCodes:object;
