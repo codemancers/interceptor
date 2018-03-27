@@ -20,9 +20,9 @@
   version "0.22.7"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.7.tgz#4a92eafedfb2b9f4437d3a4410006d81114c66ce"
 
-"@types/chrome@0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.46.tgz#f597623b2244c7484bbf59aceb9c8d16a39d4cd7"
+"@types/chrome@^0.0.63":
+  version "0.0.63"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.63.tgz#b86fc8c859ec6ae0bf929b4504d7ac47d579006d"
   dependencies:
     "@types/filesystem" "*"
 
@@ -30,7 +30,13 @@
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-0.0.32.tgz#449abcd9a826807811ef101e58df9f83cfc61713"
 
-"@types/enzyme@^3.1.8":
+"@types/enzyme-adapter-react-16@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.2.tgz#15ae37c64d6221a6f4b3a4aacc357cf773859de4"
+  dependencies:
+    "@types/enzyme" "*"
+
+"@types/enzyme@*", "@types/enzyme@^3.1.8":
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.1.9.tgz#fbd97f3beb7cad76fc9c6f04c97d77f4834522ef"
   dependencies:
@@ -72,9 +78,9 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react-table@^6.7.3":
-  version "6.7.3"
-  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-6.7.3.tgz#c594eefb0a749f0a0304894139bf712faa0fea1b"
+"@types/react-table@^6.7.8":
+  version "6.7.8"
+  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-6.7.8.tgz#698e672df1a157781531d13af8ff49b2af22b390"
   dependencies:
     "@types/react" "*"
 

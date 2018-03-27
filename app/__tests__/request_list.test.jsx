@@ -1,6 +1,6 @@
 import * as React from "react";
 import { shallow } from "enzyme";
-import RequestList from "./../request_list";
+import RequestList from "./../components/request_list";
 
 const commonProps = {
   handleIntercept: jest.fn(),

@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { createLogger } from 'redux-logger'
 import { Middleware } from 'react-redux/node_modules/redux';
 
-import {reducer}  from './modules/recordings';
+import {reducer}  from './../reducers/rootReducer';
 export interface PopUpInterface {
   enabled: boolean;
   errorMessage ?: string;

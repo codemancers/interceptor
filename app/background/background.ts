@@ -1,5 +1,4 @@
-/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
-import {RequestObj} from "./request_list";
+import {RequestObj} from "./../components/request_list"
 
 interface TabRecord {
   tabId: number;
@@ -22,7 +21,7 @@ class BackgroundWorker {
     //Send a message to content-script on when a page reloads
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       if(changeInfo.status === "complete"){
-        chrome.tabs.sendMessage(tab.id, {message : "PAGE_REFRESHED", tabId})
+        chrome.tabs.sendMessage(Number(tab.id), {message : "PAGE_REFRESHED", tabId})
       }
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
@@ -90,13 +89,13 @@ class BackgroundWorker {
   startTrackingRequests = () => {
     this.data[this.currentTab].enabled = true;
     chrome.webRequest.onBeforeRequest.addListener(
-      //For getting responses : use onHeadersReceived Event
+      //For getting responseHeaders : use onHeadersReceived Event
       this.callback,
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"]
       },
-      ["blocking"] // For response event use ["blocking", "responseHeaders"] filters and return {responseHeaders: details.responseHeaders}; to block and modify requests
+      ["blocking"]
     );
   };
 
