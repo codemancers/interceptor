@@ -108,10 +108,9 @@ const RequestList = (props: RequestObj) => {
       pageSize={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentRowSize : 10}
       onPageChange={changedPageNo => props.handlePaginationChange(changedPageNo, props.tabId, "currentPageNumber")}
       onPageSizeChange={changedRowSize => props.handlePaginationChange(changedRowSize, props.tabId, "currentRowSize")}
-      freezeWhenExpanded={true}
+      collapseOnDataChange={false}
       SubComponent={row => (
         <InterceptForm
-          freezeWhenExpanded={true}
           rowProps={row}
           handleStatusCodeChange={props.handleStatusCodeChange}
           handleRespTextChange={props.handleRespTextChange}
