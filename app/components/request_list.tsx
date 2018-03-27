@@ -39,7 +39,7 @@ const RequestList = (props: RequestObj) => {
       filterMethod: (filter, row) => row[filter.id] === filter.value,
       Filter: ({filter, onChange}) => (
         <select
-          onChange={event => props.handleRespTextChange(event.target.value)}
+          onChange={event => onChange(event.target.value)}
           style={{width: "100%"}}
           value={filter ? filter.value : ""}
         >
