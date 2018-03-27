@@ -9,15 +9,19 @@ export const InterceptTextBox = props => {
   const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
 
   return (
-    <div>
-      <textarea
-        name="responseText"
-        className="responseText"
-        defaultValue={responseTextValue}
-        //value={responseTextValue}
-        onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
-      />
-      <div>
+    <div className="grid-container form">
+      <div className="response">
+        <label htmlFor="">Response Text</label>
+        <textarea
+          name="responseText"
+          className="responseText"
+          defaultValue={responseTextValue}
+          //value={responseTextValue}
+          onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
+        />
+      </div>
+      <div className="status">
+        <label htmlFor="">Select Status</label>
         <select
           value={statusCodeValue}
           className="select-status"
@@ -31,8 +35,8 @@ export const InterceptTextBox = props => {
           <option value="300">300</option>
         </select>
       </div>
-
-      <div>
+      <div className="content">
+        <label htmlFor="">Content Type</label>
         <select
           value={contentTypeValue}
           className="content-type-select"

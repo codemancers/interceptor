@@ -168,3 +168,10 @@ label {
 .text-right {
   text-align: right;
 }
+.text-center {
+  text-align: center;
+}
+
+.form {
+  padding: 10px 75px 20px 34px;
+}

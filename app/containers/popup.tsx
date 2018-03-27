@@ -136,44 +136,41 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           </div>
         </header>
 
-        <div className="container">
+        <div>
           {this.props.errorMessage ? (
             <p className="popup-error-message popup-error"> {this.props.errorMessage} </p>
           ) : null}
-          <table>
-            <tr>
-              <th />
-              <th>Request URLs</th>
-              <th className="text-right">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary btn-clear"
-                  onClick={this.clearRequests}
-                >
-                  CLEAR
-                </button>
-              </th>
-            </tr>
-          </table>
-          {this.props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
-
-          <div className="scroll-container">
-            <RequestList
-              requests={this.props.requests}
-              handleCheckToggle={this.handleCheckToggle}
-              checkedReqs={this.props.checkedReqs}
-              handleCheckedRequests={this.handleCheckedRequests}
-              handleRespTextChange={this.handleRespTextChange}
-              handleStatusCodeChange={this.handleStatusCodeChange}
-              responseText={this.props.responseText}
-              statusCodes={this.props.statusCodes}
-              handleContentTypeChange={this.props.handleContentTypeChange}
-              contentType={this.props.contentType}
-              handlePaginationChange={this.props.handlePaginationChange}
-              PageDetails={this.props.PageDetails}
-              tabId={this.props.tabId}
-            />
+          <div className="text-right">
+            <button
+              type="button"
+              className="btn btn-sm btn-primary btn-clear"
+              onClick={this.clearRequests}
+            >
+              CLEAR
+            </button>
           </div>
+          {
+            this.props.interceptStatus &&
+            <div id="success-msg">
+              {this.props.interceptStatus}
+            </div>
+          }
+
+          <RequestList
+            requests={this.props.requests}
+            handleCheckToggle={this.handleCheckToggle}
+            checkedReqs={this.props.checkedReqs}
+            handleCheckedRequests={this.handleCheckedRequests}
+            handleRespTextChange={this.handleRespTextChange}
+            handleStatusCodeChange={this.handleStatusCodeChange}
+            responseText={this.props.responseText}
+            statusCodes={this.props.statusCodes}
+            handleContentTypeChange={this.props.handleContentTypeChange}
+            contentType={this.props.contentType}
+            handlePaginationChange={this.props.handlePaginationChange}
+            PageDetails={this.props.PageDetails}
+            tabId={this.props.tabId}
+          />
         </div>
       </div>
     );
