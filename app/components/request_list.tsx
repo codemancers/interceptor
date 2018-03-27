@@ -23,8 +23,7 @@ const RequestList = (props: RequestObj) => {
   const columns = [
     {
       Header: "Request URL",
-      className: "url",
-      accessor: "url",
+      Cell: ({original}) => <div className="url" title={original.url}>{original.url}</div>,
       filterable: true,
       filterMethod: (filter, rows) => {
         return matchSorter(rows, filter.value, {
