@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export const InterceptTextBox = props => {
-  const defaultResponseText = "{msg:hello}";
+  const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
   const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;

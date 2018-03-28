@@ -56,7 +56,7 @@ class Intercept {
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
       requestsToIntercept.forEach(req => {
-        if (!(responseField[req.requestId] && responseField[req.requestId].trim())) {
+        if (!(responseField[req.requestId])) {
           responseField[req.requestId] = defaultResponseValue;
         }
       });
@@ -67,7 +67,7 @@ class Intercept {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
-    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, `{msg : "hello"}`)
+    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, "")
     this.setDefaultValues(statusCodes,selectedReqs.requestsToIntercept, "200")
     this.setDefaultValues(contentType,selectedReqs.requestsToIntercept, "application/json")
 
