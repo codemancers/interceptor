@@ -56,7 +56,7 @@ class Intercept {
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
       requestsToIntercept.forEach(req => {
-        if (!(responseField[req.requestId] && responseField[req.requestId].trim())) {
+        if (!(responseField[req.requestId])) {
           responseField[req.requestId] = defaultResponseValue;
         }
       });
