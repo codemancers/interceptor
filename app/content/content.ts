@@ -101,6 +101,9 @@ class Intercept {
               }
              })
            })
+           if (window.interceptor) {
+            window.interceptor = null
+          }
          }
          window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
      })();`;
