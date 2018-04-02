@@ -102,10 +102,14 @@ const RequestList = (props: RequestObj) => {
         onClick={ () => props.disableInterceptor(props.tabId) }
       >
 <<<<<<< HEAD
+<<<<<<< HEAD
         DISABLE
 =======
         CLEAR
 >>>>>>> Add ability to un-mock responses
+=======
+        DISABLE
+>>>>>>> Rename button to 'DISABLE'
       </button>
     </div>
 
