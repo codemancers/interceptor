@@ -96,6 +96,13 @@ const RequestList = (props: RequestObj) => {
       >
         CLEAR
       </button>
+      <button
+        type="button"
+        className="btn btn-sm btn-primary"
+        onClick={ () => props.disableInterceptor(props.tabId) }
+      >
+        DISABLE
+      </button>
     </div>
 
     <ReactTable
