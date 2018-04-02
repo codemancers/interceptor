@@ -55,7 +55,19 @@ const RequestList = (props: RequestObj) => {
     },
     {
       id: "checkbox",
-      accessor: "",
+      accessor: "data",
+      Header : (data) => {
+          return <input type="checkbox" className="checkAll" onChange={e => {
+            data.data.map( (val, index) => {
+              if(e.target.checked){
+                props.handleCheckToggle(val._original.requestId, true)
+              }else{
+                props.handleCheckToggle(val._original.requestId, false)
+              }
+            })
+          }}/>
+        }
+          ,
       Cell: ({original}) => {
         return (
           <input
@@ -68,7 +80,6 @@ const RequestList = (props: RequestObj) => {
           />
         );
       },
-      Header: "Intercept",
       sortable: false,
       width: 75,
       className: 'text-center'
