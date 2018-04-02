@@ -1,5 +1,5 @@
 import {Store} from "react-chrome-redux";
-import {sendSuccessMessage} from "./../actions";
+import {sendMessageToUI} from "./../actions";
 import {GenericCallback} from "./../message_service";
 interface requestObject {
   url: string;
@@ -60,10 +60,17 @@ class Intercept {
     this.injectScripts(() => {
       this.runInterceptor(requestObj);
     });
+<<<<<<< HEAD
     if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
       this.store.dispatch(sendSuccessMessage("Interception Success!"));
     }else if(message === "DISABLE_INTERCEPTOR" ){
       this.store.dispatch(sendSuccessMessage("Interception Disabled!"));
+=======
+    if(selectedReqs.message === "INTERCEPT_CHECKED" || selectedReqs.message === "PAGE_REFRESHED"){
+      this.store.dispatch(sendMessageToUI("Interception Success!"));
+    }else if(selectedReqs.message === "DISABLE_INTERCEPTOR" ){
+      this.store.dispatch(sendMessageToUI("Interception Disabled!"));
+>>>>>>> Use better naming for message sending action creator
     }
   }
 
