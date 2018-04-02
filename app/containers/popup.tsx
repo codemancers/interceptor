@@ -98,6 +98,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
 
+  disableInterceptor =(tabId:number) => {
+    MessageService.disableInterceptor(tabId)
+  }
+
   render() {
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !this.props.enabled,
@@ -162,6 +166,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             PageDetails={this.props.PageDetails}
             tabId={this.props.tabId}
             clearRequests={this.clearRequests}
+            disableInterceptor={this.disableInterceptor}
           />
         </div>
       </div>

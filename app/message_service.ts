@@ -38,5 +38,8 @@ export function clearData(tabId: number) {
 export function interceptChecked(tabId:number, requests:Array<any>, responseText:Array<any>, statusCodes:Array<any>, contentType:Array<any>){
   chrome.tabs.sendMessage(tabId, {message: "INTERCEPT_CHECKED", requestsToIntercept:requests, responseText, statusCodes, contentType, tabId} )
 }
+export function disableInterceptor(tabId:number){
+  chrome.tabs.sendMessage(tabId, {message: "DISABLE_INTERCEPTOR"})
+}
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers
