@@ -100,7 +100,7 @@ const RequestList = (props: RequestObj) => {
         className="btn btn-sm btn-primary"
         onClick={ () => props.disableInterceptor(props.tabId) }
       >
-        CLEAR
+        DISABLE
       </button>
     </div>
 
