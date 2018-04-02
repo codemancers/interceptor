@@ -55,21 +55,16 @@ const RequestList = (props: RequestObj) => {
     },
     {
       id: "checkbox",
-      accessor: "data",
-      Header : (data) => {
-          return <input type="checkbox" className="checkAll" onChange={e => {
-            data.data.map( (val, index) => {
-              if(e.target.checked){
-                props.handleCheckToggle(val._original.requestId, true)
-              }else{
-                props.handleCheckToggle(val._original.requestId, false)
-              }
-            })
-          }}/>
+      Header : (data) =>
+      <input type="checkbox" className="checkAll" onChange={e =>
+          data.data.forEach( (val) => e.target.checked ?
+          props.handleCheckToggle(val._original.requestId, true) :
+          props.handleCheckToggle(val._original.requestId, false)
+          )
         }
-          ,
+       />,
+      accessor: "data",
       Cell: ({original}) => {
-        return (
           <input
             type="checkbox"
             className="checkbox"
@@ -78,7 +73,6 @@ const RequestList = (props: RequestObj) => {
               props.handleCheckToggle(original.requestId, e.target.checked);
             }}
           />
-        );
       },
       sortable: false,
       width: 75,
