@@ -34,6 +34,7 @@ class Intercept {
       });
     });
   };
+
   interceptSelected = (message:string) => {
     const presentState = this.store.getState();
     const checkedReqs = presentState.requests.filter(req => {
@@ -60,19 +61,20 @@ class Intercept {
     this.injectScripts(() => {
       this.runInterceptor(requestObj);
     });
-<<<<<<< HEAD
-    if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
-      this.store.dispatch(sendSuccessMessage("Interception Success!"));
-    }else if(message === "DISABLE_INTERCEPTOR" ){
-      this.store.dispatch(sendSuccessMessage("Interception Disabled!"));
-=======
-    if(selectedReqs.message === "INTERCEPT_CHECKED" || selectedReqs.message === "PAGE_REFRESHED"){
-      this.store.dispatch(sendMessageToUI("Interception Success!"));
-    }else if(selectedReqs.message === "DISABLE_INTERCEPTOR" ){
-      this.store.dispatch(sendMessageToUI("Interception Disabled!"));
->>>>>>> Use better naming for message sending action creator
+
+    if(message !== "DISABLE_INTERCEPTOR"){
+
     }
+    this.injectScripts(() => {
+      this.runInterceptor(requestObj);
+    });
+    if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
+      this.store.dispatch(sendMessageToUI("Interception Success!"));
+    }else if(message === "DISABLE_INTERCEPTOR" ){
+      this.store.dispatch(sendMessageToUI("Interception Disabled!"));
   }
+}
+
 
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
