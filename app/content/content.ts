@@ -77,6 +77,12 @@ class Intercept {
          let elemToRemove = document.querySelector(querySelector);
          elemToRemove.parentNode.removeChild(elemToRemove);
        };
+       function matchUrl(url, requestUrl, domain){
+          if (url.indexOf('://') < 0) {
+            return requestUrl.replace(domain, "")
+           }
+           return requestUrl;
+       }
        while(document.querySelectorAll("#tmpScript-2").length){
          remove("#tmpScript-2");
        }
@@ -90,13 +96,15 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               return (request.url === url && request.tabId === requestArray.tabId)
+               const matchedUrl = matchUrl(url, request.url, request.initiator)
+               return (matchedUrl === url && request.tabId === requestArray.tabId && request.method === method)
              })
              return !result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
-              if(xhr.url === request.url){
+               const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
+              if(xhr.url === matchedUrl){
                 xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
               }
              })
