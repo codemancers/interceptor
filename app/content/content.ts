@@ -104,7 +104,7 @@ class Intercept {
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
                const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
-              if(xhr.url === matchedUrl){
+              if(xhr.url === matchedUrl && xhr.method === request.method){
                 xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
               }
              })
