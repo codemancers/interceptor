@@ -67,11 +67,11 @@ class Intercept {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
-    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, "")
+    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, " ")
     this.setDefaultValues(statusCodes,selectedReqs.requestsToIntercept, "200")
     this.setDefaultValues(contentType,selectedReqs.requestsToIntercept, "application/json")
 
-    var selectedInterceptCode = `
+    var selectedInterceptCode =`
      (function(){
        function remove(querySelector) {
          let elemToRemove = document.querySelector(querySelector);
@@ -96,17 +96,30 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               const matchedUrl = matchUrl(url, request.url, request.initiator)
-               return (matchedUrl === url && request.tabId === requestArray.tabId && request.method === method)
+               console.log(url, request.url)
+               const incomingUrl = url
+               const requestUrl = new URL(request.url)
+               const host = requestUrl.host
+               //const urlpathName = requestUrl.pathname;
+               console.log("INCLUDES", request.url.includes(url))
+               if(!request.url.includes(url)){
+                return true
+               }
              })
-             return !result
+             console.log(!result)
+             return result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
-               const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
-              if(xhr.url === matchedUrl && xhr.method === request.method){
-                xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
-              }
+               console.log("IN RESPOND")
+               //const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
+                if((request.url.includes(xhr.url)) && xhr.method === request.method){
+                  console.log("THIS URL", xhr.url, "IN RESPOND:::MATCHES?", request.url)
+                  console.log("INTERCEPT STATUSCODE",Number(requestArray.statusCodes[request.requestId]) )
+                  console.log("INTERCEPT CONTENT_Type", requestArray.contentType[request.requestId])
+                  console.log("RESPONSE TEXT", requestArray.responseText[request.requestId].toString())
+                  xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+                }
              })
            })
            if (window.interceptor) {
@@ -114,7 +127,7 @@ class Intercept {
           }
          }
          window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
-     })();`;
+     })();`
 
     let script = document.createElement("script");
     script.defer = true;
@@ -133,7 +146,19 @@ class Intercept {
     if(!document.getElementById("interceptor-sinon")){
       (document.head || document.documentElement).appendChild(sinonScript);
     }
+    console.log("INJECTED SINON")
+    // let searchScript = document.createElement("script");
+    // searchScript.defer = false;
+    // searchScript.src = chrome.extension.getURL("./lib/url-search-params.js");
+    // searchScript.type="text/javascript";
+    // searchScript.id="interceptor-search";
+    // if(!document.getElementById("interceptor-search")){
+    //   (document.head || document.documentElement).appendChild(searchScript);
+    // }
+    // searchScript.onload && sinonScript.onload = callback;
+    // console.log("INJECTED SEARCH")
     sinonScript.onload = callback;
   };
+
 }
 new Intercept().startMessageListener();
