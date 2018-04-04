@@ -100,14 +100,14 @@ class Intercept {
                const incomingUrl = url
                const requestUrl = new URL(request.url)
                const host = requestUrl.host
-               //const urlpathName = requestUrl.pathname;
-               console.log("INCLUDES", request.url.includes(url))
-               if(!request.url.includes(url)){
+               const urlpathName = requestUrl.pathname;
+               console.log("INCLUDES", request.url.includes(requestUrl.pathname))
+               if(request.url.includes(url)){
                 return true
                }
              })
              console.log(!result)
-             return result
+             return !result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
