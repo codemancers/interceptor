@@ -1,4 +1,3 @@
-/// <reference path="../node_modules/@types/chrome/chrome-app.d.ts" />
 import { RequestObj } from "./components/request_list";
 export type GenericCallback = (_: any) => void;
 
@@ -35,8 +34,8 @@ export function getCount(tabId: number, callback: GenericCallback) {
 export function clearData(tabId: number) {
   chrome.runtime.sendMessage({ message: "CLEAR_DATA", tabId });
 }
-export function interceptChecked(tabId:number, requests:Array<any>, responseText:Array<any>, statusCodes:Array<any>, contentType:Array<any>){
-  chrome.tabs.sendMessage(tabId, {message: "INTERCEPT_CHECKED", requestsToIntercept:requests, responseText, statusCodes, contentType, tabId} )
+export function interceptChecked(tabId:number, requests:Array<any>){
+  chrome.tabs.sendMessage(tabId, {message: "INTERCEPT_CHECKED", requestsToIntercept:requests, tabId} )
 }
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers

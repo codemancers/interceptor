@@ -85,13 +85,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleCheckedRequests = (requests: Array<object>) => {
-    MessageService.interceptChecked(
-      this.props.tabId,
-      requests,
-      this.props.responseText,
-      this.props.statusCodes,
-      this.props.contentType
-    );
+    MessageService.interceptChecked(this.props.tabId, requests);
   };
 
   handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string) => {

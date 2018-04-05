@@ -25,7 +25,19 @@ class Intercept {
     this.store.ready().then( () => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
         if (request.message === "INTERCEPT_CHECKED") {
-          this.interceptSelected(request);
+          const presentState = this.store.getState();
+          const checkedReqs = presentState.requests.filter(req => {
+            return presentState.checkedReqs[req.requestId] && request.tabId;
+          });
+          const requestObj = {
+            message: "INTERCEPT_CHECKED",
+            requestsToIntercept: checkedReqs,
+            responseText: presentState.responseText,
+            statusCodes: presentState.statusCodes,
+            contentType: presentState.contentType,
+            tabId: request.tabId
+          };
+          this.interceptSelected(requestObj);
         } else if (request.message === "PAGE_REFRESHED") {
           const presentState = this.store.getState();
           const checkedReqs = presentState.requests.filter(req => {
@@ -67,7 +79,7 @@ class Intercept {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
-    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, " ")
+    this.setDefaultValues(responseTexts,selectedReqs.requestsToIntercept, "")
     this.setDefaultValues(statusCodes,selectedReqs.requestsToIntercept, "200")
     this.setDefaultValues(contentType,selectedReqs.requestsToIntercept, "application/json")
 
@@ -85,7 +97,6 @@ class Intercept {
        }
       function matchUrl(urlfromSinon, urlFromArray){
           const aTag = document.createElement('a');
-          const sortedParams = "";
           aTag.href = urlfromSinon
           requestUrl = new URL(urlFromArray)
           aTagSearchParams = new URLSearchParams(aTag.search)
@@ -136,6 +147,8 @@ class Intercept {
     sinonScript.id="interceptor-sinon";
     if(!document.getElementById("interceptor-sinon")){
       (document.head || document.documentElement).appendChild(sinonScript);
+    } else {
+      callback();
     }
     sinonScript.onload = callback;
   };
