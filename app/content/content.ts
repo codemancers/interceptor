@@ -77,18 +77,24 @@ class Intercept {
          let elemToRemove = document.querySelector(querySelector);
          elemToRemove.parentNode.removeChild(elemToRemove);
        };
-       function matchUrl(url, requestUrl, domain){
-          if (url.indexOf('://') < 0) {
-            return requestUrl.replace(domain, "")
-           }
-           return requestUrl;
-       }
        while(document.querySelectorAll("#tmpScript-2").length){
          remove("#tmpScript-2");
        }
        if (window.interceptor) {
          window.interceptor.server.xhr.filters = [];
        }
+      function matchUrl(urlfromSinon, urlFromArray){
+          const aTag = document.createElement('a');
+          const sortedParams = "";
+          aTag.href = urlfromSinon
+          requestUrl = new URL(urlFromArray)
+          aTagSearchParams = new URLSearchParams(aTag.search)
+          reqUrlParams = new URLSearchParams(requestUrl.search)
+          aTagSearchParams.sort();
+          reqUrlParams.sort()
+          return (aTag.hostname === requestUrl.hostname && aTag.pathname === requestUrl.pathname && aTagSearchParams.toString() === reqUrlParams.toString())
+      }
+
        function sinonHandler(requestArray) {
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
@@ -96,28 +102,13 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               console.log(url, request.url)
-               const incomingUrl = url
-               const requestUrl = new URL(request.url)
-               const host = requestUrl.host
-               const urlpathName = requestUrl.pathname;
-               console.log("INCLUDES", request.url.includes(requestUrl.pathname))
-               if(request.url.includes(url)){
-                return true
-               }
+               return matchUrl(url, request.url)
              })
-             console.log(!result)
              return !result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
-               console.log("IN RESPOND")
-               //const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
-                if((request.url.includes(xhr.url)) && xhr.method === request.method){
-                  console.log("THIS URL", xhr.url, "IN RESPOND:::MATCHES?", request.url)
-                  console.log("INTERCEPT STATUSCODE",Number(requestArray.statusCodes[request.requestId]) )
-                  console.log("INTERCEPT CONTENT_Type", requestArray.contentType[request.requestId])
-                  console.log("RESPONSE TEXT", requestArray.responseText[request.requestId].toString())
+                if( matchUrl(xhr.url, request.url ) && xhr.method === request.method){
                   xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
                 }
              })
@@ -146,17 +137,6 @@ class Intercept {
     if(!document.getElementById("interceptor-sinon")){
       (document.head || document.documentElement).appendChild(sinonScript);
     }
-    console.log("INJECTED SINON")
-    // let searchScript = document.createElement("script");
-    // searchScript.defer = false;
-    // searchScript.src = chrome.extension.getURL("./lib/url-search-params.js");
-    // searchScript.type="text/javascript";
-    // searchScript.id="interceptor-search";
-    // if(!document.getElementById("interceptor-search")){
-    //   (document.head || document.documentElement).appendChild(searchScript);
-    // }
-    // searchScript.onload && sinonScript.onload = callback;
-    // console.log("INJECTED SEARCH")
     sinonScript.onload = callback;
   };
 
