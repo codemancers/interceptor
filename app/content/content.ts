@@ -25,31 +25,32 @@ class Intercept {
     this.store.ready().then( () => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
         if (request.message === "INTERCEPT_CHECKED") {
-          this.interceptSelected(request);
+          this.interceptSelected("INTERCEPT_CHECKED");
         } else if (request.message === "PAGE_REFRESHED") {
-          const presentState = this.store.getState();
-          const checkedReqs = presentState.requests.filter(req => {
-            return presentState.checkedReqs[req.requestId] && request.tabId;
-          });
-          const requestObj = {
-            message: "INTERCEPT_ON_REFRESH",
-            requestsToIntercept: checkedReqs,
-            responseText: presentState.responseText,
-            statusCodes: presentState.statusCodes,
-            contentType: presentState.contentType,
-            tabId: request.tabId
-          };
-          this.interceptSelected(requestObj);
+          this.interceptSelected("PAGE_REFRESHED");
         }
       });
     })
   };
-  interceptSelected = (selectedReqs: Array<requestObject>) => {
-    if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
+  interceptSelected = (message:string) => {
+    const presentState = this.store.getState();
+    const checkedReqs = presentState.requests.filter(req => {
+      return presentState.checkedReqs[req.requestId] && presentState.tabId;
+    });
+    const requestObj = {
+      message: message,
+      requestsToIntercept: checkedReqs,
+      responseText: presentState.responseText,
+      statusCodes: presentState.statusCodes,
+      contentType: presentState.contentType,
+      tabId: presentState.tabId
+    };
+
+    if (requestObj.requestsToIntercept.length < 1 || !requestObj.tabId || requestObj.requestsToIntercept.find( (req) => req.tabId !== requestObj.tabId )){
       return;
     }
     this.injectScripts(() => {
-      this.runInterceptor(selectedReqs);
+      this.runInterceptor(requestObj);
     });
     this.store.dispatch(sendSuccessMessage("Interception Success!"))
   };
@@ -71,24 +72,29 @@ class Intercept {
     this.setDefaultValues(statusCodes,selectedReqs.requestsToIntercept, "200")
     this.setDefaultValues(contentType,selectedReqs.requestsToIntercept, "application/json")
 
-    var selectedInterceptCode = `
+    var selectedInterceptCode =`
      (function(){
        function remove(querySelector) {
          let elemToRemove = document.querySelector(querySelector);
          elemToRemove.parentNode.removeChild(elemToRemove);
        };
-       function matchUrl(url, requestUrl, domain){
-          if (url.indexOf('://') < 0) {
-            return requestUrl.replace(domain, "")
-           }
-           return requestUrl;
-       }
        while(document.querySelectorAll("#tmpScript-2").length){
          remove("#tmpScript-2");
        }
        if (window.interceptor) {
          window.interceptor.server.xhr.filters = [];
        }
+      function matchUrl(urlfromSinon, urlFromArray){
+          const aTag = document.createElement('a');
+          aTag.href = urlfromSinon
+          requestUrl = new URL(urlFromArray)
+          aTagSearchParams = new URLSearchParams(aTag.search)
+          reqUrlParams = new URLSearchParams(requestUrl.search)
+          aTagSearchParams.sort();
+          reqUrlParams.sort()
+          return (aTag.hostname === requestUrl.hostname && aTag.pathname === requestUrl.pathname && aTagSearchParams.toString() === reqUrlParams.toString())
+      }
+
        function sinonHandler(requestArray) {
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
@@ -96,17 +102,15 @@ class Intercept {
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
-               const matchedUrl = matchUrl(url, request.url, request.initiator)
-               return (matchedUrl === url && request.tabId === requestArray.tabId && request.method === method)
+               return matchUrl(url, request.url)
              })
              return !result
            });
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
-               const matchedUrl = matchUrl(xhr.url, request.url, request.initiator)
-              if(xhr.url === matchedUrl && xhr.method === request.method){
-                xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
-              }
+                if( matchUrl(xhr.url, request.url ) && xhr.method === request.method){
+                  xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+                }
              })
            })
            if (window.interceptor) {
@@ -114,7 +118,7 @@ class Intercept {
           }
          }
          window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
-     })();`;
+     })();`
 
     let script = document.createElement("script");
     script.defer = true;
@@ -132,8 +136,11 @@ class Intercept {
     sinonScript.id="interceptor-sinon";
     if(!document.getElementById("interceptor-sinon")){
       (document.head || document.documentElement).appendChild(sinonScript);
+    } else {
+      callback();
     }
     sinonScript.onload = callback;
   };
+
 }
 new Intercept().startMessageListener();
