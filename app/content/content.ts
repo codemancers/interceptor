@@ -25,43 +25,32 @@ class Intercept {
     this.store.ready().then( () => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
         if (request.message === "INTERCEPT_CHECKED") {
-          const presentState = this.store.getState();
-          const checkedReqs = presentState.requests.filter(req => {
-            return presentState.checkedReqs[req.requestId] && request.tabId;
-          });
-          const requestObj = {
-            message: "INTERCEPT_CHECKED",
-            requestsToIntercept: checkedReqs,
-            responseText: presentState.responseText,
-            statusCodes: presentState.statusCodes,
-            contentType: presentState.contentType,
-            tabId: request.tabId
-          };
-          this.interceptSelected(requestObj);
+          this.interceptSelected("INTERCEPT_CHECKED");
         } else if (request.message === "PAGE_REFRESHED") {
-          const presentState = this.store.getState();
-          const checkedReqs = presentState.requests.filter(req => {
-            return presentState.checkedReqs[req.requestId] && request.tabId;
-          });
-          const requestObj = {
-            message: "INTERCEPT_ON_REFRESH",
-            requestsToIntercept: checkedReqs,
-            responseText: presentState.responseText,
-            statusCodes: presentState.statusCodes,
-            contentType: presentState.contentType,
-            tabId: request.tabId
-          };
-          this.interceptSelected(requestObj);
+          this.interceptSelected("PAGE_REFRESHED");
         }
       });
     })
   };
-  interceptSelected = (selectedReqs: Array<requestObject>) => {
-    if (selectedReqs.requestsToIntercept.length < 1 || !selectedReqs.tabId || selectedReqs.requestsToIntercept.find( (req) => req.tabId !== selectedReqs.tabId )){
+  interceptSelected = (message:string) => {
+    const presentState = this.store.getState();
+    const checkedReqs = presentState.requests.filter(req => {
+      return presentState.checkedReqs[req.requestId] && presentState.tabId;
+    });
+    const requestObj = {
+      message: message,
+      requestsToIntercept: checkedReqs,
+      responseText: presentState.responseText,
+      statusCodes: presentState.statusCodes,
+      contentType: presentState.contentType,
+      tabId: presentState.tabId
+    };
+
+    if (requestObj.requestsToIntercept.length < 1 || !requestObj.tabId || requestObj.requestsToIntercept.find( (req) => req.tabId !== requestObj.tabId )){
       return;
     }
     this.injectScripts(() => {
-      this.runInterceptor(selectedReqs);
+      this.runInterceptor(requestObj);
     });
     this.store.dispatch(sendSuccessMessage("Interception Success!"))
   };
