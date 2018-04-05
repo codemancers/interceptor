@@ -101,7 +101,6 @@ const RequestList = (props: RequestObj) => {
     <ReactTable
       data={props.requests}
       columns={columns}
-      resizable={false}
       showPagination={true}
       showPaginationTop={false}
       showPaginationBottom={true}
