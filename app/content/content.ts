@@ -28,6 +28,8 @@ class Intercept {
           this.interceptSelected("INTERCEPT_CHECKED");
         } else if (request.message === "PAGE_REFRESHED") {
           this.interceptSelected("PAGE_REFRESHED");
+        }else if(request.message === "DISABLE_INTERCEPTOR"){
+          this.interceptSelected("DISABLE_INTERCEPTOR");
         }
       });
     });
@@ -46,14 +48,13 @@ class Intercept {
       contentType: presentState.contentType,
       tabId: presentState.tabId
     };
-
+    if(message !== "DISABLE_INTERCEPTOR"){
     if (requestObj.requestsToIntercept.length < 1 || !requestObj.tabId || requestObj.requestsToIntercept.find( (req) => req.tabId !== requestObj.tabId )){
       return;
     }
-    if(message !== "DISABLE_INTERCEPTOR"){
-
-    }
+  }
     this.injectScripts(() => {
+      console.log(requestObj)
       this.runInterceptor(requestObj);
     });
     if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
