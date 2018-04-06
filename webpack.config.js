@@ -14,7 +14,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "[name].js",
+    filename: "js/[name].js",
     crossOriginLoading: "anonymous"
   },
   devtool: "source-map",
@@ -36,7 +36,7 @@ module.exports = {
         NODE_ENV: `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("common.js", ["popup"], "content.js"),
+    new CommonsChunkPlugin("js/common.js", ["popup"], "content.js"),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
