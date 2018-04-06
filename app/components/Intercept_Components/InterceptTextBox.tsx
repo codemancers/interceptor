@@ -10,6 +10,13 @@ export const InterceptTextBox = props => {
 
   return (
     <div className="grid-container form">
+      <div className="full-url">
+        <label htmlFor="">URL</label>
+        <a
+          href={props.rowProps.checkbox.url}
+          className="urlText"
+        >{props.rowProps.checkbox.url}</a>
+      </div>
       <div className="response">
         <label htmlFor="">Response Text</label>
         <textarea
