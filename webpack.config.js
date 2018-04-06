@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
@@ -36,7 +35,6 @@ module.exports = {
         NODE_ENV: `"${process.env.NODE_ENV}"`
       }
     }),
-    new CommonsChunkPlugin("js/common.js", ["popup"], "content.js"),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
