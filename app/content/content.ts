@@ -28,14 +28,13 @@ class Intercept {
           this.interceptSelected("INTERCEPT_CHECKED");
         } else if (request.message === "PAGE_REFRESHED") {
           this.interceptSelected("PAGE_REFRESHED");
-        }else if(request.message === "DISABLE_INTERCEPTOR"){
+        } else if (request.message === "DISABLE_INTERCEPTOR") {
           this.interceptSelected("DISABLE_INTERCEPTOR");
         }
       });
     });
   };
-
-  interceptSelected = (message:string) => {
+  interceptSelected = (message: string) => {
     const presentState = this.store.getState();
     const checkedReqs = presentState.requests.filter(req => {
       return presentState.checkedReqs[req.requestId] && presentState.tabId;
@@ -48,18 +47,20 @@ class Intercept {
       contentType: presentState.contentType,
       tabId: presentState.tabId
     };
-    if(message !== "DISABLE_INTERCEPTOR"){
-    if (requestObj.requestsToIntercept.length < 1 || !requestObj.tabId || requestObj.requestsToIntercept.find( (req) => req.tabId !== requestObj.tabId )){
+
+    if (
+      requestObj.requestsToIntercept.length < 1 ||
+      !requestObj.tabId ||
+      requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
+    ) {
       return;
     }
-  }
     this.injectScripts(() => {
-      console.log(requestObj)
       this.runInterceptor(requestObj);
     });
-    if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
+    if (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") {
       this.store.dispatch(sendSuccessMessage("Interception Success!"));
-    }else if(message === "DISABLE_INTERCEPTOR" ){
+    } else if (message === "DISABLE_INTERCEPTOR") {
       this.store.dispatch(sendSuccessMessage("Interception Disabled!"));
     }
   };
@@ -83,7 +84,7 @@ class Intercept {
     this.setDefaultValues(statusCodes, selectedReqs.requestsToIntercept, "200");
     this.setDefaultValues(contentType, selectedReqs.requestsToIntercept, "application/json");
 
-    var selectedInterceptCode =`
+    var selectedInterceptCode = `
      (function(){
        function remove(querySelector) {
          let elemToRemove = document.querySelector(querySelector);
@@ -128,16 +129,17 @@ class Intercept {
             window.interceptor = null
           }
          }
-          if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(selectedReqs.message)} === "PAGE_REFRESHED")){
-            window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
+         if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(
+      selectedReqs.message
+    )} === "PAGE_REFRESHED")){
+          window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
+        }
+        else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
+          if(window.interceptor.server){
+            window.interceptor.server.restore();
           }
-          else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
-            if(window.interceptor.server){
-              window.interceptor.server.restore()
-            }
-          }
-
-     })();`
+        }
+     })();`;
 
     let script = document.createElement("script");
     script.defer = true;
@@ -161,6 +163,5 @@ class Intercept {
     sinonScript.onload = callback;
     sinonScript.parentNode.removeChild(sinonScript);
   };
-
 }
 new Intercept().startMessageListener();
