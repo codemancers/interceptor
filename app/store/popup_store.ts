@@ -8,18 +8,20 @@ export interface PopUpInterface {
   errorMessage ?: string;
   requests?: Array<Object>;
 }
-
+let enhancer:any;
+if (process.env.NODE_ENV !== 'production') {
 const logger:Middleware = createLogger();
 
 const middlewares = applyMiddleware(logger);
-const enhancer = compose(
+enhancer = compose(
   middlewares
 );
-
-export default function (initalState: PopUpInterface ) {
-  return createStore(reducer , initalState, enhancer);
 }
 
-
-
-
+export default function (initalState: PopUpInterface ) {
+  if(enhancer){
+    return createStore(reducer , initalState, enhancer)
+  }else{
+    return createStore(reducer , initalState)
+  }
+}
