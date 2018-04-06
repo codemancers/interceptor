@@ -28,14 +28,13 @@ class Intercept {
           this.interceptSelected("INTERCEPT_CHECKED");
         } else if (request.message === "PAGE_REFRESHED") {
           this.interceptSelected("PAGE_REFRESHED");
-        }else if(request.message === "DISABLE_INTERCEPTOR"){
+        } else if (request.message === "DISABLE_INTERCEPTOR") {
           this.interceptSelected("DISABLE_INTERCEPTOR");
         }
       });
     });
   };
-
-  interceptSelected = (message:string) => {
+  interceptSelected = (message: string) => {
     const presentState = this.store.getState();
     const checkedReqs = presentState.requests.filter(req => {
       return presentState.checkedReqs[req.requestId] && presentState.tabId;
@@ -61,21 +60,12 @@ class Intercept {
     this.injectScripts(() => {
       this.runInterceptor(requestObj);
     });
-
-    if(message !== "DISABLE_INTERCEPTOR"){
-
-    }
-    this.injectScripts(() => {
-      this.runInterceptor(requestObj);
-    });
-    if(message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED"){
+    if (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") {
       this.store.dispatch(sendMessageToUI("Interception Success!"));
-    }else if(message === "DISABLE_INTERCEPTOR" ){
+    } else if (message === "DISABLE_INTERCEPTOR") {
       this.store.dispatch(sendMessageToUI("Interception Disabled!"));
-  }
-}
-
-
+    }
+  };
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
     if(requestsToIntercept){
@@ -141,16 +131,17 @@ class Intercept {
             window.interceptor = null
           }
          }
-          if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(selectedReqs.message)} === "PAGE_REFRESHED")){
-            window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
+         if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(
+      selectedReqs.message
+    )} === "PAGE_REFRESHED")){
+          window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
+        }
+        else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
+          if(window.interceptor.server){
+            window.interceptor.server.restore();
           }
-          else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
-            if(window.interceptor.server){
-              window.interceptor.server.restore()
-            }
-          }
-
-     })();`
+        }
+     })();`;
 
     let script = document.createElement("script");
     script.defer = true;
@@ -174,6 +165,5 @@ class Intercept {
     sinonScript.onload = callback;
     sinonScript.parentNode.removeChild(sinonScript);
   };
-
 }
 new Intercept().startMessageListener();
