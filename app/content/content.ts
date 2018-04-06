@@ -25,19 +25,17 @@ class Intercept {
     this.store.ready().then(() => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
         if (request.message === "INTERCEPT_CHECKED") {
-          this.interceptSelected("INTERCEPT_CHECKED");
+          this.interceptSelected("INTERCEPT_CHECKED",request.tabId);
         } else if (request.message === "PAGE_REFRESHED") {
-          this.interceptSelected("PAGE_REFRESHED");
-        } else if (request.message === "DISABLE_INTERCEPTOR") {
-          this.interceptSelected("DISABLE_INTERCEPTOR");
+          this.interceptSelected("PAGE_REFRESHED",request.tabId);
         }
       });
     });
   };
-  interceptSelected = (message: string) => {
+  interceptSelected = (message:string, tabId:number) => {
     const presentState = this.store.getState();
     const checkedReqs = presentState.requests.filter(req => {
-      return presentState.checkedReqs[req.requestId] && presentState.tabId;
+      return presentState.checkedReqs[req.requestId] && tabId;
     });
     const requestObj = {
       message: message,
@@ -45,7 +43,7 @@ class Intercept {
       responseText: presentState.responseText,
       statusCodes: presentState.statusCodes,
       contentType: presentState.contentType,
-      tabId: presentState.tabId
+      tabId: tabId
     };
 
     if(requestObj.message !== "DISABLE_INTERCEPTOR"){
