@@ -1,6 +1,6 @@
 # Interceptor
 
-A chrome extension that mocks AJAX request at the browser level so you
+A browser extension that mocks AJAX request at the browser level so you
 can run front ends without really starting a backend server.
 
 ## Development
