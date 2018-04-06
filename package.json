@@ -41,7 +41,7 @@
     "build": "./build",
     "watch": "webpack --progress --colors --watch",
     "test": "jest",
-    "test -watch": "jest --watch"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@types/chrome": "^0.0.63",

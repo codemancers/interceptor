@@ -1,7 +1,7 @@
 {
   "name": "Interceptor",
   "description": "Run web clients without backends by mocking HTTP requests",
-  "version": "0.1",
+  "version": "0.0.1",
   "manifest_version": 2,
   "icons": {
     "16":"images/icon-16.png",
@@ -9,7 +9,7 @@
     "128":"images/icon-128.png"
   },
   "background": {
-    "scripts": ["background.js", "./redux_bg.js"]
+    "scripts": ["js/background.js", "js/redux_bg.js"]
   },
   "content_scripts": [
     {
