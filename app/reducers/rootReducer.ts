@@ -60,7 +60,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
           }
         }
       };
-      case actionType.UPDATE_SUCCESS_MESSAGE:{
+      case actionType.UPDATE_MESSAGE:{
         return {...state, interceptStatus : action.message }
       }
     default:
