@@ -1,7 +1,7 @@
 {
   "name": "Interceptor",
   "description": "Run web clients without backends by mocking HTTP requests",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "icons": {
     "16":"images/icon-16.png",
