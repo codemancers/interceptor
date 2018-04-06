@@ -184,3 +184,6 @@ label {
 .response-action {
   margin: 10px 15px;
 }
+.responseText{
+  font-family: "Courier New", Courier, monospace;
+}
