@@ -41,5 +41,9 @@ Henceforth the same AJAX request is requested by the browser, the browser is giv
 * ~~Mocked requests should hit a sinon fakeServer.~~
 * User should be able to disable/enable mocking for a page without clearing persisted settings for the URL.
 
+## License
+
+MIT
+
 [content-type]: https://www.w3.org/Protocols/rfc1341/4_Content-Type.html
 [status-code]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
