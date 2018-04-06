@@ -15,18 +15,21 @@ $ npm run watch
 
 Once you start listening, it shows the count of total AJAX requests in a small badge and list of incoming `XHR` requests
 in the popup like this:
-![Interceptor extension popup showing a list of AJAX requests][interceptor-ui]
+
+<img src="https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/interceptor_ui.png" alt="Interceptor extension popup showing a list of AJAX requests">
 
 You can click the small arrow beside the URL and specify a response to mock the next time the same request comes in as below:
-![Specify mock responses using Interceptor as shown][interceptor-textfields]
+
+<img src="https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/interceptor_textfields.png" alt="Specify mock responses using Interceptor as shown">
 
 You can specify the [Content-Type header][content-type] field and HTTP response [status code][status-code] through the dropdown available.
 
 Once the above fields are filled and checkboxes checked, click the `INTERCEPT` button. If the interception is successfull, it shows a success message as below:
-![Success message shown by Interceptor upon sucessful interception][intercept-success]
+
+<img src="https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/intercept_success.png" alt="Success message shown by Interceptor upon sucessful interception">
 
 
-Henceforth the same AJAX request is requested by the browser, the browser is given a fake/mock response instead of the real one. 
+Henceforth the same AJAX request is requested by the browser, the browser is given a fake/mock response instead of the real one.
 
 ## TODO
 
@@ -40,6 +43,3 @@ Henceforth the same AJAX request is requested by the browser, the browser is giv
 
 [content-type]: https://www.w3.org/Protocols/rfc1341/4_Content-Type.html
 [status-code]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-[interceptor-ui]: https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/interceptor_ui.png
-[interceptor-textfields]: https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/interceptor_textfields.png
-[intercept-success]: https://raw.githubusercontent.com/code-mancers/interceptor/Update-readme/images/intercept_success.png
