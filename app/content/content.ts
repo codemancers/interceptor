@@ -15,7 +15,7 @@ interface BgStore {
   dispatch: any;
 }
 class Intercept {
-  store: BgStore;
+  store:BgStore
   constructor() {
     this.store = new Store({
       portName: "INTERCEPTOR"
@@ -24,11 +24,7 @@ class Intercept {
   startMessageListener = () => {
     this.store.ready().then(() => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
-        if (request.message === "INTERCEPT_CHECKED") {
-          this.interceptSelected("INTERCEPT_CHECKED",request.tabId);
-        } else if (request.message === "PAGE_REFRESHED") {
-          this.interceptSelected("PAGE_REFRESHED",request.tabId);
-        }
+          this.interceptSelected(request.message,request.tabId);
       });
     });
   };
@@ -45,8 +41,6 @@ class Intercept {
       contentType: presentState.contentType,
       tabId: tabId
     };
-
-    if(requestObj.message !== "DISABLE_INTERCEPTOR"){
     if (
       requestObj.requestsToIntercept.length < 1 ||
       !requestObj.tabId ||
@@ -54,7 +48,6 @@ class Intercept {
     ) {
         return;
     }
-  }
     this.injectScripts(() => {
       this.runInterceptor(requestObj);
     });
@@ -66,17 +59,15 @@ class Intercept {
   };
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
-    if(requestsToIntercept){
     requestsToIntercept.forEach(req => {
-      if (!responseField[req.requestId]) {
+        if (!(responseField[req.requestId])) {
         responseField[req.requestId] = defaultResponseValue;
       }
     });
     return responseField;
   }
-  };
 
-  runInterceptor = selectedReqs => {
+  runInterceptor  = (selectedReqs) => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -111,6 +102,9 @@ class Intercept {
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
            this.server.xhr.useFilters = true;
+           if(requestArray.message === "DISABLE_INTERCEPTOR"){
+            this.server.restore();
+          }
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
              const result = requestArray.requestsToIntercept.find((request) => {
@@ -129,16 +123,7 @@ class Intercept {
             window.interceptor = null
           }
          }
-         if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(
-      selectedReqs.message
-    )} === "PAGE_REFRESHED")){
           window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
-        }
-        else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
-          if(window.interceptor.server){
-            window.interceptor.server.restore();
-          }
-        }
      })();`;
 
     let script = document.createElement("script");
@@ -147,7 +132,7 @@ class Intercept {
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
-  };
+    }
 
   injectScripts = (callback: GenericCallback) => {
     let sinonScript = document.createElement("script");
@@ -161,7 +146,6 @@ class Intercept {
       callback();
     }
     sinonScript.onload = callback;
-    sinonScript.parentNode.removeChild(sinonScript);
   };
 }
 new Intercept().startMessageListener();
