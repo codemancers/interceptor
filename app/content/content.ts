@@ -41,12 +41,14 @@ class Intercept {
       contentType: presentState.contentType,
       tabId: tabId
     };
-    if (
-      requestObj.requestsToIntercept.length < 1 ||
-      !requestObj.tabId ||
-      requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
-    ) {
-        return;
+    if(message !== "DISABLE_INTERCEPTOR"){
+      if (
+        requestObj.requestsToIntercept.length < 1 ||
+        !requestObj.tabId ||
+        requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
+      ) {
+          return;
+      }
     }
     this.injectScripts(() => {
       this.runInterceptor(requestObj);
