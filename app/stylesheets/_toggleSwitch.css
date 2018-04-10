@@ -1,0 +1,57 @@
+
+.switch {
+  position: relative;
+  width: 8rem;
+  height: 5rem;
+  border-radius: 20%;
+  transition: background-color 100ms ease-out;
+  z-index: 1;
+}
+.switch:before, .switch:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  background-color: inherit;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  z-index: 2;
+}
+.switch:before {
+  left: -1rem;
+}
+.switch:after {
+  right: -1rem;
+}
+
+.toggle-button {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  background-color: #353535;
+  border-radius: 50%;
+  transition: -webkit-transform 100ms ease-in-out;
+  transition: transform 100ms ease-in-out;
+  transition: transform 100ms ease-in-out, -webkit-transform 100ms ease-in-out;
+  z-index: 3;
+  border: 0.05rem solid #353535;
+  top: -0.05rem;
+}
+
+.switch_is-off {
+  background-color: #FF495C;
+}
+
+.switch_is-on {
+  background-color: #3DDC97;
+}
+
+.toggle-button_position-left {
+  -webkit-transform: translateX(-1.05rem);
+          transform: translateX(-1.05rem);
+}
+
+.toggle-button_position-right {
+  -webkit-transform: translateX(4.05rem);
+          transform: translateX(4.05rem);
+}

@@ -10,6 +10,7 @@ export interface POPUP_PROPS {
   contentType: object
   PageDetails : object
   interceptStatus : string
+  isInterceptorOn: object
 }
 
 export interface selectCheckBoxes{
@@ -24,6 +25,7 @@ export interface PopUpState {
   checkedReqs : object;
   responseText : object;
   statusCodes:object;
+  isInterceptorOn:object;
 }
 
 export interface Action extends POPUP_PROPS{

@@ -1,5 +1,5 @@
 import {Store} from "react-chrome-redux";
-import {sendMessageToUI} from "./../actions";
+import {sendMessageToUI, updateInterceptorStatus} from "./../actions";
 import {GenericCallback} from "./../message_service";
 interface requestObject {
   url: string;
@@ -30,11 +30,13 @@ class Intercept {
   };
   interceptSelected = (message:string, tabId:number) => {
     const presentState = this.store.getState();
+    console.log(presentState.isInterceptorOn, tabId)
     const checkedReqs = presentState.requests.filter(req => {
       return presentState.checkedReqs[req.requestId] && tabId;
     });
     const requestObj = {
       message: message,
+      interceptEnabledForTab : presentState.isInterceptorOn.tabId || false,
       requestsToIntercept: checkedReqs,
       responseText: presentState.responseText,
       statusCodes: presentState.statusCodes,
@@ -51,12 +53,15 @@ class Intercept {
       }
     }
     this.injectScripts(() => {
+      console.log(requestObj)
       this.runInterceptor(requestObj);
     });
     if (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") {
       this.store.dispatch(sendMessageToUI("Interception Success!"));
+      this.store.dispatch(updateInterceptorStatus(tabId, true))
     } else if (message === "DISABLE_INTERCEPTOR") {
       this.store.dispatch(sendMessageToUI("Interception Disabled!"));
+      this.store.dispatch(updateInterceptorStatus(tabId, false))
     }
   };
 
@@ -101,10 +106,11 @@ class Intercept {
       }
 
        function sinonHandler(requestArray) {
+         console.log(requestArray)
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
            this.server.xhr.useFilters = true;
-           if(requestArray.message === "DISABLE_INTERCEPTOR"){
+           if(requestArray.message === "DISABLE_INTERCEPTOR" || !requestArray.interceptEnabledForTab ){
             this.server.restore();
           }
             //If the filter returns true, the request will not be faked - leave original

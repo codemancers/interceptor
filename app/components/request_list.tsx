@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./../components/Intercept_Components/index";
 import {InterceptAllButton} from './../components/InterceptAllButton'
+import {Switch} from './Switch'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
@@ -18,6 +19,8 @@ export interface RequestObj {
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
   clearRequests:React.ChangeEvent<HTMLButtonElement>;
+  disableInterceptor:React.ChangeEvent<HTMLButtonElement>;
+  updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -82,6 +85,7 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
+    <Switch isOn={false}  />
     <div className="response-action text-right">
       <InterceptAllButton
       disabled={!enabledRequests.length}

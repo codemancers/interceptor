@@ -20,6 +20,7 @@ interface DispatchProps {
   handleStatusCodeChange: typeof actionTypes.handleStatusCodeChange;
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
   handlePaginationChange: typeof actionTypes.handlePaginationChange;
+  updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -161,6 +162,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             tabId={this.props.tabId}
             clearRequests={this.clearRequests}
             disableInterceptor={this.disableInterceptor}
+            updateInterceptorStatus={this.updateInterceptorStatus}
           />
         </div>
       </div>
@@ -177,7 +179,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails: state.PageDetails,
-  interceptStatus: state.interceptStatus
+  interceptStatus: state.interceptStatus,
+  isInterceptorOn: state.isInterceptorOn
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -192,7 +195,8 @@ const mapDispatchToProps: DispatchProps = {
   handleStatusCodeChange: actionTypes.handleStatusCodeChange,
   handleRespTextChange: actionTypes.handleRespTextChange,
   handleContentTypeChange: actionTypes.handleContentTypeChange,
-  handlePaginationChange: actionTypes.handlePaginationChange
+  handlePaginationChange: actionTypes.handlePaginationChange,
+  updateInterceptorStatus: actionTypes.updateInterceptorStatus
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
