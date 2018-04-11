@@ -5,11 +5,13 @@
 }
 
 ::-moz-selection {
+  color: #fff;
   background: var(--primary-color-light);
   text-shadow: none
 }
 
 ::selection {
+  color: #fff;
   background: var(--primary-color-light);
   text-shadow: none
 }
