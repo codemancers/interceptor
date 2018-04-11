@@ -326,9 +326,9 @@
   text-align: center;
 }
 .ReactTable .-pagination .-center {
-  -webkit-box-flex: 1.5;
-  -ms-flex: 1.5;
-  flex: 1.5;
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
   text-align: center;
   margin-bottom: 0;
   display: -webkit-box;
