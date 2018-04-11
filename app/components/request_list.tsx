@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import * as matchSorter from "match-sorter";
 import {InterceptForm} from "./../components/Intercept_Components/index";
 import {InterceptAllButton} from './../components/InterceptAllButton'
+import {Switch} from './Switch'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
@@ -18,6 +19,9 @@ export interface RequestObj {
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
   clearRequests:React.ChangeEvent<HTMLButtonElement>;
+  disableInterceptor:React.ChangeEvent<HTMLButtonElement>;
+  updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
+  isInterceptorOn:object;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -82,20 +86,23 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
-    <div className="response-action text-right">
-      <InterceptAllButton
-      disabled={!enabledRequests.length}
-      handleCheckedRequests={() => {
-        return props.handleCheckedRequests(enabledRequests);
-      }}
-      />
-      <button
-        type="button"
-        className="btn btn-sm btn-primary btn-clear"
-        onClick={props.clearRequests}
-      >
-        CLEAR
-      </button>
+    <div className="grid-container response-action">
+      <Switch isOn={props.isInterceptorOn[props.tabId]}  handleSwitch={props.handleSwitch}/>
+      <div className="text-right">
+        <InterceptAllButton
+        disabled={!enabledRequests.length}
+        handleCheckedRequests={() => {
+          return props.handleCheckedRequests(enabledRequests);
+        }}
+        />
+        <button
+          type="button"
+          className="btn btn-sm btn-primary btn-clear"
+          onClick={props.clearRequests}
+        >
+          CLEAR
+        </button>
+      </div>
     </div>
 
     <ReactTable

@@ -20,6 +20,7 @@ interface DispatchProps {
   handleStatusCodeChange: typeof actionTypes.handleStatusCodeChange;
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
   handlePaginationChange: typeof actionTypes.handlePaginationChange;
+  updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -41,6 +42,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       this.props.updateField("enabled", enabledStatus);
     });
     this.props.updateField("errorMessage", "");
+    if(this.props.isInterceptorOn[this.props.tabId] === undefined ){
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+     }
   }
 
   isUrlInValid = (tabUrl: string) => {
@@ -91,6 +95,29 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string) => {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
+
+  disableInterceptor =(tabId:number) => {
+    MessageService.disableInterceptor(tabId)
+  }
+
+  updateInterceptorStatus = (tabId:number, interceptMode:boolean) => {
+    this.props.updateInterceptorStatus(tabId, interceptMode)
+  }
+
+  handleSwitch = () => {
+    if(this.props.isInterceptorOn[this.props.tabId]){
+      this.props.updateInterceptorStatus(this.props.tabId, false)
+      .then(() => {
+        this.disableInterceptor(this.props.tabId)
+      })
+      .catch((err) => {
+        // something broke in the background store
+        console.err(err)
+      });
+    }else{
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+    }
+  }
 
   render() {
     const buttonClass = cx("btn btn-block", {
@@ -156,6 +183,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             PageDetails={this.props.PageDetails}
             tabId={this.props.tabId}
             clearRequests={this.clearRequests}
+            disableInterceptor={this.disableInterceptor}
+            updateInterceptorStatus={this.updateInterceptorStatus}
+            isInterceptorOn={this.props.isInterceptorOn}
+            handleSwitch={this.handleSwitch}
           />
         </div>
       </div>
@@ -172,7 +203,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails: state.PageDetails,
-  interceptStatus: state.interceptStatus
+  interceptStatus: state.interceptStatus,
+  isInterceptorOn: state.isInterceptorOn
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -187,7 +219,8 @@ const mapDispatchToProps: DispatchProps = {
   handleStatusCodeChange: actionTypes.handleStatusCodeChange,
   handleRespTextChange: actionTypes.handleRespTextChange,
   handleContentTypeChange: actionTypes.handleContentTypeChange,
-  handlePaginationChange: actionTypes.handlePaginationChange
+  handlePaginationChange: actionTypes.handlePaginationChange,
+  updateInterceptorStatus: actionTypes.updateInterceptorStatus
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

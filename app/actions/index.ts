@@ -13,7 +13,8 @@ export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE"
 export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 export const PAGINATION_CHANGE = "PAGINATION_CHANGE"
-export const UPDATE_SUCCESS_MESSAGE = "INTERCEPTION IS SUCCESSFULL"
+export const UPDATE_MESSAGE = "UPDATE_MESSAGE"
+export const UPDATE_INTERCEPTOR_STATUS = "UPDATE_INTERCEPTOR_STATUS"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -52,6 +53,9 @@ export function handleContentTypeChange(value:string, requestId:number){
 export function handlePaginationChange(value: string, tabId:number, field:string) {
   return {type: PAGINATION_CHANGE, payload: {field, value, tabId}};
 }
-export function sendSuccessMessage(message:string){
-  return {type : UPDATE_SUCCESS_MESSAGE,  message }
+export function sendMessageToUI(message:string){
+  return {type : UPDATE_MESSAGE,  message }
+}
+export function updateInterceptorStatus(tabId:number, value:boolean){
+  return {type : UPDATE_INTERCEPTOR_STATUS, payload : {tabId, value}}
 }

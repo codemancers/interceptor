@@ -19,6 +19,9 @@ const createTestProps = props => ({
   requests: [],
   errorMessage: "",
   interceptStatus: "",
+  isInterceptorOn : {
+    1 : true
+  },
   // allow to override common props
   ...props
 });
