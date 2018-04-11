@@ -21,6 +21,7 @@ export interface RequestObj {
   clearRequests:React.ChangeEvent<HTMLButtonElement>;
   disableInterceptor:React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
+  isInterceptorOn:object;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -85,7 +86,7 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
-    <Switch isOn={false}  />
+    <Switch isOn={props.isInterceptorOn[props.tabId]}  handleSwitch={props.handleSwitch}/>
     <div className="response-action text-right">
       <InterceptAllButton
       disabled={!enabledRequests.length}
@@ -99,13 +100,6 @@ const RequestList = (props: RequestObj) => {
         onClick={props.clearRequests}
       >
         CLEAR
-      </button>
-      <button
-        type="button"
-        className="btn btn-sm btn-primary"
-        onClick={ () => props.disableInterceptor(props.tabId) }
-      >
-        DISABLE
       </button>
     </div>
 

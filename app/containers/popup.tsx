@@ -31,6 +31,7 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
+    this.props.isInterceptorOn[this.props.tabId] ? this.props.updateInterceptorStatus(this.props.tabId, true) :this.props.updateInterceptorStatus(this.props.tabId, false)
     this.props.updateField("interceptStatus", "");
     this.props.updateField("tabId", this.props.tabId);
     this.props.updateField("tabUrl", this.props.tabUrl);
@@ -95,6 +96,19 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
   disableInterceptor =(tabId:number) => {
     MessageService.disableInterceptor(tabId)
+  }
+
+  updateInterceptorStatus = (tabId:number, interceptMode:boolean) => {
+    this.props.updateInterceptorStatus(tabId, interceptMode)
+  }
+
+  handleSwitch = () => {
+    if(this.props.isInterceptorOn[this.props.tabId]){
+      this.props.updateInterceptorStatus(this.props.tabId, false)
+      this.disableInterceptor(this.props.tabId)
+    }else{
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+    }
   }
 
   render() {
@@ -163,6 +177,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             clearRequests={this.clearRequests}
             disableInterceptor={this.disableInterceptor}
             updateInterceptorStatus={this.updateInterceptorStatus}
+            isInterceptorOn={this.props.isInterceptorOn}
+            handleSwitch={this.handleSwitch}
           />
         </div>
       </div>

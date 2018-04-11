@@ -1,8 +1,8 @@
 import * as React from "react";
-export const Switch = function(props={isOn:false, handleToggle: () => {}}) {
+export const Switch = function(props={isOn:false, handleSwitch: () => {}}) {
 	let classNames = ["switch", (props.isOn) ? "switch_is-on" : "switch_is-off"].join(" ");
 	return (
-		<div className={classNames} onClick={props.handleToggle}>
+		<div className={classNames} onClick={props.handleSwitch}>
 			<ToggleButton
 				isOn={props.isOn}
 			/>
