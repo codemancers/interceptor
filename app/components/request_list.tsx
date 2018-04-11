@@ -86,21 +86,23 @@ const RequestList = (props: RequestObj) => {
 
   return (
     <div>
-    <Switch isOn={props.isInterceptorOn[props.tabId]}  handleSwitch={props.handleSwitch}/>
-    <div className="response-action text-right">
-      <InterceptAllButton
-      disabled={!enabledRequests.length}
-      handleCheckedRequests={() => {
-        return props.handleCheckedRequests(enabledRequests);
-      }}
-      />
-      <button
-        type="button"
-        className="btn btn-sm btn-primary btn-clear"
-        onClick={props.clearRequests}
-      >
-        CLEAR
-      </button>
+    <div className="grid-container response-action">
+      <Switch isOn={props.isInterceptorOn[props.tabId]}  handleSwitch={props.handleSwitch}/>
+      <div className="text-right">
+        <InterceptAllButton
+        disabled={!enabledRequests.length}
+        handleCheckedRequests={() => {
+          return props.handleCheckedRequests(enabledRequests);
+        }}
+        />
+        <button
+          type="button"
+          className="btn btn-sm btn-primary btn-clear"
+          onClick={props.clearRequests}
+        >
+          CLEAR
+        </button>
+      </div>
     </div>
 
     <ReactTable
