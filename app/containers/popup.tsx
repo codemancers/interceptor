@@ -31,7 +31,6 @@ const isChromeUrl = (url: string) => {
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
-    this.props.isInterceptorOn[this.props.tabId] ? this.props.updateInterceptorStatus(this.props.tabId, true) :this.props.updateInterceptorStatus(this.props.tabId, false)
     this.props.updateField("interceptStatus", "");
     this.props.updateField("tabId", this.props.tabId);
     this.props.updateField("tabUrl", this.props.tabUrl);
@@ -43,6 +42,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       this.props.updateField("enabled", enabledStatus);
     });
     this.props.updateField("errorMessage", "");
+    if(this.props.isInterceptorOn[this.props.tabId] === undefined ){
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+     }
   }
 
   isUrlInValid = (tabUrl: string) => {

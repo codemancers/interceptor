@@ -17,7 +17,11 @@ const commonProps = {
       currentRowSize : 5
     }
   },
-  tabId : 100
+  tabId : 100,
+  isInterceptorOn: {
+    100: false,
+    101: false
+  }
 };
 let wrapper;
 let RowComponent;
