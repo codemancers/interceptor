@@ -107,7 +107,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   handleSwitch = () => {
     if(this.props.isInterceptorOn[this.props.tabId]){
       this.props.updateInterceptorStatus(this.props.tabId, false)
-      this.disableInterceptor(this.props.tabId)
+      .then(() => {
+        this.disableInterceptor(this.props.tabId)
+      })
+      .catch((err) => {
+        // something broke in the background store
+        console.err(err)
+      });
     }else{
       this.props.updateInterceptorStatus(this.props.tabId, true)
     }

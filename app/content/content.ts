@@ -52,7 +52,6 @@ class Intercept {
       }
     }
     this.injectScripts(() => {
-      console.log(requestObj.interceptEnabledForTab)
     if ((message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") && requestObj.interceptEnabledForTab ) {
       this.runInterceptor(requestObj);
       this.store.dispatch(sendMessageToUI("Interception Success!"));
@@ -104,7 +103,6 @@ class Intercept {
       }
 
        function sinonHandler(requestArray) {
-         console.log(requestArray)
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
            this.server.xhr.filters = [];
@@ -144,7 +142,6 @@ class Intercept {
       (function(){
         if(window.interceptor){
           window.interceptor.server.restore()
-          console.log("RESTORED");
         }
       })();`;
       let script = document.createElement("script");
