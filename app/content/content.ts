@@ -1,9 +1,5 @@
 import {Store} from "react-chrome-redux";
-<<<<<<< HEAD
 import {sendMessageToUI} from "./../actions";
-=======
-import {sendMessageToUI, updateInterceptorStatus} from "./../actions";
->>>>>>> 4f345e41fb4915f6ae02d3ffc3ddd16a0eb9d8e3
 import {GenericCallback} from "./../message_service";
 interface requestObject {
   url: string;

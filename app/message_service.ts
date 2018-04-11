@@ -40,5 +40,8 @@ export function interceptChecked(tabId:number, requests:Array<any>){
 export function disableInterceptor(tabId:number){
   chrome.tabs.sendMessage(tabId, {message: "DISABLE_INTERCEPTOR", tabId})
 }
+export function updateBadgeIcon(tabId:number, disabledStatus:boolean){
+   chrome.runtime.sendMessage({message: "UPDATE_BADGE_ICON", tabId, disabledStatus})
+}
 // TODO: Extract message handlers from background.js and content_script.js
 // into this class and use callbacks to register message handlers
