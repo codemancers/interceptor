@@ -20,6 +20,7 @@ interface DispatchProps {
   handleStatusCodeChange: typeof actionTypes.handleStatusCodeChange;
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
   handlePaginationChange: typeof actionTypes.handlePaginationChange;
+  updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -41,6 +42,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       this.props.updateField("enabled", enabledStatus);
     });
     this.props.updateField("errorMessage", "");
+    if(this.props.isInterceptorOn[this.props.tabId] === undefined ){
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+     }
   }
 
   isUrlInValid = (tabUrl: string) => {
@@ -96,6 +100,25 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.disableInterceptor(tabId)
   }
 
+  updateInterceptorStatus = (tabId:number, interceptMode:boolean) => {
+    this.props.updateInterceptorStatus(tabId, interceptMode)
+  }
+
+  handleSwitch = () => {
+    if(this.props.isInterceptorOn[this.props.tabId]){
+      this.props.updateInterceptorStatus(this.props.tabId, false)
+      .then(() => {
+        this.disableInterceptor(this.props.tabId)
+      })
+      .catch((err) => {
+        // something broke in the background store
+        console.err(err)
+      });
+    }else{
+      this.props.updateInterceptorStatus(this.props.tabId, true)
+    }
+  }
+
   render() {
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !this.props.enabled,
@@ -114,7 +137,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
                 width="16"
                 height="16"
               >
-                <rect fill="#009688" width="32" height="32" x="0" y="0" />
+                <rect fill="#3A539B" width="32" height="32" x="0" y="0" />
                 <path
                   fill="#ffffff"
                   d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z"
@@ -161,6 +184,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             tabId={this.props.tabId}
             clearRequests={this.clearRequests}
             disableInterceptor={this.disableInterceptor}
+            updateInterceptorStatus={this.updateInterceptorStatus}
+            isInterceptorOn={this.props.isInterceptorOn}
+            handleSwitch={this.handleSwitch}
           />
         </div>
       </div>
@@ -177,7 +203,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   statusCodes: state.statusCodes,
   contentType: state.contentType,
   PageDetails: state.PageDetails,
-  interceptStatus: state.interceptStatus
+  interceptStatus: state.interceptStatus,
+  isInterceptorOn: state.isInterceptorOn
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -192,7 +219,8 @@ const mapDispatchToProps: DispatchProps = {
   handleStatusCodeChange: actionTypes.handleStatusCodeChange,
   handleRespTextChange: actionTypes.handleRespTextChange,
   handleContentTypeChange: actionTypes.handleContentTypeChange,
-  handlePaginationChange: actionTypes.handlePaginationChange
+  handlePaginationChange: actionTypes.handlePaginationChange,
+  updateInterceptorStatus: actionTypes.updateInterceptorStatus
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

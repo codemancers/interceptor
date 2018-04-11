@@ -7,13 +7,14 @@
 @import "_header.css";
 @import "_form.css";
 @import "_table.css";
+@import "_toggleSwitch.css";
 
 .popup-error {
   background: #ef5350;
   color: #ffffff;
   border-radius: 3px;
   padding: 5px 10px;
-  margin-bottom: 10px;
+  margin: 10px 15px;
 }
 
 .popup-error-message {

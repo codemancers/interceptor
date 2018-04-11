@@ -1,5 +1,9 @@
 import {Store} from "react-chrome-redux";
+<<<<<<< HEAD
 import {sendMessageToUI} from "./../actions";
+=======
+import {sendMessageToUI, updateInterceptorStatus} from "./../actions";
+>>>>>>> 4f345e41fb4915f6ae02d3ffc3ddd16a0eb9d8e3
 import {GenericCallback} from "./../message_service";
 interface requestObject {
   url: string;
@@ -15,7 +19,7 @@ interface BgStore {
   dispatch: any;
 }
 class Intercept {
-  store: BgStore;
+  store:BgStore
   constructor() {
     this.store = new Store({
       portName: "INTERCEPTOR"
@@ -24,11 +28,7 @@ class Intercept {
   startMessageListener = () => {
     this.store.ready().then(() => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
-        if (request.message === "INTERCEPT_CHECKED") {
-          this.interceptSelected("INTERCEPT_CHECKED",request.tabId);
-        } else if (request.message === "PAGE_REFRESHED") {
-          this.interceptSelected("PAGE_REFRESHED",request.tabId);
-        }
+          this.interceptSelected(request.message,request.tabId);
       });
     });
   };
@@ -39,44 +39,50 @@ class Intercept {
     });
     const requestObj = {
       message: message,
+      interceptEnabledForTab : presentState.isInterceptorOn[tabId],
       requestsToIntercept: checkedReqs,
       responseText: presentState.responseText,
       statusCodes: presentState.statusCodes,
       contentType: presentState.contentType,
       tabId: tabId
     };
-
-    if(requestObj.message !== "DISABLE_INTERCEPTOR"){
-    if (
-      requestObj.requestsToIntercept.length < 1 ||
-      !requestObj.tabId ||
-      requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
-    ) {
-        return;
+    if(message !== "DISABLE_INTERCEPTOR"){
+      if (
+        requestObj.requestsToIntercept.length < 1 ||
+        !requestObj.tabId ||
+        requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
+      ) {
+          return;
+      }
     }
-  }
     this.injectScripts(() => {
+    if ((message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") && requestObj.interceptEnabledForTab ) {
       this.runInterceptor(requestObj);
-    });
-    if (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") {
       this.store.dispatch(sendMessageToUI("Interception Success!"));
-    } else if (message === "DISABLE_INTERCEPTOR") {
+    } else if ((message === "DISABLE_INTERCEPTOR" ) && !requestObj.interceptEnabledForTab) {
+      this.disableInterceptor()
       this.store.dispatch(sendMessageToUI("Interception Disabled!"));
     }
-  };
+    })
+  }
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
-    if(requestsToIntercept){
     requestsToIntercept.forEach(req => {
-      if (!responseField[req.requestId]) {
+        if (!(responseField[req.requestId])) {
         responseField[req.requestId] = defaultResponseValue;
       }
     });
     return responseField;
   }
-  };
 
-  runInterceptor = selectedReqs => {
+  removeScriptFromDom = (querySelector:string) => {
+    while(document.querySelectorAll(querySelector).length){
+    let elemToRemove = document.querySelector(querySelector);
+    elemToRemove.parentNode.removeChild(elemToRemove);
+    }
+  }
+
+  runInterceptor  = (selectedReqs) => {
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -86,15 +92,8 @@ class Intercept {
 
     var selectedInterceptCode =`
      (function(){
-       function remove(querySelector) {
-         let elemToRemove = document.querySelector(querySelector);
-         elemToRemove.parentNode.removeChild(elemToRemove);
-       };
-       while(document.querySelectorAll("#tmpScript-2").length){
-         remove("#tmpScript-2");
-       }
        if (window.interceptor) {
-         window.interceptor.server.xhr.filters = [];
+         window.interceptor.server = null;
        }
       function matchUrl(urlfromSinon, urlFromArray){
           const aTag = document.createElement('a');
@@ -110,6 +109,7 @@ class Intercept {
        function sinonHandler(requestArray) {
            this.server = sinon.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
+           this.server.xhr.filters = [];
            this.server.xhr.useFilters = true;
             //If the filter returns true, the request will not be faked - leave original
            this.server.xhr.addFilter(function(method, url, async, username, password) {
@@ -129,25 +129,33 @@ class Intercept {
             window.interceptor = null
           }
          }
-         if( (${JSON.stringify(selectedReqs.message)} === "INTERCEPT_CHECKED") || (${JSON.stringify(
-      selectedReqs.message
-    )} === "PAGE_REFRESHED")){
           window.interceptor = new sinonHandler(${JSON.stringify(selectedReqs)});
-        }
-        else if(${JSON.stringify(selectedReqs.message)} === "DISABLE_INTERCEPTOR"){
-          if(window.interceptor.server){
-            window.interceptor.server.restore();
-          }
-        }
      })();`;
 
     let script = document.createElement("script");
     script.defer = true;
-    script.id = "tmpScript-2";
+    script.id = "enableInterceptorScript";
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
-  };
+    this.removeScriptFromDom("#enableInterceptorScript");
+    }
+
+    disableInterceptor = () => {
+      var selectedInterceptCode =`
+      (function(){
+        if(window.interceptor){
+          window.interceptor.server.restore()
+        }
+      })();`;
+      let script = document.createElement("script");
+      script.defer = true;
+      script.id = "disableInterceptorScript";
+      script.type = "text/javascript";
+      script.textContent = selectedInterceptCode;
+      (document.head || document.documentElement).appendChild(script);
+      this.removeScriptFromDom("#disableInterceptorScript");
+    }
 
   injectScripts = (callback: GenericCallback) => {
     let sinonScript = document.createElement("script");

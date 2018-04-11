@@ -14,6 +14,7 @@ export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE"
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 export const PAGINATION_CHANGE = "PAGINATION_CHANGE"
 export const UPDATE_MESSAGE = "UPDATE_MESSAGE"
+export const UPDATE_INTERCEPTOR_STATUS = "UPDATE_INTERCEPTOR_STATUS"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -54,4 +55,7 @@ export function handlePaginationChange(value: string, tabId:number, field:string
 }
 export function sendMessageToUI(message:string){
   return {type : UPDATE_MESSAGE,  message }
+}
+export function updateInterceptorStatus(tabId:number, value:boolean){
+  return {type : UPDATE_INTERCEPTOR_STATUS, payload : {tabId, value}}
 }
