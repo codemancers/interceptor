@@ -139,7 +139,7 @@ input[type="text"],
 input[type="search"], textarea {
   display: block;
   width: 100%;
-  padding: 0 12px;
+  padding: 0 5px;
   color: var(--primary-text-color);
   background-color: var(--primary-color-text);
   background-image: none;
@@ -183,4 +183,8 @@ label {
 
 .response-action {
   margin: 10px 15px;
+}
+.responseText{
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.2;
 }
