@@ -71,17 +71,10 @@ class BackgroundWorker {
   };
 
   updateBadgeIcon = (tabId:number, disabledStatus:boolean) => {
-    disabledStatus
-    ?
+    const iconBadgeIconPath = disabledStatus ? "images/icon-disabled-16.png" : "images/icon-16.png"
       chrome.browserAction.setIcon({
         path : {
-          "16" : "images/icon-disabled-16.png",
-      }, tabId
-      })
-    :
-      chrome.browserAction.setIcon({
-        path : {
-          "16" : "images/icon-16.png",
+          "16" : iconBadgeIconPath,
       }, tabId
       })
     }
