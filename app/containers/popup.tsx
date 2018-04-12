@@ -103,19 +103,24 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   updateInterceptorStatus = (tabId:number, interceptMode:boolean) => {
     this.props.updateInterceptorStatus(tabId, interceptMode)
   }
+ updateBadgeIcon = (tabId:number,disabledStatus:boolean) => {
+    MessageService.updateBadgeIcon(tabId,disabledStatus)
+  }
 
   handleSwitch = () => {
     if(this.props.isInterceptorOn[this.props.tabId]){
       this.props.updateInterceptorStatus(this.props.tabId, false)
       .then(() => {
         this.disableInterceptor(this.props.tabId)
+        this.updateBadgeIcon(this.props.tabId, true)
       })
       .catch((err) => {
         // something broke in the background store
-        console.err(err)
+        console.log(err)
       });
     }else{
       this.props.updateInterceptorStatus(this.props.tabId, true)
+      this.updateBadgeIcon(this.props.tabId, false)
     }
   }
 

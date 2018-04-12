@@ -1,5 +1,5 @@
 import {Store} from "react-chrome-redux";
-import {sendMessageToUI, updateInterceptorStatus} from "./../actions";
+import {sendMessageToUI} from "./../actions";
 import {GenericCallback} from "./../message_service";
 interface requestObject {
   url: string;
@@ -59,8 +59,8 @@ class Intercept {
       this.disableInterceptor()
       this.store.dispatch(sendMessageToUI("Interception Disabled!"));
     }
-    });
-  };
+    })
+  }
 
   setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
     requestsToIntercept.forEach(req => {
@@ -165,6 +165,7 @@ class Intercept {
       callback();
     }
     sinonScript.onload = callback;
+    sinonScript.parentNode.removeChild(sinonScript);
   };
 }
 new Intercept().startMessageListener();

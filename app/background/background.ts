@@ -62,9 +62,22 @@ class BackgroundWorker {
           sendResponse(this.data[this.currentTab].requests.length);
           break;
         }
+        case "UPDATE_BADGE_ICON" : {
+          this.updateBadgeIcon(request.tabId, request.disabledStatus)
+          break;
+        }
       }
     });
   };
+
+  updateBadgeIcon = (tabId:number, disabledStatus:boolean) => {
+    const iconBadgeIconPath = disabledStatus ? "images/icon-disabled-16.png" : "images/icon-16.png"
+      chrome.browserAction.setIcon({
+        path : {
+          "16" : iconBadgeIconPath,
+      }, tabId
+      })
+    }
 
    updateBadgeText = (noOfRequests:number) => {
     chrome.browserAction.setBadgeText({
