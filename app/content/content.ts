@@ -165,7 +165,6 @@ class Intercept {
       callback();
     }
     sinonScript.onload = callback;
-    sinonScript.parentNode.removeChild(sinonScript);
   };
 }
 new Intercept().startMessageListener();
