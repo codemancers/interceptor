@@ -57,7 +57,7 @@ To mock the calls again, just toggle the switch to `ON` state, check the request
 * ~~The user may choose to let the request pass through or fill in mock response using a form.~~
 * Persist settings for each URL in localStorage.
 * ~~Mocked requests should hit a sinon fakeServer.~~
-* User should be able to disable/enable mocking for a page without clearing persisted settings for the URL.
+* ~~User should be able to disable/enable mocking for a page without clearing persisted settings for the URL.~~
 
 ## License
 
