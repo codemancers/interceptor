@@ -30,3 +30,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.requestHeaderContainer{
+  font-size: 12px;
+  grid-row: 1;
+  grid-column: 3;
+}
+.requestHeader{
+  list-style: none
+}
+.requestHeaderName{
+  font-weight: bold
+}
+.requestHeaderValue{
+  word-wrap: break-all;
+}
+
