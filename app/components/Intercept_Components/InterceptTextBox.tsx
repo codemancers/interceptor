@@ -1,4 +1,5 @@
 import * as React from "react";
+import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
   const defaultResponseText = "";
@@ -12,10 +13,9 @@ export const InterceptTextBox = props => {
     <div className="grid-container form">
       <div className="full-url">
         <label htmlFor="">URL</label>
-        <a
-          href={props.rowProps.checkbox.url}
-          className="urlText"
-        >{props.rowProps.checkbox.url}</a>
+        <a href={props.rowProps.checkbox.url} className="urlText">
+          {props.rowProps.checkbox.url}
+        </a>
       </div>
       <div className="response">
         <label htmlFor="">Response Text</label>
@@ -60,6 +60,7 @@ export const InterceptTextBox = props => {
           <option value="application/pdf">application/pdf</option>
         </select>
       </div>
+      <RequestHeaderList requestHeaders={props.rowProps.checkbox.requestHeaders} />
     </div>
   );
 };

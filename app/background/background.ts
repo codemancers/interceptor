@@ -101,14 +101,14 @@ class BackgroundWorker {
 
   startTrackingRequests = () => {
     this.data[this.currentTab].enabled = true;
-    chrome.webRequest.onBeforeRequest.addListener(
+    chrome.webRequest.onBeforeSendHeaders.addListener(
       //For getting responseHeaders : use onHeadersReceived Event
       this.callback,
       {
         urls: ["<all_urls>"],
         types: ["xmlhttprequest"]
       },
-      ["blocking"]
+      ["requestHeaders"]
     );
   };
 
