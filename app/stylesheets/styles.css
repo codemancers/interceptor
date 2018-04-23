@@ -25,23 +25,28 @@
 .popup {
   width: 100%;
 }
-.url{
+.url {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.requestHeaderContainer{
+.requestHeaderContainer {
   font-size: 12px;
-  grid-row: 1;
-  grid-column: 3;
+  grid-row: 4;
+  grid-column: 1 / 3;
+  word-break: break-all;
 }
-.requestHeader{
-  list-style: none
+.requestHeader {
+  list-style: none;
 }
-.requestHeaderName{
-  font-weight: bold
+.requestHeaderName {
+  font-weight: bold;
 }
-.requestHeaderValue{
+.requestHeaderValue {
   word-wrap: break-all;
 }
-
+.cookie {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 75ch;
+}

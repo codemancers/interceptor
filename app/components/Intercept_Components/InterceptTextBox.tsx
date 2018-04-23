@@ -60,7 +60,7 @@ export const InterceptTextBox = props => {
           <option value="application/pdf">application/pdf</option>
         </select>
       </div>
-      <RequestHeaderList RequestHeaders={props.rowProps.checkbox.requestHeaders} />
+      <RequestHeaderList requestHeaders={props.rowProps.checkbox.requestHeaders} />
     </div>
   );
 };
