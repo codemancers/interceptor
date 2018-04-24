@@ -22,6 +22,7 @@ export interface RequestObj {
   disableInterceptor:React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn:object;
+  fetchResponse:React.MouseEvent<HTMLButtonElement>
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -126,6 +127,7 @@ const RequestList = (props: RequestObj) => {
           statusCodes={props.statusCodes}
           handleContentTypeChange={props.handleContentTypeChange}
           contentType={props.contentType}
+          fetchResponse={props.fetchResponse}
         />
       )}
     />

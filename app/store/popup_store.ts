@@ -1,6 +1,9 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 import { Middleware } from 'react-redux/node_modules/redux';
+import thunkMiddleware from 'redux-thunk';
+// import { aliases } from './aliases'
+// import { alias } from 'react-chrome-redux';
 
 import {reducer}  from './../reducers/rootReducer';
 export interface PopUpInterface {
@@ -12,9 +15,9 @@ let enhancer:any;
 if (process.env.NODE_ENV !== 'production') {
 const logger:Middleware = createLogger();
 
-const middlewares = applyMiddleware(logger);
-enhancer = compose(
-  middlewares
+enhancer = applyMiddleware(
+	thunkMiddleware,
+	logger
 );
 }
 
