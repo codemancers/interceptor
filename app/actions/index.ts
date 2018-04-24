@@ -62,21 +62,19 @@ export function sendMessageToUI(message:string){
 export function updateInterceptorStatus(tabId:number, value:boolean){
   return {type : UPDATE_INTERCEPTOR_STATUS, payload : {tabId, value}}
 }
-export function fetchResponse(url:string,method:string) {
+export function fetchResponse(url:string,method:string, tabId:number, index: number) {
   return function (dispatch) {
     axios({
       method: method,
       url: url
     })
-    .then(response => response)
-      .then(response => dispatch(fetchSuccess(response)
-    .catch(err => err)
-      .then(err => dispatch(fetchFailure(err)))
+    .then(response => dispatch(response))
+    .catch(err => dispatch(err))
   }
 }
-export function fetchSuccess(res:string){
-  return {type: FETCH_DATA_SUCCESS, response : res }
+export function fetchSuccess(res){
+  return {type: FETCH_DATA_SUCCESS, response : res.data, type: res.type }
 }
-export function fetchFailure(err:string){
-  return {type : FETCH_DATA_FAILURE, error : err }
+export function fetchFailure(err){
+  return {type : FETCH_DATA_FAILURE, error : err, type: err.type }
 }
