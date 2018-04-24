@@ -15,7 +15,7 @@ $ npm run watch
 # Install "./dist" directory as "unpacked chrome extension" (google it!)
 ```
 
-## Status
+## How to use
 
 Once you open the extension popup, it shows a UI as seen below. By default, `Intercept Mode` is `ON`.
 
@@ -44,8 +44,13 @@ Henceforth the same AJAX request is requested by the browser, the browser is giv
 
 You can also stop listening for `AJAX calls` by clicking the `STOP LISTENING`
 
-The toggle switch is used to disable `INTERCEPTOR`. If the toggle is switched to `OFF` state,
-the extension will not mock any previously intercepted calls.
+The toggle switch is used to disable `INTERCEPTOR`. If the toggle is switched to `OFF` state, it displays a message saying `Interception Disabled` as below.
+
+<img src="images/interceptor_disabled.png" alt="Message shown by Interceptor on disabling">
+
+In the `disabled` state, the extension won't mock any previously intercepted calls.
+Also, the extension's icon beside the url address bar turns red for that particular tab as in screenshot above.
+
 
 To mock the calls again, just toggle the switch to `ON` state, check the requests that are to be mocked and click `INTERCEPT` button.
 
