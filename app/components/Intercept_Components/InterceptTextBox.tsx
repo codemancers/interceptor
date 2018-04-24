@@ -18,6 +18,7 @@ export const InterceptTextBox = props => {
         </a>
       </div>
       <div className="response">
+      <span className="fetch-responsetext" onClick={() => props.fetchResponse(props.rowProps.checkbox.url,props.rowProps.checkbox.method)}>X</span>
         <label htmlFor="">Response Text</label>
         <textarea
           name="responseText"

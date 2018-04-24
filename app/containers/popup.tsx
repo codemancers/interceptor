@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as cx from "classnames";
 import {connect} from "react-redux";
+import {Store} from "react-chrome-redux";
 
 import * as MessageService from "./../message_service";
 import RequestList from "./../components/request_list";
@@ -20,7 +21,8 @@ interface DispatchProps {
   handleStatusCodeChange: typeof actionTypes.handleStatusCodeChange;
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
   handlePaginationChange: typeof actionTypes.handlePaginationChange;
-  updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus
+  updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus;
+  fetchResponse:typeof actionTypes.fetchResponse;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -28,6 +30,12 @@ const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
+
+interface BgStore {
+  ready(): Promise<void>;
+  getState(): any;
+  dispatch: any;
+}
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
@@ -124,6 +132,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   }
 
+  fetchResponse = (url:string, method:string) => {
+    this.props.fetchResponse(url, method)
+  }
+
   render() {
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !this.props.enabled,
@@ -192,6 +204,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             updateInterceptorStatus={this.updateInterceptorStatus}
             isInterceptorOn={this.props.isInterceptorOn}
             handleSwitch={this.handleSwitch}
+            fetchResponse={this.fetchResponse}
           />
         </div>
       </div>
@@ -225,7 +238,8 @@ const mapDispatchToProps: DispatchProps = {
   handleRespTextChange: actionTypes.handleRespTextChange,
   handleContentTypeChange: actionTypes.handleContentTypeChange,
   handlePaginationChange: actionTypes.handlePaginationChange,
-  updateInterceptorStatus: actionTypes.updateInterceptorStatus
+  updateInterceptorStatus: actionTypes.updateInterceptorStatus,
+  fetchResponse:actionTypes.fetchResponse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

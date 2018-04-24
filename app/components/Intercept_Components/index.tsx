@@ -12,6 +12,7 @@ export const InterceptForm = props => {
         statusCodes={props.statusCodes}
         handleContentTypeChange={props.handleContentTypeChange}
         contentType={props.contentType}
+        fetchResponse={props.fetchResponse}
       />
     </div>
   );

@@ -1,3 +1,4 @@
+import * as axios from 'axios'
 //ACTION CONSTANTS
 export const  START_LISTENING = "START_LISTENING";
 export const STOP_LISTENING = "STOP_LISTENING";
@@ -15,6 +16,8 @@ export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE"
 export const PAGINATION_CHANGE = "PAGINATION_CHANGE"
 export const UPDATE_MESSAGE = "UPDATE_MESSAGE"
 export const UPDATE_INTERCEPTOR_STATUS = "UPDATE_INTERCEPTOR_STATUS"
+export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS"
+export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE"
 
 // Action Creators
 export function startListening (enabledStatus:boolean){
@@ -58,4 +61,12 @@ export function sendMessageToUI(message:string){
 }
 export function updateInterceptorStatus(tabId:number, value:boolean){
   return {type : UPDATE_INTERCEPTOR_STATUS, payload : {tabId, value}}
+}
+export function fetchResponse(url:string,method:string) {
+  return function (dispatch) {
+    axios({
+      method: method,
+      url: url
+    });
+  }
 }
