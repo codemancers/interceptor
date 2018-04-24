@@ -132,10 +132,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   }
 
-  fetchResponse = (url:string, method:string) => {
-    this.props.fetchResponse(url, method)
-  }
-
   render() {
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !this.props.enabled,
@@ -204,7 +200,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             updateInterceptorStatus={this.updateInterceptorStatus}
             isInterceptorOn={this.props.isInterceptorOn}
             handleSwitch={this.handleSwitch}
-            fetchResponse={this.fetchResponse}
+            fetchResponse={this.props.fetchResponse}
           />
         </div>
       </div>
