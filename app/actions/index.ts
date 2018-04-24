@@ -67,6 +67,16 @@ export function fetchResponse(url:string,method:string) {
     axios({
       method: method,
       url: url
-    });
+    })
+    .then(response => response)
+      .then(response => dispatch(fetchSuccess(response)
+    .catch(err => err)
+      .then(err => dispatch(fetchFailure(err)))
   }
+}
+export function fetchSuccess(res:string){
+  return {type: FETCH_DATA_SUCCESS, response : res }
+}
+export function fetchFailure(err:string){
+  return {type : FETCH_DATA_FAILURE, error : err }
 }

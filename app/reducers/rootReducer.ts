@@ -61,16 +61,19 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
           }
         }
       };
-      case actionType.UPDATE_MESSAGE:{
+    case actionType.UPDATE_MESSAGE:{
         return {...state, interceptStatus : action.message }
       }
-      case actionType.UPDATE_INTERCEPTOR_STATUS:
+    case actionType.UPDATE_INTERCEPTOR_STATUS:
       return {
         ...state,
         isInterceptorOn: {...state.isInterceptorOn, [action.payload.tabId]: action.payload.value}
       };
-      case actionType.FETCH_DATA_SUCCESS: {
-        return action.data;
+    case actionType.FETCH_DATA_SUCCESS: {
+        return {...state, response : action.response};
+    }
+    case actionType.FETCH_DATA_FAILURE : {
+      return {...state, error: action.error}
     }
     default:
       return state;
