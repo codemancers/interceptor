@@ -8,6 +8,7 @@ export const InterceptTextBox = props => {
   const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;
   const statusCodeValue = props.statusCodes[props.rowProps.checkbox.requestId] || defaultStatusCode;
   const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
+  const textAreaValue = JSON.stringify(props.responseData[props.rowProps.checkbox.requestId]) ||responseTextValue
 
   return (
     <div className="grid-container form">
@@ -18,15 +19,18 @@ export const InterceptTextBox = props => {
         </a>
       </div>
       <div className="response">
-      <span className="fetch-responsetext" onClick={() => props.fetchResponse(props.rowProps.checkbox.url,props.rowProps.checkbox.method, props.tabId,props.rowProps.checkbox._index )}>X</span>
+      <span className="fetch-responsetext" onClick={() => {
+        props.fetchResponse(props.rowProps.checkbox.url,props.rowProps.checkbox.method, props.rowProps.checkbox.requestId )
+      }
+      }>X</span>
         <label htmlFor="">Response Text</label>
-        <textarea
-          name="responseText"
-          className="responseText"
-          defaultValue={responseTextValue}
-          //value={responseTextValue}
-          onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
-        />
+              <textarea
+              name="responseText"
+              className="responseText"
+              defaultValue={textAreaValue } //|| props.responseData[props.rowProps.checkbox.requestId]}
+              //value={props.responseData[requestId]}
+              onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
+            />
       </div>
       <div className="status">
         <label htmlFor="">Select Status</label>
@@ -107,5 +111,6 @@ export const InterceptTextBox = props => {
 InterceptTextBox.defaultProps = {
   responseText: [],
   statusCodes: [],
-  contentType: []
+  contentType: [],
+  responseData:{}
 };
