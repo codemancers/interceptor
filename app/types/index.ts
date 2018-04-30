@@ -11,6 +11,7 @@ export interface POPUP_PROPS {
   PageDetails : object
   interceptStatus : string
   isInterceptorOn: interceptOn
+  responseData: object
 }
 
 export interface interceptOn{
@@ -30,6 +31,7 @@ export interface PopUpState {
   responseText : object;
   statusCodes:object;
   isInterceptorOn:interceptOn;
+  responseData: object
 }
 
 export interface Action extends POPUP_PROPS{

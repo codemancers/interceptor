@@ -11,7 +11,8 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   contentType: {},
   PageDetails: {},
   interceptStatus : "",
-  isInterceptorOn: {}
+  isInterceptorOn: {},
+  responseData : {}
 };
 
 //ACTION CONSTANTS
@@ -70,24 +71,16 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         isInterceptorOn: {...state.isInterceptorOn, [action.payload.tabId]: action.payload.value}
       };
     case actionType.FETCH_DATA_SUCCESS: {
-        return {...state, responseData : {
-          ...state.responseData,
-          [action.payload.tabId]: {
-            ...state.responseData[action.payload.tabId],
-            [action.payload.index]: action.payload.response
-          }
-        }
-    }
+      return {
+        ...state,
+        responseData: {...state.responseData, [action.payload.requestId]: action.payload.response}
+      };
   }
   case actionType.FETCH_DATA_FAILURE: {
-    return {...state, responseData : {
-      ...state.responseData,
-      [action.payload.tabId]: {
-        ...state.responseData[action.payload.tabId],
-        [action.payload.index]: action.payload.error
-      }
-    }
-}
+    return {
+      ...state,
+      responseData: {...state.responseData, [action.payload.requestId]: action.payload.error}
+    };
 }
     default:
       return state;

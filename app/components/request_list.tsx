@@ -23,6 +23,7 @@ export interface RequestObj {
   updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn:object;
   fetchResponse:React.MouseEvent<HTMLButtonElement>
+  responseData : object;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -129,6 +130,7 @@ const RequestList = (props: RequestObj) => {
           contentType={props.contentType}
           tabId={props.tabId}
           fetchResponse={props.fetchResponse}
+          responseData = {props.responseData}
         />
       )}
     />
