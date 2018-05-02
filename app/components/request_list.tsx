@@ -7,7 +7,7 @@ import {Switch} from './Switch'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests: React.MouseEventHandler<HTMLButtonElement>;
+  handleCheckedRequests: React.MouseEvent<HTMLButtonElement>;
   handleRespTextChange: React.FormEvent<HTMLInputElement>;
   handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
   checkedReqs: object;
@@ -22,7 +22,7 @@ export interface RequestObj {
   disableInterceptor:React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus:React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn:object;
-  fetchResponse:React.MouseEvent<HTMLButtonElement>
+  fetchResponse:React.MouseEvent<HTMLSpanElement>
   responseData : object;
 }
 const RequestList = (props: RequestObj) => {
