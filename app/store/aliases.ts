@@ -1,24 +1,27 @@
-import * as axios from 'axios'
-import { fetchResponse, fetchSuccess, fetchFailure } from './../actions'
+import * as axios from "axios";
+import {fetchSuccess, fetchFailure} from "./../actions";
 
-  const fetchDataAlias = ({payload}) => {
-    return (dispatch, getState) => {
-        const {method, url, requestId} = payload
-        console.log(method, url, requestId)
-              //dispatch(fetchResponse(payload.url, payload.method, payload.tabId))
-              axios({
-                method,
-                url
-              })
-                .then( (data) => {
-                  dispatch(fetchSuccess(data, requestId))
-                })
-                .catch( (err) => {
-                  dispatch(fetchFailure(err, requestId))
-                })
-    }
-  }
+const fetchDataAlias = (payload: object) => {
+  return dispatch => {
+    const {method, url, requestId, requestHeaders} = payload.requestDetails;
+    const requestHeadersObject = requestHeaders.reduce((accumulatedObj, reqHeaderNameValuePair) => {
+      accumulatedObj[reqHeaderNameValuePair.name] = reqHeaderNameValuePair.value;
+      return accumulatedObj;
+    }, {});
+    axios({
+      method,
+      url,
+      requestHeadersObject
+    })
+      .then(data => {
+        dispatch(fetchSuccess(data, requestId));
+      })
+      .catch(err => {
+        dispatch(fetchFailure(err, requestId));
+      });
+  };
+};
 
-  export default {
-    "FETCH_DATA": fetchDataAlias
-  }
+export default {
+  FETCH_DATA: fetchDataAlias
+};

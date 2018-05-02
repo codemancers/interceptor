@@ -63,10 +63,10 @@ export function sendMessageToUI(message:string){
 export function updateInterceptorStatus(tabId:number, value:boolean){
   return {type : UPDATE_INTERCEPTOR_STATUS, payload : {tabId, value}}
 }
-export function fetchResponse(url:string,method:string, requestId:number) {
+export function fetchResponse(requestDetails:object) {
   return {
     type: FETCH_DATA,
-    payload : {url, method, requestId}
+    requestDetails
   }
 }
 export function fetchSuccess(data:object, requestId:number){

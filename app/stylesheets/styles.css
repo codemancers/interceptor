@@ -50,3 +50,9 @@
   text-overflow: ellipsis;
   max-width: 75ch;
 }
+.responseTextlabel{
+  display:inline-block;
+}
+.fetch-responsetext{
+  float:right;
+}
