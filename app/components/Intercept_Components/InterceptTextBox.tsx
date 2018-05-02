@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Store} from "react-chrome-redux";
 import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
