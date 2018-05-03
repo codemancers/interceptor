@@ -2,7 +2,6 @@ import * as React from "react";
 import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
-  console.log("responseText", props.responseText, "responseData", props.responseData)
   const isObject = (val:any) => {
     if (val === null) { return false;}
     return ( (typeof val === 'function') || (typeof val === 'object') );
@@ -30,10 +29,8 @@ export const InterceptTextBox = props => {
           className="fetch-responsetext"
           onClick={() => {
             props.fetchResponse(props.rowProps.checkbox)
-            .then( () => {
-              props.handleRespTextChange(props.responseText[requestId], requestId);
-            })
-          }}
+        }
+      }
         >
           X
         </span>

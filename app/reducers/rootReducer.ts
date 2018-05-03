@@ -74,7 +74,6 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       return {
         ...state,
         responseData: {...state.responseData, [action.payload.requestId]: action.payload.response},
-        responseText: {...state.responseText, [action.payload.requestId]: action.payload.value}
       };
   }
   case actionType.FETCH_DATA_FAILURE: {

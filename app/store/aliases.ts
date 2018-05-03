@@ -1,5 +1,5 @@
 import * as axios from "axios";
-import {fetchSuccess, fetchFailure} from "./../actions";
+import {fetchSuccess, fetchFailure, handleRespTextChange} from "./../actions";
 
 const fetchDataAlias = (payload: object) => {
   return dispatch => {
@@ -15,6 +15,7 @@ const fetchDataAlias = (payload: object) => {
     })
       .then(data => {
         dispatch(fetchSuccess(data, requestId));
+        dispatch(handleRespTextChange(data.data, requestId))
       })
       .catch(err => {
         dispatch(fetchFailure(err, requestId));
