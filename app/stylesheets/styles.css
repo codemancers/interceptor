@@ -48,11 +48,17 @@
 .cookie {
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 75ch;
+  white-space: nowrap;
+  width: 390px;
+  display: inline-block;
 }
 .responseTextlabel{
   display:inline-block;
 }
 .fetch-responsetext{
   float:right;
+  cursor: pointer;
+}
+.select-status{
+  width: 155px;
 }

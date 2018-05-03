@@ -2,15 +2,19 @@ import * as React from "react";
 import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
+  console.log("responseText", props.responseText, "responseData", props.responseData)
+  const isObject = (val:any) => {
+    if (val === null) { return false;}
+    return ( (typeof val === 'function') || (typeof val === 'object') );
+  }
+  const requestId = props.rowProps.checkbox.requestId
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
-  const responseTextValue = props.responseText[props.rowProps.checkbox.requestId] || defaultResponseText;
-  const statusCodeValue = props.statusCodes[props.rowProps.checkbox.requestId] || defaultStatusCode;
-  const contentTypeValue = props.contentType[props.rowProps.checkbox.requestId] || defaultContentType;
-  let textAreaValue = JSON.stringify(props.responseData[props.rowProps.checkbox.requestId]) || responseTextValue;
+  const responseTextValue = isObject(props.responseText[requestId]) ? JSON.stringify(props.responseText[requestId]) : props.responseText[requestId] || defaultResponseText;
+  const statusCodeValue = props.statusCodes[requestId] || defaultStatusCode;
+  const contentTypeValue = props.contentType[requestId] || defaultContentType;
 
-  console.log(props.rowProps.checkbox.requestHeaders);
   return (
     <div className="grid-container form">
       <div className="full-url">
@@ -22,10 +26,13 @@ export const InterceptTextBox = props => {
       <div className="response">
         <label className="responseTextlabel">Response Text</label>
         <span
+          title="Fetch Response Text"
           className="fetch-responsetext"
           onClick={() => {
-            props.fetchResponse(props.rowProps.checkbox);
-            textAreaValue = JSON.stringify(props.responseData[props.rowProps.checkbox.requestId]) || responseTextValue;
+            props.fetchResponse(props.rowProps.checkbox)
+            .then( () => {
+              props.handleRespTextChange(props.responseText[requestId], requestId);
+            })
           }}
         >
           X
@@ -33,10 +40,13 @@ export const InterceptTextBox = props => {
         <textarea
           name="responseText"
           className="responseText"
-          defaultValue={textAreaValue}
-          key={textAreaValue}
+          defaultValue={responseTextValue}
+          key={props.responseData[requestId]}
           //value={textAreaValue}
-          onChange={event => props.handleRespTextChange(event.target.value, props.rowProps.checkbox.requestId)}
+          onChange={event => {
+            props.handleRespTextChange(event.target.value, requestId);
+          }
+          }
         />
       </div>
       <div className="status">
@@ -45,7 +55,7 @@ export const InterceptTextBox = props => {
           value={statusCodeValue}
           className="select-status"
           onChange={event => {
-            props.handleStatusCodeChange(event.target.value, props.rowProps.checkbox.requestId);
+            props.handleStatusCodeChange(event.target.value, requestId);
           }}
         >
           <option value="100">100 - Continue</option>
@@ -98,7 +108,7 @@ export const InterceptTextBox = props => {
           value={contentTypeValue}
           className="content-type-select"
           onChange={event => {
-            props.handleContentTypeChange(event.target.value, props.rowProps.checkbox.requestId);
+            props.handleContentTypeChange(event.target.value, requestId);
           }}
         >
           <option value="application/json">application/json</option>
