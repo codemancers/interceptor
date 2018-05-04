@@ -57,7 +57,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.11",
     "match-sorter": "^2.2.0",
@@ -67,7 +66,6 @@
     "react-redux": "^5.0.6",
     "react-table": "^6.7.6",
     "redux": "3.5.2",
-    "redux-thunk": "^2.2.0",
     "tslint": "^5.10.0",
     "typescript": "^2.8.1"
   }
