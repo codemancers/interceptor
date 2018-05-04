@@ -5,6 +5,7 @@
     "@types/classnames": "^2.2.3",
     "@types/enzyme": "^3.1.8",
     "@types/enzyme-adapter-react-16": "^1.0.2",
+    "@types/fork-ts-checker-webpack-plugin": "^0.4.0",
     "@types/jasmine": "^2.8.6",
     "@types/jest": "^22.1.1",
     "@types/react": "^15.0.23",
@@ -12,7 +13,6 @@
     "@types/react-redux": "^5.0.14",
     "@types/react-table": "^6.7.8",
     "@types/redux-logger": "^3.0.5",
-    "@types/fork-ts-checker-webpack-plugin": "^0.4.0",
     "copy-webpack-plugin": "^4.5.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -26,7 +26,7 @@
     "ts-loader": "^4.2.0",
     "tslint-react": "^3.5.1",
     "webpack": "4.5.0",
-    "webpack-cli": "^2.0.11",
+    "webpack-cli": "^2.0.11"
   },
   "jest": {
     "verbose": true,
