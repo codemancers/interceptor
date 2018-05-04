@@ -7,6 +7,8 @@ export const InterceptTextBox = props => {
     return ( (typeof val === 'function') || (typeof val === 'object') );
   }
   const requestId = props.rowProps.checkbox.requestId
+  console.log("Re-rendered")
+  console.log("responseData::", props.responseData[requestId])
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
