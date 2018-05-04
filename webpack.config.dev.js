@@ -55,7 +55,7 @@ module.exports = {
     ]),
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.resolve("tsconfig.json"),
-      tslint: path.resolve("tslint.json"), // optional
+      tslint: path.resolve("tslint.json"),
       react: path.resolve("tslint-react.json"),
       memoryLimit: 512,
        diagnosticFormatter: "ts-loader",
