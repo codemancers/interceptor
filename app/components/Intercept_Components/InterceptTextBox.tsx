@@ -2,17 +2,12 @@ import * as React from "react";
 import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
-  const isObject = (val:any) => {
-    if (val === null) { return false;}
-    return ( (typeof val === 'function') || (typeof val === 'object') );
-  }
   const requestId = props.rowProps.checkbox.requestId
   console.log("Re-rendered")
-  console.log("responseData::", props.responseData[requestId])
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
-  const responseTextValue = isObject(props.responseText[requestId]) ? JSON.stringify(props.responseText[requestId]) : props.responseText[requestId] || defaultResponseText;
+  let responseTextValue = props.responseText[requestId] || defaultResponseText;
   const statusCodeValue = props.statusCodes[requestId] || defaultStatusCode;
   const contentTypeValue = props.contentType[requestId] || defaultContentType;
 

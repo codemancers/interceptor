@@ -69,9 +69,9 @@ export function fetchResponse(requestDetails:object) {
     requestDetails
   }
 }
-export function fetchSuccess(data:object, requestId:number){
-  return {type: FETCH_DATA_SUCCESS, payload : {response : data.data, requestId } }
+export function fetchSuccess(data:string, requestId:number){
+  return {type: FETCH_DATA_SUCCESS, payload : {response : data, requestId } }
 }
-export function fetchFailure(error:object, requestId:number){
-  return {type : FETCH_DATA_FAILURE, payload : {error : error.data, requestId } }
+export function fetchFailure(error:string, requestId:number){
+  return {type : FETCH_DATA_FAILURE, payload : {error : error, requestId } }
 }
