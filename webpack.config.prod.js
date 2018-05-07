@@ -22,11 +22,6 @@ module.exports = {
     crossOriginLoading: "anonymous"
   },
   mode: 'production',
-  optimization: {
-    minimize: {
-      sourceMap: false,
-    },
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
@@ -35,7 +30,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          { loader: 'ts-loader' }
+          { loader: 'ts-loader', options: { transpileOnly: true } }
         ],
         exclude: /node_modules/
       },
@@ -53,7 +48,6 @@ module.exports = {
     ]
 },
   plugins: [
-    new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
