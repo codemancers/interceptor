@@ -2,6 +2,11 @@ const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+let pathsToClean = [
+  'dist',
+]
 
 module.exports = {
   context: path.join(__dirname, "app"),
@@ -46,6 +51,7 @@ module.exports = {
     ]
 },
   plugins: [
+    new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
@@ -55,8 +61,6 @@ module.exports = {
     ]),
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.resolve("tsconfig.json"),
-      tslint: path.resolve("tslint.json"),
-      react: path.resolve("tslint-react.json"),
       memoryLimit: 512,
        diagnosticFormatter: "ts-loader",
        watch: ['./app'] // optional but improves performance (fewer stat calls)

@@ -3,6 +3,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.63",
     "@types/classnames": "^2.2.3",
+    "@types/clean-webpack-plugin": "^0.1.2",
     "@types/enzyme": "^3.1.8",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/fork-ts-checker-webpack-plugin": "^0.4.0",
@@ -13,6 +14,7 @@
     "@types/react-redux": "^5.0.14",
     "@types/react-table": "^6.7.8",
     "@types/redux-logger": "^3.0.5",
+    "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -52,7 +54,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
-    "watch": "webpack --config webpack.config.dev.js --watch",
+    "watch": "webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch"
   },

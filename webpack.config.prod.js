@@ -1,6 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+let pathsToClean = [
+  'dist',
+]
 
 module.exports = {
   context: path.join(__dirname, "app"),
@@ -17,6 +22,11 @@ module.exports = {
     crossOriginLoading: "anonymous"
   },
   mode: 'production',
+  optimization: {
+    minimize: {
+      sourceMap: false,
+    },
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
@@ -25,7 +35,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          { loader: 'ts-loader', options: { happyPackMode: true, transpileOnly: true } }
+          { loader: 'ts-loader' }
         ],
         exclude: /node_modules/
       },
@@ -43,6 +53,7 @@ module.exports = {
     ]
 },
   plugins: [
+    new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
