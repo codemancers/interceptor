@@ -14,11 +14,13 @@ const fetchDataAlias = (payload: object) => {
       requestHeadersObject
     })
       .then(data => {
+        dispatch(handleRespTextChange("", requestId))
+        dispatch(fetchSuccess("", requestId))
         dispatch(handleRespTextChange(JSON.stringify(data.data), requestId))
         dispatch(fetchSuccess(JSON.stringify(data.data), requestId));
       })
       .catch(err => {
-        dispatch(fetchFailure(err.data, requestId));
+        dispatch(fetchFailure("", requestId))
       });
   };
 };
