@@ -48,6 +48,7 @@ module.exports = {
     ]
 },
   plugins: [
+    new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },
