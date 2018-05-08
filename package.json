@@ -27,7 +27,7 @@
     "ts-jest": "^22.0.2",
     "ts-loader": "^4.2.0",
     "tslint-react": "^3.5.1",
-    "webpack": "4.5.0",
+    "webpack": "^4.8.1",
     "webpack-cli": "^2.0.11"
   },
   "jest": {
@@ -53,7 +53,7 @@
     "url": "https://github.com/code-mancers/interceptor.git"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.prod.js",
+    "build": "webpack -p --config webpack.config.prod.js",
     "watch": "webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch"
