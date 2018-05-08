@@ -3,7 +3,6 @@ import {RequestHeaderList} from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
   const requestId = props.rowProps.checkbox.requestId
-  console.log("Re-rendered")
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
@@ -21,16 +20,15 @@ export const InterceptTextBox = props => {
       </div>
       <div className="response">
         <label className="responseTextlabel">Response Text</label>
-        <span
-          title="Fetch Response Text"
-          className="fetch-responsetext"
+        <button
+          className="fetch-responsetext btn-sm btn-primary"
           onClick={() => {
             props.fetchResponse(props.rowProps.checkbox)
         }
       }
         >
-          X
-        </span>
+          Fetch Response
+        </button>
         <textarea
           name="responseText"
           className="responseText"
