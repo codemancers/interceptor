@@ -1,6 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+let pathsToClean = [
+  'dist',
+]
 
 module.exports = {
   context: path.join(__dirname, "app"),
@@ -16,25 +21,34 @@ module.exports = {
     filename: "js/[name].js",
     crossOriginLoading: "anonymous"
   },
-  devtool: "source-map",
+  mode: 'production',
   resolve: {
-    extensions: ["", ".ts", ".tsx", ".js", ".json"]
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
-      }
-    ],
-    preLoaders: [{ test: /\.js$/, loader: "source-map-loader" }]
-  },
+        use: [
+          { loader: 'ts-loader', options: { transpileOnly: true } }
+        ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              minimize : true
+            }
+          }
+        ]
+       }
+    ]
+},
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: `"${process.env.NODE_ENV}"`
-      }
-    }),
+    new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
       { from: "manifest.json" },
       { from: "index.html" },

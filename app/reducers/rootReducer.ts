@@ -33,7 +33,13 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.CLEAR_REQUESTS:
       return {...state, requests: []};
     case actionType.TOGGLE_CHECKBOX:
-      return {...state, checkedReqs: {...state.checkedReqs, [action.reqId]: action.checked}};
+      return {
+        ...state,
+        checkedReqs: {
+          ...state.checkedReqs,
+          [action.payload.reqId]: action.payload.checked
+        }
+      };
     case actionType.INTERCEPT_CHECKED:
       return {...state};
     case actionType.RESP_TEXT_CHANGE:
