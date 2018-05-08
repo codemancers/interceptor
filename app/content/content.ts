@@ -156,7 +156,7 @@ class Intercept {
   injectScripts = (callback: GenericCallback) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;
-    sinonScript.src = chrome.extension.getURL("./lib/sinon.js");
+    sinonScript.src = chrome.extension.getURL("./lib/sinon.min.js");
     sinonScript.type = "text/javascript";
     sinonScript.id = "interceptor-sinon";
     if (!document.getElementById("interceptor-sinon")) {
