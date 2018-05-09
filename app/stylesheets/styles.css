@@ -58,6 +58,16 @@
 .fetch-responsetext{
   float:right;
   cursor: pointer;
+  border: none;
+  border-radius: var(--br);
+  margin: 0 0 5px 0;
+  background-image: url("./../images/fetchResponse.svg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .select-status{
   width: 155px;
