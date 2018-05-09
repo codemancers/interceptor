@@ -64,7 +64,7 @@ To mock the calls again, just toggle the switch to `ON` state, check the request
 * ~~Mocked requests should hit a sinon fakeServer.~~
 * ~~User should be able to disable/enable mocking for a page without clearing persisted settings for the URL.~~
 
-#Attribution
+## Attribution
 
 Icons for this projects are used from [The Noun Project](https://thenounproject.com/)
 
