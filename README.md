@@ -64,6 +64,12 @@ To mock the calls again, just toggle the switch to `ON` state, check the request
 * ~~Mocked requests should hit a sinon fakeServer.~~
 * ~~User should be able to disable/enable mocking for a page without clearing persisted settings for the URL.~~
 
+#Attribution
+
+Icons for this projects are used from [The Noun Project](https://thenounproject.com/)
+
+ * [Download](https://thenounproject.com/prosymbols/collection/set-of-line-essentials-icons-2/?i=790723) icon used is by [ProSymbols](https://thenounproject.com/prosymbols/) from the [Noun Project](http://thenounproject.com/).
+
 ## License
 
 MIT
