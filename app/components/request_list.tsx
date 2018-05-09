@@ -60,9 +60,16 @@ const RequestList = (props: RequestObj) => {
     },
     {
       id: "checkbox",
-      accessor: "",
+      Header : (data) =>
+      <input type="checkbox" className="checkAll" onChange={e =>
+          data.data.forEach( (val) => e.target.checked ?
+          props.handleCheckToggle(val._original.requestId, true) :
+          props.handleCheckToggle(val._original.requestId, false)
+          )
+        }
+       />,
+      accessor: "data",
       Cell: ({original}) => {
-        return (
           <input
             type="checkbox"
             className="checkbox"
@@ -71,9 +78,7 @@ const RequestList = (props: RequestObj) => {
               props.handleCheckToggle(original.requestId, e.target.checked);
             }}
           />
-        );
       },
-      Header: "Intercept",
       sortable: false,
       width: 75,
       className: 'text-center'
