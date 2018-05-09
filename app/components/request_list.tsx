@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactTable from "react-table";
-import * as matchSorter from "match-sorter";
+import matchSorter from "match-sorter";
 import {InterceptForm} from "./../components/Intercept_Components/index";
 import {InterceptAllButton} from './../components/InterceptAllButton'
 import {Switch} from './Switch'
