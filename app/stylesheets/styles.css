@@ -61,13 +61,18 @@
   border: none;
   border-radius: var(--br);
   margin: 0 0 5px 0;
+  padding-left: 30px;
+  font-weight: bold;
+}
+.fetch-responsetext,
+.fetch-responsetext:hover,
+.fetch-responsetext:focus,
+.fetch-responsetext:active {
   background-image: url("./../images/fetchResponse.svg");
-  background-position: center;
-  background-size: 100%;
+  background-position: 10px;
+  background-size: 14px;
   background-repeat: no-repeat;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+
 }
 .select-status{
   width: 155px;
