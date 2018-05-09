@@ -6,8 +6,10 @@ import {InterceptAllButton} from './../components/InterceptAllButton'
 import {Switch} from './Switch'
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
+  requestId?: number;
+  url?: string;
   handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests: React.MouseEvent<HTMLButtonElement>;
+  handleCheckedRequests: React.MouseEventHandler<HTMLButtonElement>;
   handleRespTextChange: React.FormEvent<HTMLInputElement>;
   handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
   checkedReqs: object;
@@ -24,6 +26,7 @@ export interface RequestObj {
   isInterceptorOn:object;
   fetchResponse:React.MouseEvent<HTMLSpanElement>
   responseData : object;
+  responseError: object;
 }
 const RequestList = (props: RequestObj) => {
   const columns = [
@@ -131,6 +134,7 @@ const RequestList = (props: RequestObj) => {
           tabId={props.tabId}
           fetchResponse={props.fetchResponse}
           responseData = {props.responseData}
+          responseError= {props.responseError}
         />
       )}
     />

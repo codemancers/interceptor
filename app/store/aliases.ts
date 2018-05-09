@@ -14,12 +14,13 @@ const fetchDataAlias = (payload: object) => {
       requestHeadersObject
     })
       .then(data => {
-        dispatch(fetchSuccess("", requestId))
-        dispatch(handleRespTextChange(JSON.stringify(data.data), requestId))
-        dispatch(fetchSuccess(JSON.stringify(data.data), requestId));
+        const stringifiedData = JSON.stringify(data.data);
+        dispatch(fetchSuccess("", requestId));
+        dispatch(handleRespTextChange(stringifiedData, requestId));
+        dispatch(fetchSuccess(stringifiedData, requestId));
       })
       .catch(err => {
-        dispatch(fetchFailure("", requestId))
+        dispatch(fetchFailure("Couldn't connect to server. Check your connection.", requestId));
       });
   };
 };

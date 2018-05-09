@@ -11,7 +11,8 @@ export interface POPUP_PROPS {
   PageDetails : object
   interceptStatus : string
   isInterceptorOn: interceptOn
-  responseData: object
+  responseData: object;
+  responseError: object;
 }
 
 export interface interceptOn{

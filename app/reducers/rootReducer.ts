@@ -12,7 +12,8 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   PageDetails: {},
   interceptStatus : "",
   isInterceptorOn: {},
-  responseData : {}
+  responseData: {},
+  responseError: {}
 };
 
 //ACTION CONSTANTS
@@ -85,7 +86,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
   case actionType.FETCH_DATA_FAILURE: {
     return {
       ...state,
-      responseData: {...state.responseData, [action.payload.requestId]: action.payload.error},
+      responseError: {...state.responseError, [action.payload.requestId]: action.payload.error},
     };
 }
     default:

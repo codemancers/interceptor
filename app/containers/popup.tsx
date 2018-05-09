@@ -202,6 +202,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             handleSwitch={this.handleSwitch}
             fetchResponse={this.props.fetchResponse}
             responseData={this.props.responseData}
+            responseError={this.props.responseError}
           />
         </div>
       </div>
@@ -220,7 +221,8 @@ const mapStateToProps = (state: POPUP_PROPS) => ({
   PageDetails: state.PageDetails,
   interceptStatus: state.interceptStatus,
   isInterceptorOn: state.isInterceptorOn,
-  responseData: state.responseData
+  responseData: state.responseData,
+  responseError: state.responseError
 });
 
 const mapDispatchToProps: DispatchProps = {
