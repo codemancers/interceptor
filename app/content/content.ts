@@ -103,7 +103,7 @@ class Intercept {
       }
 
        function sinonHandler(requestArray) {
-           this.server = sinon.fakeServer.create({ logger: console.log });
+           this.server = nise.fakeServer.create({ logger: console.log });
            this.server.autoRespond = true;
            this.server.xhr.filters = [];
            this.server.xhr.useFilters = true;
@@ -156,7 +156,7 @@ class Intercept {
   injectScripts = (callback: GenericCallback) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;
-    sinonScript.src = chrome.extension.getURL("./lib/sinon.min.js");
+    sinonScript.src = chrome.extension.getURL("./lib/nise.min.js");
     sinonScript.type = "text/javascript";
     sinonScript.id = "interceptor-sinon";
     if (!document.getElementById("interceptor-sinon")) {

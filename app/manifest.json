@@ -18,7 +18,7 @@
       "run_at": "document_end"
     }
   ],
-  "web_accessible_resources": ["lib/sinon.min.js"],
+  "web_accessible_resources": ["lib/nise.min.js"],
   "browser_action": {
     "default_title":"Interceptor",
     "default_popup": "index.html",
