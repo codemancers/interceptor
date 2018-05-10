@@ -1,4 +1,3 @@
-import * as axios from 'axios'
 //ACTION CONSTANTS
 export const  START_LISTENING = "START_LISTENING";
 export const STOP_LISTENING = "STOP_LISTENING";
