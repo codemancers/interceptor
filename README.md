@@ -17,6 +17,8 @@ $ npm run watch
 
 ## How to use
 
+### Listening to requests made by the browser
+
 Once you open the extension popup, it shows a UI as seen below. By default, `Intercept Mode` is `ON`.
 
 <img src="images/interceptor_ui.png" alt="Interceptor extension default popup">
@@ -26,11 +28,21 @@ in the popup like this:
 
 <img src="images/interceptor_ui_xhr_list.png" alt="Interceptor extension popup showing a list of AJAX requests">
 
-You can click the small arrow beside the URL and specify a response to mock, when the same request is encountered next:
+Request headers for listened requests are listed below the response form as shown in the screenshot.
 
-<img src="images/interceptor_textfields.png" alt="Specify mock responses using Interceptor as shown">
+<img src="images/interceptor_textfields.png" alt="A screenshot of Listened requests with request headers">
 
-You can specify the [Content-Type header][content-type] field and HTTP response [status code][status-code] through the dropdown available.
+#### Response data returned by backend server
+
+Many a times, before defining you mock response text, you would want to look at the response data returned by the server when the request is made. On clicking `Fetch Response` button, the `textarea` gets filled with the response data from the real server as shown below. However, You can completely skip this step and move on to typing out mock response text.
+
+<img src="images/interceptor_showresponse.png" alt="Fetching data from backend server">
+
+#### Specifying mock response data
+
+You can click the small arrow beside the URL, which shows a form in which you can specify a response to mock, when the same request is encountered next. You also need to specify the [Content-Type header][content-type] field and [status code][status-code] for the mock response through the dropdown available as shown below.
+
+<img src="images/interceptor_modifyresponse.png" alt="Specify mock responses using Interceptor as shown">
 
 Once the above fields are filled and checkbox is checked, click the `INTERCEPT` button. If the interception is successfull, it shows a success message as below:
 
@@ -40,19 +52,21 @@ You can intercept/mock multiple calls by checking as many checkboxes as you want
 
 <img src="images/intercept_multiple_xhr.png" alt="Success message shown by Interceptor upon sucessful interception">
 
-Henceforth the same AJAX request is requested by the browser, the browser is given a fake/mock response instead of the real one.
+Henceforth the same AJAX request is made by the browser, the browser is given a fake/mock response instead of the real one.
 
-You can also stop listening for `AJAX calls` by clicking the `STOP LISTENING`
+You can also stop listening for `AJAX calls` by clicking the `STOP LISTENING` button. Requests made henceforth won't be listed on UI.
 
 The toggle switch is used to disable `INTERCEPTOR`. If the toggle is switched to `OFF` state, it displays a message saying `Interception Disabled` as below.
 
 <img src="images/interceptor_disabled.png" alt="Message shown by Interceptor on disabling">
 
-In the `disabled` state, the extension won't mock any previously intercepted calls.
-Also, the extension's icon beside the url address bar turns red for that particular tab as in screenshot above.
+In the `disabled` state, the extension won't mock any previously intercepted calls. Instead all `XHR's` are routed to the server.
+The extension's icon beside the url address bar turns red for that particular tab as in screenshot above.
 
 
 To mock the calls again, just toggle the switch to `ON` state, check the requests that are to be mocked and click `INTERCEPT` button.
+
+This [blogpost](https://crypt.codemancers.com/posts/2018-04-24-intro-to-interceptor/) makes things much more clear.
 
 ## TODO
 
