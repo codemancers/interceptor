@@ -27,13 +27,12 @@ export const InterceptTextBox = props => {
         <div className="response">
           <label className="responseTextlabel">Response Text</label>
           <button
+            title="Fetch Response"
             className="fetch-responsetext btn-sm btn-primary"
             onClick={() => {
               props.fetchResponse(props.rowProps.checkbox);
             }}
-          >
-            Fetch Response
-          </button>
+          />
           <textarea
             name="responseText"
             className="responseText"

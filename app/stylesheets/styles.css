@@ -61,7 +61,6 @@
   border: none;
   border-radius: var(--br);
   margin: 0 0 5px 0;
-  padding-left: 30px;
   font-weight: bold;
 }
 .fetch-responsetext,
@@ -69,7 +68,7 @@
 .fetch-responsetext:focus,
 .fetch-responsetext:active {
   background-image: url("./../images/fetchResponse.svg");
-  background-position: 10px;
+  background-position: 5px;
   background-size: 14px;
   background-repeat: no-repeat;
 
