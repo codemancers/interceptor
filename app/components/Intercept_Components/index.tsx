@@ -1,7 +1,8 @@
 import * as React from "react";
 import {InterceptTextBox} from "./InterceptTextBox";
+import {RequestObj} from './../request_list'
 
-export const InterceptForm = props => {
+export const InterceptForm = (props:RequestObj) => {
   return (
     <div>
       <InterceptTextBox

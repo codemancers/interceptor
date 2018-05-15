@@ -1,6 +1,11 @@
 import * as React from "react";
 
-export const InterceptAllButton = props => {
+interface InterceptAllButtonProps{
+  handleCheckedRequests :React.MouseEventHandler<HTMLButtonElement>
+  disabled: boolean;
+}
+
+export const InterceptAllButton = (props:InterceptAllButtonProps) => {
   return (
     <button
     id="intercept-all-btn"

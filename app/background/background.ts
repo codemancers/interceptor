@@ -1,4 +1,4 @@
-import {RequestObj} from "./../components/request_list"
+import {RequestObj} from "./../components/request_list";
 
 interface TabRecord {
   tabId: number;
@@ -20,8 +20,8 @@ class BackgroundWorker {
   startMessageListener = () => {
     //Send a message to content-script on when a page reloads
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if(changeInfo.status === "complete"){
-        chrome.tabs.sendMessage(Number(tab.id), {message : "PAGE_REFRESHED", tabId})
+      if (changeInfo.status === "complete") {
+        chrome.tabs.sendMessage(Number(tab.id), {message: "PAGE_REFRESHED", tabId});
       }
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
@@ -62,24 +62,25 @@ class BackgroundWorker {
           sendResponse(this.data[this.currentTab].requests.length);
           break;
         }
-        case "UPDATE_BADGE_ICON" : {
-          this.updateBadgeIcon(request.tabId, request.disabledStatus)
+        case "UPDATE_BADGE_ICON": {
+          this.updateBadgeIcon(request.tabId, request.disabledStatus);
           break;
         }
       }
     });
   };
 
-  updateBadgeIcon = (tabId:number, disabledStatus:boolean) => {
-    const iconBadgeIconPath = disabledStatus ? "images/icon-disabled-16.png" : "images/icon-16.png"
-      chrome.browserAction.setIcon({
-        path : {
-          "16" : iconBadgeIconPath,
-      }, tabId
-      })
-    }
+  updateBadgeIcon = (tabId: number, disabledStatus: boolean) => {
+    const iconBadgeIconPath = disabledStatus ? "images/icon-disabled-16.png" : "images/icon-16.png";
+    chrome.browserAction.setIcon({
+      path: {
+        "16": iconBadgeIconPath
+      },
+      tabId
+    });
+  };
 
-   updateBadgeText = (noOfRequests:number) => {
+  updateBadgeText = (noOfRequests: number) => {
     chrome.browserAction.setBadgeText({
       text: `${noOfRequests}`,
       tabId: this.currentTab
@@ -90,7 +91,11 @@ class BackgroundWorker {
     const tabRecords = this.data[this.currentTab];
     if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
       this.updateBadgeText(this.data[this.currentTab].requests.length);
-      if (tabRecords.requests.filter(req => req.requestId === details.requestId || (req.url === details.url && req.method === details.method)).length > 0) {
+      if (
+        tabRecords.requests.filter(
+          req => req.requestId === details.requestId || (req.url === details.url && req.method === details.method)
+        ).length > 0
+      ) {
         return;
       }
       tabRecords.requests.push(details);
@@ -117,7 +122,7 @@ class BackgroundWorker {
   };
   clearData = () => {
     this.data[this.currentTab].requests = [];
-    this.updateBadgeText(0)
+    this.updateBadgeText(0);
   };
 }
 

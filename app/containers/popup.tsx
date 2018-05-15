@@ -30,13 +30,6 @@ const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
-
-interface BgStore {
-  ready(): Promise<void>;
-  getState(): any;
-  dispatch: any;
-}
-
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     this.props.updateField("interceptStatus", "");
@@ -122,7 +115,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         this.disableInterceptor(this.props.tabId)
         this.updateBadgeIcon(this.props.tabId, true)
       })
-      .catch((err) => {
+      .catch((err: any) => {
         // something broke in the background store
         console.log(err)
       });
