@@ -1,7 +1,7 @@
-import {POPUP_PROPS, Action} from "../types";
+import { POPUP_PROPS, Action } from "../types";
 export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   enabled: false,
-  tabId: -1,
+  tabId: "-1",
   tabUrl: "",
   errorMessage: "",
   requests: [],
@@ -22,17 +22,17 @@ import * as actionType from "../actions";
 export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
   switch (action.type) {
     case actionType.START_LISTENING:
-      return {...state, enabled: action.payload};
+      return { ...state, enabled: action.payload };
     case actionType.UPDATE_FIELD:
-      return {...state, [action.payload.name]: action.payload.value};
+      return { ...state, [action.payload.name]: action.payload.value };
     case actionType.UPDATE_FIELDS:
-      return {...state, ...action.payload};
+      return { ...state, ...action.payload };
     case actionType.STOP_LISTENING:
-      return {...state, enabled: action.payload};
+      return { ...state, enabled: action.payload };
     case actionType.ERROR:
-      return {...state, errorMessage: action.errorMessage, enabled: false};
+      return { ...state, errorMessage: action.errorMessage, enabled: false };
     case actionType.CLEAR_REQUESTS:
-      return {...state, requests: []};
+      return { ...state, requests: [] };
     case actionType.TOGGLE_CHECKBOX:
       return {
         ...state,
@@ -42,21 +42,21 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         }
       };
     case actionType.INTERCEPT_CHECKED:
-      return {...state};
+      return { ...state };
     case actionType.RESP_TEXT_CHANGE:
       return {
         ...state,
-        responseText: {...state.responseText, [action.payload.requestId]: action.payload.value}
+        responseText: { ...state.responseText, [action.payload.requestId]: action.payload.value }
       };
     case actionType.STATUSCODE_CHANGE:
       return {
         ...state,
-        statusCodes: {...state.statusCodes, [action.payload.requestId]: action.payload.value}
+        statusCodes: { ...state.statusCodes, [action.payload.requestId]: action.payload.value }
       };
     case actionType.CONTENT_TYPE_CHANGE:
       return {
         ...state,
-        contentType: {...state.contentType, [action.payload.requestId]: action.payload.value}
+        contentType: { ...state.contentType, [action.payload.requestId]: action.payload.value }
       };
     case actionType.PAGINATION_CHANGE:
       return {
@@ -70,23 +70,23 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         }
       };
     case actionType.UPDATE_MESSAGE: {
-      return {...state, interceptStatus: action.message};
+      return { ...state, interceptStatus: action.message };
     }
     case actionType.UPDATE_INTERCEPTOR_STATUS:
       return {
         ...state,
-        isInterceptorOn: {...state.isInterceptorOn, [action.payload.tabId]: action.payload.value}
+        isInterceptorOn: { ...state.isInterceptorOn, [action.payload.tabId]: action.payload.value }
       };
     case actionType.FETCH_DATA_SUCCESS: {
       return {
         ...state,
-        responseData: {...state.responseData, [action.payload.requestId]: action.payload.response}
+        responseData: { ...state.responseData, [action.payload.requestId]: action.payload.response }
       };
     }
     case actionType.FETCH_DATA_FAILURE: {
       return {
         ...state,
-        responseError: {...state.responseError, [action.payload.requestId]: action.payload.error}
+        responseError: { ...state.responseError, [action.payload.requestId]: action.payload.error }
       };
     }
     default:

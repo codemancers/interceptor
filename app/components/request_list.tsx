@@ -1,32 +1,32 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
-import {InterceptForm} from "./../components/Intercept_Components/index";
-import {InterceptAllButton} from "./../components/InterceptAllButton";
-import {Switch} from "./Switch";
+import { InterceptForm } from "./../components/Intercept_Components/index";
+import { InterceptAllButton } from "./../components/InterceptAllButton";
+import { Switch } from "./Switch";
+import { responseField, statusCodes, contentType } from "./../../content/content";
+
+export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  requestId?: number;
+  requestId?: string;
   url?: string;
   method?: string;
-  handleCheckedRequests? : React.MouseEventHandler<HTMLButtonElement>;
-  handleRespTextChange?: React.FormEvent<HTMLInputElement>;
-  handleStatusCodeChange?: React.FormEvent<HTMLSelectElement>;
-  checkedReqs: {
+  handleCheckedRequests?: () => any;
+  handleRespTextChange?: () => any;
+  handleStatusCodeChange?: any;
+  checkedReqs?: {
     requestId?: number;
   };
-  handleCheckToggle?: {
-    requestId: number;
-    checked: false;
-  };
-  responseText?: object;
-  statusCodes?: object;
+  handleCheckToggle?: any;
+  responseText?: responseField;
+  statusCodes?: statusCodes;
   handleContentTypeChange?: React.FormEvent<HTMLSelectElement>;
-  contentType?: object;
+  contentType?: contentType;
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
-  clearRequests: React.MouseEvent<HTMLButtonElement>;
+  clearRequests?: any;
   disableInterceptor: React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus: React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn: object;
@@ -39,7 +39,7 @@ const RequestList = (props: RequestObj) => {
     {
       Header: "Request URL",
       accessor: "url",
-      Cell: ({original}: any) => (
+      Cell: ({ original }: any) => (
         <div className="url" title={original.url}>
           {original.url}
         </div>
@@ -60,10 +60,10 @@ const RequestList = (props: RequestObj) => {
       width: 100,
       filterable: true,
       filterMethod: (filter: any, row: any) => row[filter.id] === filter.value,
-      Filter: ({filter, onChange}: any) => (
+      Filter: ({ filter, onChange }: any) => (
         <select
           onChange={event => onChange(event.target.value)}
-          style={{width: "100%"}}
+          style={{ width: "100%" }}
           value={filter ? filter.value : ""}
         >
           <option value="">ALL</option>
@@ -76,7 +76,7 @@ const RequestList = (props: RequestObj) => {
     {
       id: "checkbox",
       accessor: "",
-      Cell: ({original}: any) => {
+      Cell: ({ original }: any) => {
         return (
           <input
             type="checkbox"
@@ -110,7 +110,11 @@ const RequestList = (props: RequestObj) => {
               return props.handleCheckedRequests(enabledRequests);
             }}
           />
-          <button type="button" className="btn btn-sm btn-primary btn-clear" onClick={props.clearRequests}>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary btn-clear"
+            onClick={props.clearRequests}
+          >
             CLEAR
           </button>
         </div>
@@ -124,9 +128,15 @@ const RequestList = (props: RequestObj) => {
         showPaginationBottom={true}
         defaultPageSize={10}
         page={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentPageNumber : 0}
-        pageSize={props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentRowSize : 10}
-        onPageChange={changedPageNo => props.handlePaginationChange(changedPageNo, props.tabId, "currentPageNumber")}
-        onPageSizeChange={changedRowSize => props.handlePaginationChange(changedRowSize, props.tabId, "currentRowSize")}
+        pageSize={
+          props.PageDetails[props.tabId] ? props.PageDetails[props.tabId].currentRowSize : 10
+        }
+        onPageChange={changedPageNo =>
+          props.handlePaginationChange(changedPageNo, props.tabId, "currentPageNumber")
+        }
+        onPageSizeChange={changedRowSize =>
+          props.handlePaginationChange(changedRowSize, props.tabId, "currentRowSize")
+        }
         collapseOnDataChange={false}
         SubComponent={row => (
           <InterceptForm
@@ -148,3 +158,19 @@ const RequestList = (props: RequestObj) => {
   );
 };
 export default RequestList;
+
+RequestList.defaultProps = {
+  requests: [],
+  requestId: "-1",
+  url: "",
+  method: "",
+  checkedReqs: {},
+  responseText: {},
+  statusCodes: {},
+  contentType: {},
+  PageDetails: {},
+  tabId: -1,
+  isInterceptorOn: {},
+  responseData: {},
+  responseError: {}
+};

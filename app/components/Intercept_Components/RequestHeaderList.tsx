@@ -11,7 +11,7 @@ interface RequestHeadersProps {
   defaultProps: string;
 }
 
-export const RequestHeaderList = (props: RequestHeadersProps) => {
+export const RequestHeaderList: React.SFC<RequestHeadersProps> = props => {
   return (
     <div className="requestHeaderContainer">
       <label>Request Headers</label>
