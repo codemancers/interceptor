@@ -29,7 +29,6 @@ const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
-
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     this.props.updateField("interceptStatus", "");

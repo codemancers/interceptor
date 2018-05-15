@@ -8,15 +8,21 @@ export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   requestId?: number;
   url?: string;
-  handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests: React.MouseEventHandler<HTMLButtonElement>;
-  handleRespTextChange: React.FormEvent<HTMLInputElement>;
-  handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
-  checkedReqs: object;
-  responseText: object;
-  statusCodes: object;
-  handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
-  contentType: object;
+  method?: string;
+  handleCheckedRequests?: React.MouseEventHandler<HTMLButtonElement>;
+  handleRespTextChange?: React.FormEvent<HTMLInputElement>;
+  handleStatusCodeChange?: React.FormEvent<HTMLSelectElement>;
+  checkedReqs: {
+    requestId?: number;
+  };
+  handleCheckToggle?: {
+    requestId: number;
+    checked: false;
+  };
+  responseText?: object;
+  statusCodes?: object;
+  handleContentTypeChange?: React.FormEvent<HTMLSelectElement>;
+  contentType?: object;
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
@@ -39,7 +45,7 @@ const RequestList = (props: RequestObj) => {
         </div>
       ),
       filterable: true,
-      filterMethod: (filter, rows) => {
+      filterMethod: (filter: any, rows: any) => {
         return matchSorter(rows, filter.value, {
           keys: ["url"],
           threshold: matchSorter.rankings.CONTAINS
@@ -53,8 +59,8 @@ const RequestList = (props: RequestObj) => {
       accessor: "method",
       width: 100,
       filterable: true,
-      filterMethod: (filter, row) => row[filter.id] === filter.value,
-      Filter: ({ filter, onChange }) => (
+      filterMethod: (filter: any, row: any) => row[filter.id] === filter.value,
+      Filter: ({ filter, onChange }: any) => (
         <select
           onChange={event => onChange(event.target.value)}
           style={{ width: "100%" }}
@@ -70,7 +76,7 @@ const RequestList = (props: RequestObj) => {
     {
       id: "checkbox",
       accessor: "",
-      Cell: ({ original }) => {
+      Cell: ({ original }: any) => {
         return (
           <input
             type="checkbox"

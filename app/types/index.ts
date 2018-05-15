@@ -2,13 +2,15 @@ export interface POPUP_PROPS {
   tabId : number
   tabUrl : string
   enabled : boolean
+  method: string
+  url: string
   requests : Array<any>
   errorMessage : string
   checkedReqs : object
   statusCodes: object
   responseText: object
   contentType: object
-  PageDetails : object
+  PageDetails : Array<object>
   interceptStatus : string
   isInterceptorOn: interceptOn
   responseData: object;

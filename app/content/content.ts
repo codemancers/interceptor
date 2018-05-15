@@ -1,19 +1,31 @@
 import {Store} from "react-chrome-redux";
 import {sendMessageToUI} from "./../actions";
-import {GenericCallback} from "./../message_service";
-interface requestObject {
-  url: string;
-  method: string;
-  requestId: number;
-  timeStamp: number;
-  responseText: string;
-}
 
 interface BgStore {
   ready(): Promise<void>;
   getState(): any;
   dispatch: any;
 }
+
+interface responseField {
+  [requestId:number] : string
+}
+interface statusCodes {
+  [statusCode:number] : string
+}
+interface contentType{
+  [contentType:number]: string
+}
+interface selectedReqs{
+  contentType: contentType;
+  interceptEnabledForTab: boolean;
+  message: string;
+  requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>;
+  responseText: responseField;
+  statusCodes: statusCodes;
+  tabId: number;
+}
+export type GenericCallbackWithoutParams = () => void;
 class Intercept {
   store:BgStore
   constructor() {
@@ -62,10 +74,10 @@ class Intercept {
     })
   }
 
-  setDefaultValues = (responseField, requestsToIntercept, defaultResponseValue) => {
-    requestsToIntercept.forEach(req => {
-        if (!(responseField[req.requestId])) {
-        responseField[req.requestId] = defaultResponseValue;
+  setDefaultValues = (responseField:responseField, requestsToIntercept:Array<chrome.webRequest.WebRequestBodyDetails>, defaultResponseValue:string) => {
+    requestsToIntercept.forEach( (req:chrome.webRequest.WebRequestBodyDetails) => {
+        if (!(responseField[Number(req.requestId)])) {
+        responseField[Number(req.requestId)] = defaultResponseValue;
       }
     });
     return responseField;
@@ -78,7 +90,8 @@ class Intercept {
     }
   }
 
-  runInterceptor  = (selectedReqs) => {
+  runInterceptor  = (selectedReqs:selectedReqs) => {
+    console.log(selectedReqs)
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -153,7 +166,7 @@ class Intercept {
       this.removeScriptFromDom("#disableInterceptorScript");
     }
 
-  injectScripts = (callback: GenericCallback) => {
+  injectScripts = (callback: GenericCallbackWithoutParams) => {
     let sinonScript = document.createElement("script");
     sinonScript.defer = false;
     sinonScript.src = chrome.extension.getURL("./lib/nise.min.js");
