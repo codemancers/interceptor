@@ -1,5 +1,5 @@
-import {Store} from "react-chrome-redux";
-import {sendMessageToUI} from "./../actions";
+import { Store } from "react-chrome-redux";
+import { sendMessageToUI } from "./../actions";
 
 interface BgStore {
   ready(): Promise<void>;
@@ -7,16 +7,16 @@ interface BgStore {
   dispatch: any;
 }
 
-interface responseField {
-  [requestId:number] : string
+export interface responseField {
+  [requestId: number]: string;
 }
-interface statusCodes {
-  [statusCode:number] : string
+export interface statusCodes {
+  [statusCode: number]: string;
 }
-interface contentType{
-  [contentType:number]: string
+export interface contentType {
+  [contentType: number]: string;
 }
-interface selectedReqs{
+interface selectedReqs {
   contentType: contentType;
   interceptEnabledForTab: boolean;
   message: string;
@@ -27,7 +27,7 @@ interface selectedReqs{
 }
 export type GenericCallbackWithoutParams = () => void;
 class Intercept {
-  store:BgStore
+  store: BgStore;
   constructor() {
     this.store = new Store({
       portName: "INTERCEPTOR"
@@ -36,62 +36,69 @@ class Intercept {
   startMessageListener = () => {
     this.store.ready().then(() => {
       chrome.runtime.onMessage.addListener((request, _, __) => {
-          this.interceptSelected(request.message,request.tabId);
+        this.interceptSelected(request.message, request.tabId);
       });
     });
   };
-  interceptSelected = (message:string, tabId:number) => {
+  interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState();
     const checkedReqs = presentState.requests.filter(req => {
       return presentState.checkedReqs[req.requestId] && tabId;
     });
     const requestObj = {
       message: message,
-      interceptEnabledForTab : presentState.isInterceptorOn[tabId],
+      interceptEnabledForTab: presentState.isInterceptorOn[tabId],
       requestsToIntercept: checkedReqs,
       responseText: presentState.responseText,
       statusCodes: presentState.statusCodes,
       contentType: presentState.contentType,
       tabId: tabId
     };
-    if(message !== "DISABLE_INTERCEPTOR"){
+    if (message !== "DISABLE_INTERCEPTOR") {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
         requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
       ) {
-          return;
+        return;
       }
     }
     this.injectScripts(() => {
-    if ((message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") && requestObj.interceptEnabledForTab ) {
-      this.runInterceptor(requestObj);
-      this.store.dispatch(sendMessageToUI("Interception Success!"));
-    } else if ((message === "DISABLE_INTERCEPTOR" ) && !requestObj.interceptEnabledForTab) {
-      this.disableInterceptor()
-      this.store.dispatch(sendMessageToUI("Interception Disabled!"));
-    }
-    })
-  }
+      if (
+        (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") &&
+        requestObj.interceptEnabledForTab
+      ) {
+        this.runInterceptor(requestObj);
+        this.store.dispatch(sendMessageToUI("Interception Success!"));
+      } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
+        this.disableInterceptor();
+        this.store.dispatch(sendMessageToUI("Interception Disabled!"));
+      }
+    });
+  };
 
-  setDefaultValues = (responseField:responseField, requestsToIntercept:Array<chrome.webRequest.WebRequestBodyDetails>, defaultResponseValue:string) => {
-    requestsToIntercept.forEach( (req:chrome.webRequest.WebRequestBodyDetails) => {
-        if (!(responseField[Number(req.requestId)])) {
+  setDefaultValues = (
+    responseField: responseField,
+    requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>,
+    defaultResponseValue: string
+  ) => {
+    requestsToIntercept.forEach((req: chrome.webRequest.WebRequestBodyDetails) => {
+      if (!responseField[Number(req.requestId)]) {
         responseField[Number(req.requestId)] = defaultResponseValue;
       }
     });
     return responseField;
-  }
+  };
 
-  removeScriptFromDom = (querySelector:string) => {
-    while(document.querySelectorAll(querySelector).length){
-    let elemToRemove = document.querySelector(querySelector);
-    elemToRemove.parentNode.removeChild(elemToRemove);
+  removeScriptFromDom = (querySelector: string) => {
+    while (document.querySelectorAll(querySelector).length) {
+      let elemToRemove = document.querySelector(querySelector);
+      elemToRemove.parentNode.removeChild(elemToRemove);
     }
-  }
+  };
 
-  runInterceptor  = (selectedReqs:selectedReqs) => {
-    console.log(selectedReqs)
+  runInterceptor = (selectedReqs: selectedReqs) => {
+    console.log(selectedReqs);
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
@@ -99,7 +106,7 @@ class Intercept {
     this.setDefaultValues(statusCodes, selectedReqs.requestsToIntercept, "200");
     this.setDefaultValues(contentType, selectedReqs.requestsToIntercept, "application/json");
 
-    var selectedInterceptCode =`
+    var selectedInterceptCode = `
      (function(){
        if (window.interceptor) {
          window.interceptor.server = null;
@@ -148,23 +155,23 @@ class Intercept {
     script.textContent = selectedInterceptCode;
     (document.head || document.documentElement).appendChild(script);
     this.removeScriptFromDom("#enableInterceptorScript");
-    }
+  };
 
-    disableInterceptor = () => {
-      var selectedInterceptCode =`
+  disableInterceptor = () => {
+    var selectedInterceptCode = `
       (function(){
         if(window.interceptor){
           window.interceptor.server.restore()
         }
       })();`;
-      let script = document.createElement("script");
-      script.defer = true;
-      script.id = "disableInterceptorScript";
-      script.type = "text/javascript";
-      script.textContent = selectedInterceptCode;
-      (document.head || document.documentElement).appendChild(script);
-      this.removeScriptFromDom("#disableInterceptorScript");
-    }
+    let script = document.createElement("script");
+    script.defer = true;
+    script.id = "disableInterceptorScript";
+    script.type = "text/javascript";
+    script.textContent = selectedInterceptCode;
+    (document.head || document.documentElement).appendChild(script);
+    this.removeScriptFromDom("#disableInterceptorScript");
+  };
 
   injectScripts = (callback: GenericCallbackWithoutParams) => {
     let sinonScript = document.createElement("script");
