@@ -30,12 +30,6 @@ const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
 
-interface BgStore {
-  ready(): Promise<void>;
-  getState(): any;
-  dispatch: any;
-}
-
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
     this.props.updateField("interceptStatus", "");
@@ -137,6 +131,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       "button-start-listening btn-secondary": !this.props.enabled,
       "button-stop-listening btn-danger": this.props.enabled
     });
+    const props = this.props;
+    const enabled = this.props.enabled;
     return (
       <div className="popup">
         <header>
@@ -165,44 +161,44 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               <span>INTERCEPTOR</span>
             </a>
             <button
-              title="Start/Stop Listening to Requests"
+              title={enabled ? "Stop Listening to Requests" : "Start Listening to Requests"}
               type="button"
               onClick={this.handleClick}
               className={buttonClass}
             >
-              {this.props.enabled ? "Stop Listening" : "Start Listening"}
+              {enabled ? "Stop Listening" : "Start Listening"}
             </button>
           </div>
         </header>
 
         <div>
-          {this.props.errorMessage ? (
+          {props.errorMessage ? (
             <p className="popup-error-message popup-error"> {this.props.errorMessage} </p>
           ) : null}
-          {this.props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
+          {props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
 
           <RequestList
-            requests={this.props.requests}
+            requests={props.requests}
             handleCheckToggle={this.handleCheckToggle}
-            checkedReqs={this.props.checkedReqs}
+            checkedReqs={props.checkedReqs}
             handleCheckedRequests={this.handleCheckedRequests}
             handleRespTextChange={this.handleRespTextChange}
             handleStatusCodeChange={this.handleStatusCodeChange}
-            responseText={this.props.responseText}
-            statusCodes={this.props.statusCodes}
-            handleContentTypeChange={this.props.handleContentTypeChange}
-            contentType={this.props.contentType}
-            handlePaginationChange={this.props.handlePaginationChange}
-            PageDetails={this.props.PageDetails}
-            tabId={this.props.tabId}
+            responseText={props.responseText}
+            statusCodes={props.statusCodes}
+            handleContentTypeChange={props.handleContentTypeChange}
+            contentType={props.contentType}
+            handlePaginationChange={props.handlePaginationChange}
+            PageDetails={props.PageDetails}
+            tabId={props.tabId}
             clearRequests={this.clearRequests}
             disableInterceptor={this.disableInterceptor}
             updateInterceptorStatus={this.updateInterceptorStatus}
-            isInterceptorOn={this.props.isInterceptorOn}
+            isInterceptorOn={props.isInterceptorOn}
             handleSwitch={this.handleSwitch}
-            fetchResponse={this.props.fetchResponse}
-            responseData={this.props.responseData}
-            responseError={this.props.responseError}
+            fetchResponse={props.fetchResponse}
+            responseData={props.responseData}
+            responseError={props.responseError}
           />
         </div>
       </div>
