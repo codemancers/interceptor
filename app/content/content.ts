@@ -92,8 +92,9 @@ class Intercept {
 
   removeScriptFromDom = (querySelector: string) => {
     while (document.querySelectorAll(querySelector).length) {
-      let elemToRemove = document.querySelector(querySelector);
-      elemToRemove.parentNode.removeChild(elemToRemove);
+      let elemToRemove = document.querySelector(querySelector) as Node;
+      const parentElement = elemToRemove.parentNode as Node | null
+      parentElement.removeChild(elemToRemove);
     }
   };
 
