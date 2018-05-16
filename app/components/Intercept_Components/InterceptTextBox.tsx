@@ -1,5 +1,5 @@
 import * as React from "react";
-import {RequestHeaderList} from "./RequestHeaderList";
+import { RequestHeaderList } from "./RequestHeaderList";
 
 export const InterceptTextBox = props => {
   const requestId = props.rowProps.checkbox.requestId;
@@ -25,9 +25,9 @@ export const InterceptTextBox = props => {
           </a>
         </div>
         <div className="response">
-          <label className="responseTextlabel">Response Text</label>
+          <label className="responseTextlabel">Mocked Response Text</label>
           <button
-            title="Fetch Response"
+            title="Fetch Response Text"
             className="fetch-responsetext btn-sm btn-primary"
             onClick={() => {
               props.fetchResponse(props.rowProps.checkbox);
@@ -38,6 +38,7 @@ export const InterceptTextBox = props => {
             className="responseText"
             defaultValue={responseTextValue}
             key={props.responseData[requestId]}
+            title="Mocked Response Text"
             //value={textAreaValue}
             onChange={event => {
               props.handleRespTextChange(event.target.value, requestId);
