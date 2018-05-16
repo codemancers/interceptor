@@ -132,7 +132,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       "button-stop-listening btn-danger": this.props.enabled
     });
     const props = this.props;
-    const enabled = this.props.enabled;
     return (
       <div className="popup">
         <header>
@@ -161,21 +160,21 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               <span>INTERCEPTOR</span>
             </a>
             <button
-              title={enabled ? "Stop Listening to Requests" : "Start Listening to Requests"}
+              title={props.enabled ? "Stop Listening to Requests" : "Start Listening to Requests"}
               type="button"
               onClick={this.handleClick}
               className={buttonClass}
             >
-              {enabled ? "Stop Listening" : "Start Listening"}
+              {props.enabled ? "Stop Listening" : "Start Listening"}
             </button>
           </div>
         </header>
 
         <div>
           {props.errorMessage ? (
-            <p className="popup-error-message popup-error"> {this.props.errorMessage} </p>
+            <p className="popup-error-message popup-error"> {props.errorMessage} </p>
           ) : null}
-          {props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
+          {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
           <RequestList
             requests={props.requests}
