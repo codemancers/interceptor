@@ -1,7 +1,5 @@
 import * as React from "react";
 import { RequestHeaderList } from "./RequestHeaderList";
-<<<<<<< HEAD
-=======
 import { responseField, statusCodes, contentType } from "./../../content/content";
 interface InterceptTextBox {
   rowProps: any;
@@ -15,7 +13,6 @@ interface InterceptTextBox {
   handleStatusCodeChange: any;
   handleContentTypeChange: any;
 }
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
 
 export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
   const requestId = props.rowProps.checkbox.requestId;

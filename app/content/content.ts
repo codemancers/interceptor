@@ -42,7 +42,7 @@ class Intercept {
   };
   interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState();
-    const checkedReqs = presentState.requests.filter(req => {
+    const checkedReqs = presentState.requests.filter( (req:chrome.webRequest.WebRequestBodyDetails) => {
       return presentState.checkedReqs[req.requestId] && tabId;
     });
     const requestObj = {
@@ -58,7 +58,7 @@ class Intercept {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
-        requestObj.requestsToIntercept.find(req => req.tabId !== requestObj.tabId)
+        requestObj.requestsToIntercept.find( (req:chrome.webRequest.WebRequestBodyDetails) => req.tabId !== requestObj.tabId)
       ) {
         return;
       }

@@ -115,11 +115,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           this.disableInterceptor(this.props.tabId);
           this.updateBadgeIcon(this.props.tabId, true);
         })
-<<<<<<< HEAD
-        .catch(err => {
-=======
-        .catch((err: any) => {
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
+        .catch((err:any) => {
           // something broke in the background store
           console.log(err);
         });
@@ -177,11 +173,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           {props.errorMessage ? (
             <p className="popup-error-message popup-error"> {props.errorMessage} </p>
           ) : null}
-<<<<<<< HEAD
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
-=======
-          {this.props.interceptStatus && <div id="success-msg">{this.props.interceptStatus}</div>}
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
 
           <RequestList
             requests={props.requests}

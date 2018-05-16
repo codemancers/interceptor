@@ -4,43 +4,30 @@ import matchSorter from "match-sorter";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
-<<<<<<< HEAD
-=======
-import { responseField, statusCodes, contentType } from "./../../content/content";
-
-export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  requestId?: string;
+  requestId?: number;
   url?: string;
   method?: string;
-<<<<<<< HEAD
+  rowProps?: any;
   handleCheckedRequests?: React.MouseEventHandler<HTMLButtonElement>;
   handleRespTextChange?: React.FormEvent<HTMLInputElement>;
   handleStatusCodeChange?: React.FormEvent<HTMLSelectElement>;
   checkedReqs: {
-=======
-  handleCheckedRequests?: () => any;
-  handleRespTextChange?: () => any;
-  handleStatusCodeChange?: any;
-  checkedReqs?: {
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
     requestId?: number;
   };
-  handleCheckToggle?: any;
-  responseText?: responseField;
-  statusCodes?: statusCodes;
+  handleCheckToggle?: {
+    requestId: number;
+    checked: false;
+  };
+  responseText?: object;
+  statusCodes?: object;
   handleContentTypeChange?: React.FormEvent<HTMLSelectElement>;
-  contentType?: contentType;
+  contentType?: object;
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
-<<<<<<< HEAD
   clearRequests: React.ChangeEvent<HTMLButtonElement>;
-=======
-  clearRequests?: any;
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
   disableInterceptor: React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus: React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn: object;
@@ -53,11 +40,7 @@ const RequestList = (props: RequestObj) => {
     {
       Header: "Request URL",
       accessor: "url",
-<<<<<<< HEAD
-      Cell: ({ original }) => (
-=======
       Cell: ({ original }: any) => (
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
         <div className="url" title={original.url}>
           {original.url}
         </div>
@@ -130,10 +113,7 @@ const RequestList = (props: RequestObj) => {
           />
           <button
             type="button"
-<<<<<<< HEAD
             title="Clear All Requests"
-=======
->>>>>>> 926fd86... Fix more ts errors, correct reqId type to a string from number type
             className="btn btn-sm btn-primary btn-clear"
             onClick={props.clearRequests}
           >
@@ -180,19 +160,3 @@ const RequestList = (props: RequestObj) => {
   );
 };
 export default RequestList;
-
-RequestList.defaultProps = {
-  requests: [],
-  requestId: "-1",
-  url: "",
-  method: "",
-  checkedReqs: {},
-  responseText: {},
-  statusCodes: {},
-  contentType: {},
-  PageDetails: {},
-  tabId: -1,
-  isInterceptorOn: {},
-  responseData: {},
-  responseError: {}
-};
