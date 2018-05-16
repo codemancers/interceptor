@@ -4,42 +4,49 @@ import matchSorter from "match-sorter";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
+import { responseField, statusCodes, contentType } from "./../content/content";
+import { interceptOn } from "./../types";
+
+export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  requestId?: number;
+  requestId?: string;
   url?: string;
-  handleCheckToggle: React.ChangeEvent<HTMLInputElement>;
-  handleCheckedRequests: React.MouseEventHandler<HTMLButtonElement>;
-  handleRespTextChange: React.FormEvent<HTMLInputElement>;
-  handleStatusCodeChange: React.FormEvent<HTMLSelectElement>;
-  checkedReqs: object;
-  responseText: object;
-  statusCodes: object;
-  handleContentTypeChange: React.FormEvent<HTMLSelectElement>;
-  contentType: object;
-  PageDetails: object;
-  handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
+  method?: string;
+  handleCheckedRequests?: () => (requests: Array<chrome.webRequest.WebRequestDetails>) => void;
+  handleRespTextChange?: () => (value: string, reqId: string) => void;
+  handleStatusCodeChange?: (value: string, reqId: string) => void;
+  checkedReqs?: {
+    requestId?: number;
+  };
+  handleCheckToggle?: (reqId:number, checked: boolean) => void;
+  responseText?: responseField;
+  statusCodes?: statusCodes;
+  handleContentTypeChange?: (value: string, reqId: string) => void;
+  contentType?: contentType;
+  PageDetails: Array<object>;
+  handlePaginationChange: (rowSize: string, tabId: number, field: string) => void;
   tabId: number;
-  clearRequests: React.ChangeEvent<HTMLButtonElement>;
-  disableInterceptor: React.ChangeEvent<HTMLButtonElement>;
-  updateInterceptorStatus: React.ChangeEvent<HTMLButtonElement>;
-  isInterceptorOn: object;
+  clearRequests?: (e: React.MouseEvent<HTMLButtonElement>) => void ;
+  disableInterceptor: (tabId:number) => void ;
+  updateInterceptorStatus: (tabId:number) => void;
+  isInterceptorOn: interceptOn;
   fetchResponse: React.MouseEvent<HTMLSpanElement>;
   responseData: object;
   responseError: object;
 }
-const RequestList = (props: RequestObj) => {
+const RequestList: React.SFC<RequestObj> = props => {
   const columns = [
     {
       Header: "Request URL",
       accessor: "url",
-      Cell: ({ original }) => (
+      Cell: ({ original }: any) => (
         <div className="url" title={original.url}>
           {original.url}
         </div>
       ),
       filterable: true,
-      filterMethod: (filter, rows) => {
+      filterMethod: (filter: any, rows: any) => {
         return matchSorter(rows, filter.value, {
           keys: ["url"],
           threshold: matchSorter.rankings.CONTAINS
@@ -53,8 +60,8 @@ const RequestList = (props: RequestObj) => {
       accessor: "method",
       width: 100,
       filterable: true,
-      filterMethod: (filter, row) => row[filter.id] === filter.value,
-      Filter: ({ filter, onChange }) => (
+      filterMethod: (filter: any, row: any) => row[filter.id] === filter.value,
+      Filter: ({ filter, onChange }: any) => (
         <select
           onChange={event => onChange(event.target.value)}
           style={{ width: "100%" }}
@@ -70,7 +77,7 @@ const RequestList = (props: RequestObj) => {
     {
       id: "checkbox",
       accessor: "",
-      Cell: ({ original }) => {
+      Cell: ({ original }: any) => {
         return (
           <input
             type="checkbox"
@@ -153,3 +160,19 @@ const RequestList = (props: RequestObj) => {
   );
 };
 export default RequestList;
+
+RequestList.defaultProps = {
+  requests: [],
+  requestId: "-1",
+  url: "",
+  method: "",
+  checkedReqs: {},
+  responseText: {},
+  statusCodes: {},
+  contentType: {},
+  PageDetails: {},
+  tabId: -1,
+  isInterceptorOn: {},
+  responseData: {},
+  responseError: {}
+};

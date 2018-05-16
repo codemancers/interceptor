@@ -1,11 +1,17 @@
 import * as React from "react";
 
+interface requestHeadersProps extends chrome.webRequest.WebRequestHeadersDetails {
+  map: Function;
+}
+
 interface RequestHeadersProps {
   name: string;
   value: string;
+  requestHeaders: requestHeadersProps;
+  defaultProps: string;
 }
 
-export const RequestHeaderList = props => {
+export const RequestHeaderList: React.SFC<RequestHeadersProps> = props => {
   return (
     <div className="requestHeaderContainer">
       <label>Request Headers</label>
@@ -31,5 +37,7 @@ export const RequestHeaderList = props => {
 };
 
 RequestHeaderList.defaultProps = {
+  name: "",
+  value: "",
   requestHeaders: []
 };

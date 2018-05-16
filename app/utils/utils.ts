@@ -1,8 +1,9 @@
 setTimeout(() => {
-  const style = document.querySelector('body').style;
-  style.display = 'block';
+  const bodyElement = <HTMLBodyElement>document.querySelector("body");
+  const style: CSSStyleDeclaration = bodyElement.style;
+  style.display = "block";
   setTimeout(() => {
-    style.opacity = 1;
+    style.opacity = "1";
   });
 }, 200);
 

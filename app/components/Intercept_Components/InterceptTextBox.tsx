@@ -1,7 +1,20 @@
 import * as React from "react";
 import { RequestHeaderList } from "./RequestHeaderList";
+import { responseField, statusCodes, contentType } from "./../../content/content";
+interface InterceptTextBox {
+  rowProps: any;
+  responseText: responseField;
+  statusCodes: statusCodes;
+  contentType: contentType;
+  responseError: responseField;
+  fetchResponse: any;
+  responseData: responseField;
+  handleRespTextChange: any;
+  handleStatusCodeChange: any;
+  handleContentTypeChange: any;
+}
 
-export const InterceptTextBox = props => {
+export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
   const requestId = props.rowProps.checkbox.requestId;
   const defaultResponseText = "";
   const defaultStatusCode = "200";
