@@ -72,31 +72,31 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.clearFields();
   };
 
-  handleCheckToggle = (reqId: number, presentCheckedState: boolean) => {
+  handleCheckToggle = (reqId: number, presentCheckedState: boolean): void => {
     this.props.handleCheckToggle(reqId, presentCheckedState);
   };
 
-  handleRespTextChange = (value: string, requestId: string) => {
+  handleRespTextChange = (value: string, requestId: string): void => {
     this.props.handleRespTextChange(value, requestId);
   };
 
-  handleStatusCodeChange = (value: string, requestId: string) => {
+  handleStatusCodeChange = (value: string, requestId: string): void => {
     this.props.handleStatusCodeChange(value, requestId);
   };
 
-  handleContentTypeChange = (value: string, requestId: string) => {
+  handleContentTypeChange = (value: string, requestId: string) : void => {
     this.props.handleContentTypeChange(value, requestId);
   };
 
-  handleCheckedRequests = (requests: Array<object>) => {
+  handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
     MessageService.interceptChecked(this.props.tabId, requests);
   };
 
-  handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string) => {
+  handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string): void=> {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
 
-  disableInterceptor = (tabId: number) => {
+  disableInterceptor = (tabId: number) : void => {
     MessageService.disableInterceptor(tabId);
   };
 

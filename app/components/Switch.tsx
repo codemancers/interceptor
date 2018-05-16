@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export const Switch = function(props = {isOn: true, handleSwitch: () => {}}) {
   let classNames = ["switch", props.isOn ? "switch_is-on" : "switch_is-off"].join(" ");
   return (

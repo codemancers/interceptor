@@ -1,7 +1,7 @@
 import { POPUP_PROPS, Action } from "../types";
 export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   enabled: false,
-  tabId: "-1",
+  tabId: -1,
   tabUrl: "",
   errorMessage: "",
   requests: [],

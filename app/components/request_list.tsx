@@ -4,7 +4,8 @@ import matchSorter from "match-sorter";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
-import { responseField, statusCodes, contentType } from "./../../content/content";
+import { responseField, statusCodes, contentType } from "./../content/content";
+import { interceptOn } from "./../types";
 
 export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
@@ -12,29 +13,29 @@ export interface RequestObj {
   requestId?: string;
   url?: string;
   method?: string;
-  handleCheckedRequests?: () => any;
-  handleRespTextChange?: () => any;
-  handleStatusCodeChange?: any;
+  handleCheckedRequests?: () => (requests: Array<chrome.webRequest.WebRequestDetails>) => void;
+  handleRespTextChange?: () => (value: string, reqId: string) => void;
+  handleStatusCodeChange?: (value: string, reqId: string) => void;
   checkedReqs?: {
     requestId?: number;
   };
-  handleCheckToggle?: any;
+  handleCheckToggle?: (reqId:number, checked: boolean) => void;
   responseText?: responseField;
   statusCodes?: statusCodes;
-  handleContentTypeChange?: React.FormEvent<HTMLSelectElement>;
+  handleContentTypeChange?: (value: string, reqId: string) => void;
   contentType?: contentType;
-  PageDetails: object;
-  handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
+  PageDetails: Array<object>;
+  handlePaginationChange: (rowSize: string, tabId: number, field: string) => void;
   tabId: number;
-  clearRequests?: any;
-  disableInterceptor: React.ChangeEvent<HTMLButtonElement>;
-  updateInterceptorStatus: React.ChangeEvent<HTMLButtonElement>;
-  isInterceptorOn: object;
+  clearRequests?: (e: React.MouseEvent<HTMLButtonElement>) => void ;
+  disableInterceptor: (tabId:number) => void ;
+  updateInterceptorStatus: (tabId:number) => void;
+  isInterceptorOn: interceptOn;
   fetchResponse: React.MouseEvent<HTMLSpanElement>;
   responseData: object;
   responseError: object;
 }
-const RequestList = (props: RequestObj) => {
+const RequestList: React.SFC<RequestObj> = props => {
   const columns = [
     {
       Header: "Request URL",

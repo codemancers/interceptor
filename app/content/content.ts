@@ -93,13 +93,12 @@ class Intercept {
   removeScriptFromDom = (querySelector: string) => {
     while (document.querySelectorAll(querySelector).length) {
       let elemToRemove = document.querySelector(querySelector) as Node;
-      const parentElement = elemToRemove.parentNode as Node | null
+      const parentElement:(Node | null) = elemToRemove.parentNode;
       parentElement.removeChild(elemToRemove);
     }
   };
 
   runInterceptor = (selectedReqs: selectedReqs) => {
-    console.log(selectedReqs);
     let responseTexts = selectedReqs.responseText || {};
     let statusCodes = selectedReqs.statusCodes || {};
     let contentType = selectedReqs.contentType || {};
