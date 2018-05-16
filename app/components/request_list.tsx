@@ -4,30 +4,29 @@ import matchSorter from "match-sorter";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
+import { responseField, statusCodes, contentType } from "./../../content/content";
+
+export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
   requests: Array<chrome.webRequest.WebRequestDetails>;
-  requestId?: number;
+  requestId?: string;
   url?: string;
   method?: string;
-  rowProps?: any;
-  handleCheckedRequests?: React.MouseEventHandler<HTMLButtonElement>;
-  handleRespTextChange?: React.FormEvent<HTMLInputElement>;
-  handleStatusCodeChange?: React.FormEvent<HTMLSelectElement>;
-  checkedReqs: {
+  handleCheckedRequests?: () => any;
+  handleRespTextChange?: () => any;
+  handleStatusCodeChange?: any;
+  checkedReqs?: {
     requestId?: number;
   };
-  handleCheckToggle?: {
-    requestId: number;
-    checked: false;
-  };
-  responseText?: object;
-  statusCodes?: object;
+  handleCheckToggle?: any;
+  responseText?: responseField;
+  statusCodes?: statusCodes;
   handleContentTypeChange?: React.FormEvent<HTMLSelectElement>;
-  contentType?: object;
+  contentType?: contentType;
   PageDetails: object;
   handlePaginationChange: React.MouseEvent<HTMLButtonElement>;
   tabId: number;
-  clearRequests: React.ChangeEvent<HTMLButtonElement>;
+  clearRequests?: any;
   disableInterceptor: React.ChangeEvent<HTMLButtonElement>;
   updateInterceptorStatus: React.ChangeEvent<HTMLButtonElement>;
   isInterceptorOn: object;
@@ -160,3 +159,19 @@ const RequestList = (props: RequestObj) => {
   );
 };
 export default RequestList;
+
+RequestList.defaultProps = {
+  requests: [],
+  requestId: "-1",
+  url: "",
+  method: "",
+  checkedReqs: {},
+  responseText: {},
+  statusCodes: {},
+  contentType: {},
+  PageDetails: {},
+  tabId: -1,
+  isInterceptorOn: {},
+  responseData: {},
+  responseError: {}
+};
