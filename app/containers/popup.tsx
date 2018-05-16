@@ -1,11 +1,10 @@
 import * as React from "react";
 import * as cx from "classnames";
-import {connect} from "react-redux";
-import {Store} from "react-chrome-redux";
+import { connect } from "react-redux";
 
 import * as MessageService from "./../message_service";
 import RequestList from "./../components/request_list";
-import {POPUP_PROPS} from "./../types";
+import { POPUP_PROPS } from "./../types";
 import * as actionTypes from "./../actions";
 
 interface DispatchProps {
@@ -22,7 +21,7 @@ interface DispatchProps {
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
   handlePaginationChange: typeof actionTypes.handlePaginationChange;
   updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus;
-  fetchResponse:typeof actionTypes.fetchResponse;
+  fetchResponse: typeof actionTypes.fetchResponse;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -30,12 +29,6 @@ const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
 const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
-
-interface BgStore {
-  ready(): Promise<void>;
-  getState(): any;
-  dispatch: any;
-}
 
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentWillMount() {
@@ -50,9 +43,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       this.props.updateField("enabled", enabledStatus);
     });
     this.props.updateField("errorMessage", "");
-    if(this.props.isInterceptorOn[this.props.tabId] === undefined ){
-      this.props.updateInterceptorStatus(this.props.tabId, true)
-     }
+    if (this.props.isInterceptorOn[this.props.tabId] === undefined) {
+      this.props.updateInterceptorStatus(this.props.tabId, true);
+    }
   }
 
   isUrlInValid = (tabUrl: string) => {
@@ -70,7 +63,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     } else {
       MessageService.getRequests(this.props.tabId, requests => {
         MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({enabled: true, requests});
+        this.props.updateFields({ enabled: true, requests });
       });
     }
   };
@@ -104,39 +97,41 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
 
-  disableInterceptor =(tabId:number) => {
-    MessageService.disableInterceptor(tabId)
-  }
+  disableInterceptor = (tabId: number) => {
+    MessageService.disableInterceptor(tabId);
+  };
 
-  updateInterceptorStatus = (tabId:number, interceptMode:boolean) => {
-    this.props.updateInterceptorStatus(tabId, interceptMode)
-  }
- updateBadgeIcon = (tabId:number,disabledStatus:boolean) => {
-    MessageService.updateBadgeIcon(tabId,disabledStatus)
-  }
+  updateInterceptorStatus = (tabId: number, interceptMode: boolean) => {
+    this.props.updateInterceptorStatus(tabId, interceptMode);
+  };
+  updateBadgeIcon = (tabId: number, disabledStatus: boolean) => {
+    MessageService.updateBadgeIcon(tabId, disabledStatus);
+  };
 
   handleSwitch = () => {
-    if(this.props.isInterceptorOn[this.props.tabId]){
-      this.props.updateInterceptorStatus(this.props.tabId, false)
-      .then(() => {
-        this.disableInterceptor(this.props.tabId)
-        this.updateBadgeIcon(this.props.tabId, true)
-      })
-      .catch((err) => {
-        // something broke in the background store
-        console.log(err)
-      });
-    }else{
-      this.props.updateInterceptorStatus(this.props.tabId, true)
-      this.updateBadgeIcon(this.props.tabId, false)
+    if (this.props.isInterceptorOn[this.props.tabId]) {
+      this.props
+        .updateInterceptorStatus(this.props.tabId, false)
+        .then(() => {
+          this.disableInterceptor(this.props.tabId);
+          this.updateBadgeIcon(this.props.tabId, true);
+        })
+        .catch(err => {
+          // something broke in the background store
+          console.log(err);
+        });
+    } else {
+      this.props.updateInterceptorStatus(this.props.tabId, true);
+      this.updateBadgeIcon(this.props.tabId, false);
     }
-  }
+  };
 
   render() {
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !this.props.enabled,
       "button-stop-listening btn-danger": this.props.enabled
     });
+    const props = this.props;
     return (
       <div className="popup">
         <header>
@@ -164,45 +159,45 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               </svg>
               <span>INTERCEPTOR</span>
             </a>
-            <button type="button" onClick={this.handleClick} className={buttonClass}>
-              {this.props.enabled ? "Stop Listening" : "Start Listening"}
+            <button
+              title={props.enabled ? "Stop Listening to Requests" : "Start Listening to Requests"}
+              type="button"
+              onClick={this.handleClick}
+              className={buttonClass}
+            >
+              {props.enabled ? "Stop Listening" : "Start Listening"}
             </button>
           </div>
         </header>
 
         <div>
-          {this.props.errorMessage ? (
-            <p className="popup-error-message popup-error"> {this.props.errorMessage} </p>
+          {props.errorMessage ? (
+            <p className="popup-error-message popup-error"> {props.errorMessage} </p>
           ) : null}
-          {
-            this.props.interceptStatus &&
-            <div id="success-msg">
-              {this.props.interceptStatus}
-            </div>
-          }
+          {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
           <RequestList
-            requests={this.props.requests}
+            requests={props.requests}
             handleCheckToggle={this.handleCheckToggle}
-            checkedReqs={this.props.checkedReqs}
+            checkedReqs={props.checkedReqs}
             handleCheckedRequests={this.handleCheckedRequests}
             handleRespTextChange={this.handleRespTextChange}
             handleStatusCodeChange={this.handleStatusCodeChange}
-            responseText={this.props.responseText}
-            statusCodes={this.props.statusCodes}
-            handleContentTypeChange={this.props.handleContentTypeChange}
-            contentType={this.props.contentType}
-            handlePaginationChange={this.props.handlePaginationChange}
-            PageDetails={this.props.PageDetails}
-            tabId={this.props.tabId}
+            responseText={props.responseText}
+            statusCodes={props.statusCodes}
+            handleContentTypeChange={props.handleContentTypeChange}
+            contentType={props.contentType}
+            handlePaginationChange={props.handlePaginationChange}
+            PageDetails={props.PageDetails}
+            tabId={props.tabId}
             clearRequests={this.clearRequests}
             disableInterceptor={this.disableInterceptor}
             updateInterceptorStatus={this.updateInterceptorStatus}
-            isInterceptorOn={this.props.isInterceptorOn}
+            isInterceptorOn={props.isInterceptorOn}
             handleSwitch={this.handleSwitch}
-            fetchResponse={this.props.fetchResponse}
-            responseData={this.props.responseData}
-            responseError={this.props.responseError}
+            fetchResponse={props.fetchResponse}
+            responseData={props.responseData}
+            responseError={props.responseError}
           />
         </div>
       </div>
@@ -239,7 +234,7 @@ const mapDispatchToProps: DispatchProps = {
   handleContentTypeChange: actionTypes.handleContentTypeChange,
   handlePaginationChange: actionTypes.handlePaginationChange,
   updateInterceptorStatus: actionTypes.updateInterceptorStatus,
-  fetchResponse:actionTypes.fetchResponse
+  fetchResponse: actionTypes.fetchResponse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
