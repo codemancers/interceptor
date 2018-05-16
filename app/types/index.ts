@@ -1,3 +1,7 @@
+enum interceptStatus {
+  Success = "Interception Success!",
+  Fail = "Interception Disabled!"
+}
 export interface POPUP_PROPS {
   tabId: number;
   tabUrl: string;
@@ -11,7 +15,7 @@ export interface POPUP_PROPS {
   responseText: object;
   contentType: object;
   PageDetails: Array<object>;
-  interceptStatus: string;
+  interceptStatus: interceptStatus;
   isInterceptorOn: interceptOn;
   responseData: object;
   responseError: object;
