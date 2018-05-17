@@ -34,9 +34,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.updateField("interceptStatus", "");
     this.props.updateField("tabId", this.props.tabId);
     this.props.updateField("tabUrl", this.props.tabUrl);
-    MessageService.getRequests(this.props.tabId, requests => {
-      this.props.updateField("requests", requests);
-    });
 
     MessageService.getEnabledStatus(this.props.tabId, (enabledStatus: boolean) => {
       this.props.updateField("enabled", enabledStatus);
@@ -60,10 +57,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       MessageService.disableLogging(this.props.tabUrl, this.props.tabId);
       this.props.updateField("enabled", false);
     } else {
-      MessageService.getRequests(this.props.tabId, requests => {
-        MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
-        this.props.updateFields({ enabled: true, requests });
-      });
+      MessageService.enableLogging(this.props.tabUrl, this.props.tabId);
+      this.props.updateFields({ enabled: true });
     }
   };
 
@@ -84,7 +79,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.handleStatusCodeChange(value, requestId);
   };
 
-  handleContentTypeChange = (value: string, requestId: string) : void => {
+  handleContentTypeChange = (value: string, requestId: string): void => {
     this.props.handleContentTypeChange(value, requestId);
   };
 
@@ -92,11 +87,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.interceptChecked(this.props.tabId, requests);
   };
 
-  handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string): void=> {
+  handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string): void => {
     this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
 
-  disableInterceptor = (tabId: number) : void => {
+  disableInterceptor = (tabId: number): void => {
     MessageService.disableInterceptor(tabId);
   };
 
@@ -115,7 +110,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           this.disableInterceptor(this.props.tabId);
           this.updateBadgeIcon(this.props.tabId, true);
         })
-        .catch((err:any) => {
+        .catch((err: any) => {
           // something broke in the background store
           console.log(err);
         });

@@ -18,6 +18,7 @@ export const UPDATE_INTERCEPTOR_STATUS = "UPDATE_INTERCEPTOR_STATUS";
 export const FETCH_DATA = "FETCH_DATA";
 export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
 export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
+export const UPDATE_REQUEST = "UPDATE_REQUEST";
 
 // Action Creators
 export function startListening(enabledStatus: boolean) {
@@ -73,4 +74,7 @@ export function fetchSuccess(data: string, requestId: string) {
 }
 export function fetchFailure(error: string, requestId: string) {
   return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId } };
+}
+export function updateRequests(payload: any) {
+  return { type: UPDATE_REQUEST, payload };
 }

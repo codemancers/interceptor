@@ -89,6 +89,9 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         responseError: { ...state.responseError, [action.payload.requestId]: action.payload.error }
       };
     }
+    case actionType.UPDATE_REQUEST: {
+      return { ...state, requests: [...state.requests, action.payload] };
+    }
     default:
       return state;
   }

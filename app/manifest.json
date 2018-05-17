@@ -9,7 +9,7 @@
     "128":"images/icon-128.png"
   },
   "background": {
-    "scripts": ["js/background.js", "js/redux_bg.js"]
+    "scripts": ["js/background.js"]
   },
   "content_scripts": [
     {

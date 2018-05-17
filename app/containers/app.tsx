@@ -12,7 +12,6 @@ const queryParams: chrome.tabs.QueryInfo = {
 };
 
 const store = new Store({
-  state: {},
   portName: "INTERCEPTOR"
 });
 

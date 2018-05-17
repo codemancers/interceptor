@@ -42,9 +42,11 @@ class Intercept {
   };
   interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState();
-    const checkedReqs = presentState.requests.filter( (req:chrome.webRequest.WebRequestBodyDetails) => {
-      return presentState.checkedReqs[req.requestId] && tabId;
-    });
+    const checkedReqs = presentState.requests.filter(
+      (req: chrome.webRequest.WebRequestBodyDetails) => {
+        return presentState.checkedReqs[req.requestId] && tabId;
+      }
+    );
     const requestObj = {
       message: message,
       interceptEnabledForTab: presentState.isInterceptorOn[tabId],
@@ -58,7 +60,9 @@ class Intercept {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
-        requestObj.requestsToIntercept.find( (req:chrome.webRequest.WebRequestBodyDetails) => req.tabId !== requestObj.tabId)
+        requestObj.requestsToIntercept.find(
+          (req: chrome.webRequest.WebRequestBodyDetails) => req.tabId !== requestObj.tabId
+        )
       ) {
         return;
       }
@@ -93,7 +97,7 @@ class Intercept {
   removeScriptFromDom = (querySelector: string) => {
     while (document.querySelectorAll(querySelector).length) {
       let elemToRemove = document.querySelector(querySelector) as Node;
-      const parentElement:(Node | null) = elemToRemove.parentNode;
+      const parentElement: Node | null = elemToRemove.parentNode;
       parentElement.removeChild(elemToRemove);
     }
   };

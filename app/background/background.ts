@@ -1,4 +1,9 @@
-import {RequestObj} from "./../components/request_list";
+import { wrapStore } from "react-chrome-redux";
+
+import { RequestObj } from "./../components/request_list";
+import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
+import store from "./../store/popup_store";
+export const createStore = store({ ...INITIAL_POPUP_STATE });
 
 interface TabRecord {
   tabId: number;
@@ -9,6 +14,10 @@ interface TabRecord {
 interface Recordings {
   [index: number]: TabRecord;
 }
+
+wrapStore(createStore, {
+  portName: "INTERCEPTOR"
+});
 
 class BackgroundWorker {
   currentTab: number = -1;
@@ -21,7 +30,7 @@ class BackgroundWorker {
     //Send a message to content-script on when a page reloads
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       if (changeInfo.status === "complete") {
-        chrome.tabs.sendMessage(Number(tab.id), {message: "PAGE_REFRESHED", tabId});
+        chrome.tabs.sendMessage(Number(tab.id), { message: "PAGE_REFRESHED", tabId });
       }
     });
     chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
@@ -54,10 +63,10 @@ class BackgroundWorker {
           this.stopTrackingRequests();
           break;
         }
-        case "GET_REQUESTS": {
-          sendResponse(this.data[this.currentTab].requests);
-          break;
-        }
+        // case "GET_REQUESTS": {
+        //   sendResponse(this.data[this.currentTab].requests);
+        //   break;
+        // }
         case "GET_COUNT": {
           sendResponse(this.data[this.currentTab].requests.length);
           break;
@@ -93,12 +102,15 @@ class BackgroundWorker {
       this.updateBadgeText(this.data[this.currentTab].requests.length);
       if (
         tabRecords.requests.filter(
-          req => req.requestId === details.requestId || (req.url === details.url && req.method === details.method)
+          req =>
+            req.requestId === details.requestId ||
+            (req.url === details.url && req.method === details.method)
         ).length > 0
       ) {
         return;
       }
       tabRecords.requests.push(details);
+      createStore.dispatch({ type: "UPDATE_REQUEST", payload: details });
       this.updateBadgeText(this.data[this.currentTab].requests.length);
       this.data[this.currentTab] = tabRecords;
     }
