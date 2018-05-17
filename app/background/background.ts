@@ -63,10 +63,6 @@ class BackgroundWorker {
           this.stopTrackingRequests();
           break;
         }
-        // case "GET_REQUESTS": {
-        //   sendResponse(this.data[this.currentTab].requests);
-        //   break;
-        // }
         case "GET_COUNT": {
           sendResponse(this.data[this.currentTab].requests.length);
           break;
@@ -110,7 +106,10 @@ class BackgroundWorker {
         return;
       }
       tabRecords.requests.push(details);
-      createStore.dispatch({ type: "UPDATE_REQUEST", payload: details });
+      createStore.dispatch({
+        type: "UPDATE_REQUEST",
+        payload: details
+      });
       this.updateBadgeText(this.data[this.currentTab].requests.length);
       this.data[this.currentTab] = tabRecords;
     }
