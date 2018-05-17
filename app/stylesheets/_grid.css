@@ -8,7 +8,6 @@ header .grid-container {
 
 .form {
   grid-row-gap: 10px;
-  grid-template-rows: 50px auto;
   grid-column-gap: 10px;
   grid-template-columns: auto 160px;
   padding: 5px 10px 15px 40px;
@@ -17,8 +16,7 @@ header .grid-container {
 
 .response {
   grid-row: 1;
-  margin-bottom: 20px;
-  grid-row-end: 2;
+  grid-row-end: 3;
 }
 
 .content {
