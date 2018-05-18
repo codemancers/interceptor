@@ -63,6 +63,10 @@
   margin: 0 0 5px 0;
   font-weight: bold;
 }
+.responseText{
+  min-width: 278px;
+  max-width: 278px;
+}
 .fetch-responsetext,
 .fetch-responsetext:hover,
 .fetch-responsetext:focus,
@@ -75,4 +79,7 @@
 }
 .select-status{
   width: 155px;
+}
+.mt15 {
+  margin-top: 15px;
 }
