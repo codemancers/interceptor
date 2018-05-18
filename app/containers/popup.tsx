@@ -63,7 +63,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
-    MessageService.clearData(this.props.tabId);
+    //MessageService.clearData(this.props.tabId);
     this.props.clearFields();
   };
 

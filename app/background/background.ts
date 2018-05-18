@@ -46,10 +46,6 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
-        case "CLEAR_DATA": {
-          this.clearData();
-          break;
-        }
         case "ENABLE_LOGGING": {
           this.startTrackingRequests();
           break;
@@ -130,10 +126,6 @@ class BackgroundWorker {
 
   stopTrackingRequests = () => {
     this.data[this.currentTab].enabled = false;
-  };
-  clearData = () => {
-    this.data[this.currentTab].requests = [];
-    this.updateBadgeText(0);
   };
 }
 
