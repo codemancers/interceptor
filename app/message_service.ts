@@ -16,6 +16,9 @@ export function getEnabledStatus(tabId: number, callback: GenericCallback) {
 export function getRequests(tabId: number, callback: GenericCallback) {
   chrome.runtime.sendMessage({ message: "GET_REQUESTS", tabId }, {}, callback);
 }
+export function clearData() {
+  chrome.runtime.sendMessage({ message: "CLEAR_DATA" });
+}
 export function interceptChecked(tabId: number, requests: Array<any>) {
   chrome.tabs.sendMessage(tabId, {
     message: "INTERCEPT_CHECKED",

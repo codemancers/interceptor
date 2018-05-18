@@ -63,8 +63,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
-    //MessageService.clearData(this.props.tabId);
-    this.props.clearFields();
+    this.props
+      .clearFields(this.props.tabId)
+      .then(() => {
+        console.log("GOING TO MESSAGE SERVICE");
+        MessageService.clearData();
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 
   handleCheckToggle = (reqId: number, presentCheckedState: boolean): void => {

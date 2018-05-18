@@ -46,6 +46,10 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
+        case "CLEAR_DATA": {
+          this.clearData();
+          break;
+        }
         case "ENABLE_LOGGING": {
           this.startTrackingRequests();
           break;
@@ -81,9 +85,9 @@ class BackgroundWorker {
     });
   };
 
-  updateBadgeText = (noOfRequests: number) => {
+  updateBadgeText = () => {
     chrome.browserAction.setBadgeText({
-      text: `${noOfRequests}`,
+      text: `${createStore.getState().requests.length}`,
       tabId: this.currentTab
     });
   };
@@ -91,7 +95,7 @@ class BackgroundWorker {
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
     if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
-      this.updateBadgeText(this.data[this.currentTab].requests.length);
+      this.updateBadgeText();
       if (
         tabRecords.requests.filter(
           req =>
@@ -106,7 +110,7 @@ class BackgroundWorker {
         type: "UPDATE_REQUEST",
         payload: details
       });
-      this.updateBadgeText(this.data[this.currentTab].requests.length);
+      this.updateBadgeText();
       this.data[this.currentTab] = tabRecords;
     }
   };
@@ -126,6 +130,9 @@ class BackgroundWorker {
 
   stopTrackingRequests = () => {
     this.data[this.currentTab].enabled = false;
+  };
+  clearData = () => {
+    this.updateBadgeText();
   };
 }
 

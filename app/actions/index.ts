@@ -36,8 +36,8 @@ export function stopListening(enabledStatus: boolean) {
 export function errorNotify(errorMessage: string) {
   return { type: ERROR, errorMessage };
 }
-export function clearFields() {
-  return { type: CLEAR_REQUESTS };
+export function clearFields(tabId: number) {
+  return { type: CLEAR_REQUESTS, payload: { tabId } };
 }
 export function handleCheckToggle(reqId: number, checked: boolean) {
   return { type: TOGGLE_CHECKBOX, payload: { reqId, checked } };
