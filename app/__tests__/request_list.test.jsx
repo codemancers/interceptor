@@ -3,36 +3,42 @@ import { shallow } from "enzyme";
 import RequestList from "./../components/request_list";
 
 const commonProps = {
-  handleIntercept: jest.fn(),
-  handleCheckedRequests : jest.fn(),
-  clearRequests: jest.fn(),
-  requests: [],
-  PageDetails : {
-    100 : {
-      currentPageNumber : 0,
-      currentRowSize : 10
-    },
-    101 : {
-      currentPageNumber : 1,
-      currentRowSize : 5
-    }
+  data: {
+    PageDetails: [],
+    checkedReqs: {},
+    contentType: {},
+    enabledStatus: true,
+    errorMessage: "",
+    interceptStatus: "",
+    isInterceptorOn: true,
+    requests: [],
+    responseData: {},
+    responseError: {},
+    responseText: {},
+    statusCodes: {}
   },
-  tabId : 100,
-  isInterceptorOn: {
-    100: false,
-    101: false
-  }
+  clearRequests: jest.fn(),
+  currentTabId: 2328,
+  fetchResponse: jest.fn(),
+  handleCheckToggle: jest.fn(),
+  handleCheckedRequests: jest.fn(),
+  handleContentTypeChange: jest.fn(),
+  handlePaginationChange: jest.fn(),
+  handleRespTextChange: jest.fn(),
+  handleStatusCodeChange: jest.fn(),
+  handleSwitch: jest.fn(),
+  updateInterceptorStatus: jest.fn()
 };
 let wrapper;
 let RowComponent;
 
 describe("RequestList initial state", () => {
   beforeEach(() => {
-    commonProps.handleIntercept.mockClear();
+    jest.clearAllMocks();
     wrapper = shallow(<RequestList {...commonProps} />);
   });
   test("Request list must be empty", () => {
-    expect(commonProps.requests).toHaveLength(0);
+    expect(commonProps.data.requests).toHaveLength(0);
   });
 
   test("Only one ReactTable component should be present", () => {
@@ -46,7 +52,10 @@ describe("RequestList initial state", () => {
   });
 
   test("on clear button click, should trigger clearData and clearField", () => {
-    wrapper.find(".btn-clear").first().simulate("click");
+    wrapper
+      .find(".btn-clear")
+      .first()
+      .simulate("click");
     expect(commonProps.clearRequests).toHaveBeenCalledTimes(1);
   });
 });
