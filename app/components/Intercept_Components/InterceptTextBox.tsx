@@ -55,8 +55,24 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             }}
           />
         </div>
-        <div className="status">
-          <label htmlFor="">Select Status</label>
+        <div className="content">
+          <label htmlFor="">Content Type</label>
+          <select
+            value={contentTypeValue}
+            className="content-type-select"
+            onChange={event => {
+              props.handleContentTypeChange(event.target.value, requestId);
+            }}
+          >
+            <option value="application/json">application/json</option>
+            <option value="text/html">text/html</option>
+            <option value="text/csv">text/csv</option>
+            <option value="application/javascript">application/javascript</option>
+            <option value="text/css">text/css</option>
+            <option value="text/plain">text/plain</option>
+            <option value="application/pdf">application/pdf</option>
+          </select>
+          <label className="mt15" htmlFor="">Select Status</label>
           <select
             value={statusCodeValue}
             className="select-status"
