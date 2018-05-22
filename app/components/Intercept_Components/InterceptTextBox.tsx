@@ -61,7 +61,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             value={contentTypeValue}
             className="content-type-select"
             onChange={event => {
-              props.handleContentTypeChange(event.target.value, requestId);
+              props.handleContentTypeChange(event.target.value, requestId, props.currentTabId);
             }}
           >
             <option value="application/json">application/json</option>
@@ -79,7 +79,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             value={statusCodeValue}
             className="select-status"
             onChange={event => {
-              props.handleStatusCodeChange(event.target.value, requestId);
+              props.handleStatusCodeChange(event.target.value, requestId, props.currentTabId);
             }}
           >
             <option value="100">100 - Continue</option>
