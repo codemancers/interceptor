@@ -8,7 +8,6 @@ interface RequestHeadersProps {
   name: string;
   value: string;
   requestHeaders: requestHeadersProps;
-  defaultProps: string;
 }
 
 export const RequestHeaderList: React.SFC<RequestHeadersProps> = props => {

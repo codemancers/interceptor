@@ -1,14 +1,14 @@
 import { wrapStore } from "react-chrome-redux";
 
-import { RequestObj } from "./../components/request_list";
 import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
 import store from "./../store/popup_store";
 export const createStore = store({ ...INITIAL_POPUP_STATE });
+import { toggleListeningRequests, updateRequests } from "./../actions";
 
 interface TabRecord {
   tabId: number;
   enabled: boolean;
-  requests: Array<RequestObj>;
+  requests: Array<chrome.webRequest.WebRequestDetails>;
 }
 
 interface Recordings {
@@ -33,7 +33,7 @@ class BackgroundWorker {
         chrome.tabs.sendMessage(Number(tab.id), { message: "PAGE_REFRESHED", tabId });
       }
     });
-    chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+    chrome.runtime.onMessage.addListener(request => {
       if (!request.tabId) {
         return;
       }
@@ -46,25 +46,16 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
-        case "CLEAR_DATA": {
-          this.clearData();
+        case "SET_BADGE_ZERO": {
+          this.updateBadgeText(request.tabId, 0);
           break;
         }
         case "ENABLE_LOGGING": {
-          this.startTrackingRequests();
-          break;
-        }
-        case "GET_ENABLED_STATUS": {
-          const data = this.data[this.currentTab];
-          sendResponse(data.enabled);
+          this.startTrackingRequests(request.tabId);
           break;
         }
         case "DISABLE_LOGGING": {
-          this.stopTrackingRequests();
-          break;
-        }
-        case "GET_COUNT": {
-          sendResponse(this.data[this.currentTab].requests.length);
+          this.stopTrackingRequests(request.tabId);
           break;
         }
         case "UPDATE_BADGE_ICON": {
@@ -85,17 +76,17 @@ class BackgroundWorker {
     });
   };
 
-  updateBadgeText = () => {
+  updateBadgeText = (tabId: number, requestsLength: number) => {
     chrome.browserAction.setBadgeText({
-      text: `${createStore.getState().requests.length}`,
-      tabId: this.currentTab
+      text: `${requestsLength}`,
+      tabId: tabId
     });
   };
 
   callback = (details: any) => {
     const tabRecords = this.data[this.currentTab];
     if (this.data[this.currentTab].enabled && this.currentTab === details.tabId) {
-      this.updateBadgeText();
+      this.updateBadgeText(this.currentTab, tabRecords.requests.length);
       if (
         tabRecords.requests.filter(
           req =>
@@ -106,17 +97,15 @@ class BackgroundWorker {
         return;
       }
       tabRecords.requests.push(details);
-      createStore.dispatch({
-        type: "UPDATE_REQUEST",
-        payload: details
-      });
-      this.updateBadgeText();
+      createStore.dispatch(updateRequests(details.tabId, tabRecords.requests));
+      this.updateBadgeText(this.currentTab, tabRecords.requests.length);
       this.data[this.currentTab] = tabRecords;
     }
   };
 
-  startTrackingRequests = () => {
+  startTrackingRequests = (tabId: number) => {
     this.data[this.currentTab].enabled = true;
+    createStore.dispatch(toggleListeningRequests(tabId, true));
     chrome.webRequest.onBeforeSendHeaders.addListener(
       //For getting responseHeaders : use onHeadersReceived Event
       this.callback,
@@ -128,11 +117,9 @@ class BackgroundWorker {
     );
   };
 
-  stopTrackingRequests = () => {
+  stopTrackingRequests = (tabId: number) => {
     this.data[this.currentTab].enabled = false;
-  };
-  clearData = () => {
-    this.updateBadgeText();
+    createStore.dispatch(toggleListeningRequests(tabId, false));
   };
 }
 

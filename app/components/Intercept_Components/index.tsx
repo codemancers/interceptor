@@ -1,23 +1,18 @@
 import * as React from "react";
-import {InterceptTextBox} from "./InterceptTextBox";
-import {RequestObj} from "./../request_list";
+import { InterceptTextBox } from "./InterceptTextBox";
+import { RequestObj } from "./../request_list";
 
-
-export const InterceptForm:React.SFC<RequestObj> = (props) => {
+export const InterceptForm: React.SFC<RequestObj> = props => {
   return (
     <div>
       <InterceptTextBox
+        data={props.data}
         rowProps={props.rowProps.row}
         handleRespTextChange={props.handleRespTextChange}
-        responseText={props.responseText}
         handleStatusCodeChange={props.handleStatusCodeChange}
-        statusCodes={props.statusCodes}
         handleContentTypeChange={props.handleContentTypeChange}
-        contentType={props.contentType}
-        tabId={props.tabId}
+        currentTabId={props.currentTabId}
         fetchResponse={props.fetchResponse}
-        responseData={props.responseData}
-        responseError={props.responseError}
       />
     </div>
   );

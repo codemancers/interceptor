@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const Switch = function(props = {isOn: true, handleSwitch: () => {}}) {
+export const Switch = (props = { isOn: true, handleSwitch: () => {} }) => {
   let classNames = ["switch", props.isOn ? "switch_is-on" : "switch_is-off"].join(" ");
   return (
     <div className="toggle-switch-container">
@@ -12,10 +12,11 @@ export const Switch = function(props = {isOn: true, handleSwitch: () => {}}) {
   );
 };
 
-const ToggleButton = function(props: ToggleButton) {
-  let classNames = ["toggle-button", props.isOn ? "toggle-button_position-right" : "toggle-button_position-left"].join(
-    " "
-  );
+const ToggleButton = (props: ToggleButton) => {
+  let classNames = [
+    "toggle-button",
+    props.isOn ? "toggle-button_position-right" : "toggle-button_position-left"
+  ].join(" ");
   return <div className={classNames} />;
 };
 

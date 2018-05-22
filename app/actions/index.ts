@@ -1,12 +1,6 @@
 //ACTION CONSTANTS
-export const START_LISTENING = "START_LISTENING";
-export const STOP_LISTENING = "STOP_LISTENING";
 export const ERROR = "ERROR";
-export const DEFAULT_ACTION = "DEFAULT";
 export const CLEAR_REQUESTS = "CLEAR_REQUESTS";
-export const RELOAD_REQUESTS = "RELOAD_REQUESTS";
-export const UPDATE_FIELD = "UPDATE_FIELD";
-export const UPDATE_FIELDS = "UPDATE_FIELDS";
 export const TOGGLE_CHECKBOX = "TOGGLE_CHECKBOX";
 export const INTERCEPT_CHECKED = "INTERCEPT_CHECKED";
 export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE";
@@ -19,62 +13,64 @@ export const FETCH_DATA = "FETCH_DATA";
 export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
 export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 export const UPDATE_REQUEST = "UPDATE_REQUEST";
+export const TOGGLE_LISTENING = "TOGGLE_LISTENING";
+export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
 
 // Action Creators
-export function startListening(enabledStatus: boolean) {
-  return { type: START_LISTENING, payload: enabledStatus };
-}
-export function updateField(name: string, value: any) {
-  return { type: UPDATE_FIELD, payload: { name, value } };
-}
-export function updateFields(payload: object) {
-  return { type: UPDATE_FIELDS, payload };
-}
-export function stopListening(enabledStatus: boolean) {
-  return { type: STOP_LISTENING, payload: enabledStatus };
-}
-export function errorNotify(errorMessage: string) {
-  return { type: ERROR, errorMessage };
+export function errorNotify(errorMessage: string, tabId: number) {
+  return { type: ERROR, payload: { errorMessage, tabId } };
 }
 export function clearFields(tabId: number) {
   return { type: CLEAR_REQUESTS, payload: { tabId } };
 }
-export function handleCheckToggle(reqId: number, checked: boolean) {
-  return { type: TOGGLE_CHECKBOX, payload: { reqId, checked } };
+export function handleCheckToggle(tabId: number, reqId: number, checked: boolean) {
+  return { type: TOGGLE_CHECKBOX, payload: { tabId, reqId, checked } };
 }
 export function handleCheckedRequests(tabId: number, requests: Array<any>) {
-  return { type: INTERCEPT_CHECKED, payload: requests };
+  return { type: INTERCEPT_CHECKED, payload: { requests, tabId } };
 }
-export function handleStatusCodeChange(value: string, requestId: string) {
-  return { type: STATUSCODE_CHANGE, payload: { value, requestId } };
+export function handleStatusCodeChange(value: string, requestId: string, tabId: number) {
+  return { type: STATUSCODE_CHANGE, payload: { value, requestId, tabId } };
 }
-export function handleRespTextChange(value: string, requestId: string) {
-  return { type: RESP_TEXT_CHANGE, payload: { value, requestId } };
+export function handleRespTextChange(value: string, requestId: string, tabId: number) {
+  return { type: RESP_TEXT_CHANGE, payload: { value, requestId, tabId } };
 }
-export function handleContentTypeChange(value: string, requestId: string) {
-  return { type: CONTENT_TYPE_CHANGE, payload: { value, requestId } };
+export function handleContentTypeChange(value: string, requestId: string, tabId: number) {
+  return { type: CONTENT_TYPE_CHANGE, payload: { value, requestId, tabId } };
 }
 export function handlePaginationChange(value: string, tabId: number, field: string) {
   return { type: PAGINATION_CHANGE, payload: { field, value, tabId } };
 }
-export function sendMessageToUI(message: string) {
-  return { type: UPDATE_MESSAGE, message };
+export function sendMessageToUI(message: string, tabId: number) {
+  return { type: UPDATE_MESSAGE, payload: { message, tabId } };
 }
 export function updateInterceptorStatus(tabId: number, value: boolean) {
   return { type: UPDATE_INTERCEPTOR_STATUS, payload: { tabId, value } };
 }
-export function fetchResponse(requestDetails: chrome.webRequest.WebRequestHeadersDetails) {
+export function fetchResponse(
+  requestDetails: chrome.webRequest.WebRequestHeadersDetails,
+  tabId: number
+) {
   return {
     type: FETCH_DATA,
-    requestDetails
+    payload: { requestDetails, tabId }
   };
 }
-export function fetchSuccess(data: string, requestId: string) {
-  return { type: FETCH_DATA_SUCCESS, payload: { response: data, requestId } };
+export function fetchSuccess(data: string, requestId: string, tabId: number) {
+  return { type: FETCH_DATA_SUCCESS, payload: { response: data, requestId, tabId } };
 }
-export function fetchFailure(error: string, requestId: string) {
-  return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId } };
+export function fetchFailure(error: string, requestId: string, tabId: number) {
+  return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId, tabId } };
 }
-export function updateRequests(payload: any) {
-  return { type: UPDATE_REQUEST, payload };
+export function updateRequests(
+  tabId: number,
+  requests: Array<chrome.webRequest.WebRequestDetails>
+) {
+  return { type: UPDATE_REQUEST, payload: { tabId, requests } };
+}
+export function toggleListeningRequests(tabId: number, enabledStatus: boolean) {
+  return { type: TOGGLE_LISTENING, payload: { tabId, enabledStatus } };
+}
+export function initialiseDefaults(currentTab: number, currentUrl: string) {
+  return { type: INITIALISE_DEFAULTS, payload: { currentTab, currentUrl } };
 }

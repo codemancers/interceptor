@@ -41,15 +41,19 @@ class Intercept {
     });
   };
   interceptSelected = (message: string, tabId: number) => {
-    const presentState = this.store.getState();
-    const checkedReqs = presentState.requests.filter(
-      (req: chrome.webRequest.WebRequestBodyDetails) => {
+    const presentState = this.store.getState().data[tabId];
+    let checkedReqs;
+    if (presentState) {
+      checkedReqs = presentState.requests.filter((req: chrome.webRequest.WebRequestBodyDetails) => {
         return presentState.checkedReqs[req.requestId] && tabId;
-      }
-    );
+      });
+    } else {
+      return;
+    }
+
     const requestObj = {
       message: message,
-      interceptEnabledForTab: presentState.isInterceptorOn[tabId],
+      interceptEnabledForTab: presentState.isInterceptorOn,
       requestsToIntercept: checkedReqs,
       responseText: presentState.responseText,
       statusCodes: presentState.statusCodes,
@@ -73,10 +77,10 @@ class Intercept {
         requestObj.interceptEnabledForTab
       ) {
         this.runInterceptor(requestObj);
-        this.store.dispatch(sendMessageToUI("Interception Success!"));
+        this.store.dispatch(sendMessageToUI("Interception Success!", requestObj.tabId));
       } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
         this.disableInterceptor();
-        this.store.dispatch(sendMessageToUI("Interception Disabled!"));
+        this.store.dispatch(sendMessageToUI("Interception Disabled!", requestObj.tabId));
       }
     });
   };

@@ -1,23 +1,14 @@
 export type GenericCallback = (_: any) => void;
 
 // Outgoing
-export function enableLogging(url: string, tabId: number) {
-  chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", url, tabId });
+export function enableLogging(tabId: number) {
+  chrome.runtime.sendMessage({ message: "ENABLE_LOGGING", tabId });
 }
-
-export function disableLogging(url: string, tabId: number) {
-  chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", url, tabId });
+export function disableLogging(tabId: number) {
+  chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", tabId });
 }
-
-export function getEnabledStatus(tabId: number, callback: GenericCallback) {
-  chrome.runtime.sendMessage({ message: "GET_ENABLED_STATUS", tabId }, callback);
-}
-
-export function getRequests(tabId: number, callback: GenericCallback) {
-  chrome.runtime.sendMessage({ message: "GET_REQUESTS", tabId }, {}, callback);
-}
-export function clearData() {
-  chrome.runtime.sendMessage({ message: "CLEAR_DATA" });
+export function setBadgeTextToZero(tabId: number) {
+  chrome.runtime.sendMessage({ message: "SET_BADGE_ZERO", tabId: tabId });
 }
 export function interceptChecked(tabId: number, requests: Array<any>) {
   chrome.tabs.sendMessage(tabId, {

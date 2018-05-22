@@ -2,6 +2,7 @@ import * as React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { Store } from "react-chrome-redux";
+import { initialiseDefaults } from "./../actions";
 
 // components
 import Popup from "./popup";
@@ -22,10 +23,12 @@ chrome.tabs.query(queryParams, tabs => {
   const { id, url } = tab;
   if (typeof id === "undefined" || typeof url === "undefined") return;
 
+  store.dispatch(initialiseDefaults(id, url));
+
   store.ready().then(() => {
     render(
       <Provider store={store}>
-        <Popup tabUrl={url} tabId={id} />
+        <Popup />
       </Provider>,
       document.getElementById("root") as HTMLElement
     );
