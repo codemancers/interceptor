@@ -111,7 +111,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
   render() {
     const props = this.props;
-    console.log(props);
     if (!props.data) {
       return null;
     }

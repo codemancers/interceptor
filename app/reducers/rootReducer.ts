@@ -26,7 +26,6 @@ const initialTabProperties = {
 export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
   switch (action.type) {
     case actionType.INITIALISE_DEFAULTS: {
-      console.log(state.data);
       return {
         ...state,
         currentUrl: action.payload.currentUrl,
