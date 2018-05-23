@@ -108,7 +108,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         interceptStatus: action.payload.message
       });
     case actionType.UPDATE_INTERCEPTOR_STATUS:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         isInterceptorOn: action.payload.value
       });
     case actionType.FETCH_DATA_SUCCESS:

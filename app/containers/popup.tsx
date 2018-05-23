@@ -90,8 +90,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleSwitch = () => {
-    const { data } = this.props;
-    if (this.props.data[this.props.currentTab].isInterceptorOn) {
+    if (this.props.data.isInterceptorOn) {
       this.props
         .updateInterceptorStatus(this.props.currentTab, false)
         .then(() => {
