@@ -1,6 +1,5 @@
 import * as React from "react";
 import { RequestHeaderList } from "./RequestHeaderList";
-//import { responseField, statusCodes, contentType } from "./../../content/content";
 interface InterceptTextBox {
   data: any;
   rowProps: any;

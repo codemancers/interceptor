@@ -105,7 +105,6 @@ class BackgroundWorker {
     this.data[this.currentTab].enabled = true;
     store.dispatch(toggleListeningRequests(tabId, true));
     chrome.webRequest.onBeforeSendHeaders.addListener(
-      //For getting responseHeaders : use onHeadersReceived Event
       this.callback,
       {
         urls: ["<all_urls>"],

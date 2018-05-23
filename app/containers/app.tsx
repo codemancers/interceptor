@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { Store } from "react-chrome-redux";
 import { initialiseDefaults } from "./../actions";
 
-// components
 import Popup from "./popup";
 
 const queryParams: chrome.tabs.QueryInfo = {

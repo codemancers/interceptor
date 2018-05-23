@@ -4,8 +4,6 @@ import matchSorter from "match-sorter";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
-// import { responseField, statusCodes, contentType } from "./../content/content";
-// import { interceptOn } from "./../types";
 
 export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
