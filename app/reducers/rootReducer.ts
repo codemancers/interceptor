@@ -22,13 +22,13 @@ const initialTabProperties = {
   statusCodes: {}
 };
 
-function extendStateData(state, action, props) {
+function extendStateData(state: POPUP_PROPS, payload: any, props: any) {
   return {
     ...state,
     data: {
       ...state.data,
-      [action.payload.tabId]: {
-        ...state.data[action.payload.tabId],
+      [payload.tabId]: {
+        ...state.data[payload.tabId],
         ...props
       }
     }
@@ -51,23 +51,23 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         currentTab: action.payload.currentTab
       };
     case actionType.ERROR:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
       });
     case actionType.CLEAR_REQUESTS:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         requests: []
       });
     case actionType.TOGGLE_CHECKBOX:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         checkedReqs: {
           ...state.data[action.payload.tabId].checkedReqs,
           [action.payload.reqId]: action.payload.checked
         }
       });
     case actionType.CLEAR_REQUESTS:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         checkedReqs: {
           ...state.data[action.payload.tabId].checkedReqs,
           [action.payload.reqId]: action.payload.checked
@@ -76,35 +76,35 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.INTERCEPT_CHECKED:
       return { ...state };
     case actionType.RESP_TEXT_CHANGE:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         responseText: {
           ...state.data[action.payload.tabId].responseText,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.STATUSCODE_CHANGE:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         statusCodes: {
           ...state.data[action.payload.tabId].statusCodes,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.CONTENT_TYPE_CHANGE:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         contentType: {
           ...state.data[action.payload.tabId].contentType,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.PAGINATION_CHANGE:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         PageDetails: {
           ...state.data[action.payload.tabId].PageDetails,
           [action.payload.field]: action.payload.value
         }
       });
     case actionType.UPDATE_MESSAGE:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         interceptStatus: action.payload.message
       });
     case actionType.UPDATE_INTERCEPTOR_STATUS:
@@ -112,14 +112,14 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         isInterceptorOn: action.payload.value
       });
     case actionType.FETCH_DATA_SUCCESS:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         responseData: {
           ...state.data[action.payload.tabId].responseData,
           [action.payload.requestId]: action.payload.response
         }
       });
     case actionType.FETCH_DATA_FAILURE: {
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         responseError: {
           ...state.data[action.payload.tabId].responseError,
           [action.payload.requestId]: action.payload.error
@@ -127,12 +127,12 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       });
     }
     case actionType.TOGGLE_LISTENING: {
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         enabledStatus: action.payload.enabledStatus
       });
     }
     case actionType.UPDATE_REQUEST:
-      return extendStateData(state, action, {
+      return extendStateData(state, action.payload, {
         requests: action.payload.requests
       });
     default:

@@ -11,7 +11,6 @@ interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
   clearFields: typeof actionTypes.clearFields;
   handleCheckToggle: typeof actionTypes.handleCheckToggle;
-  handleCheckedRequests: typeof actionTypes.handleCheckedRequests;
   handleRespTextChange: typeof actionTypes.handleRespTextChange;
   handleStatusCodeChange: typeof actionTypes.handleStatusCodeChange;
   handleContentTypeChange: typeof actionTypes.handleContentTypeChange;
@@ -198,7 +197,6 @@ const mapDispatchToProps: DispatchProps = {
   errorNotify: actionTypes.errorNotify,
   clearFields: actionTypes.clearFields,
   handleCheckToggle: actionTypes.handleCheckToggle,
-  handleCheckedRequests: actionTypes.handleCheckedRequests,
   handleStatusCodeChange: actionTypes.handleStatusCodeChange,
   handleRespTextChange: actionTypes.handleRespTextChange,
   handleContentTypeChange: actionTypes.handleContentTypeChange,

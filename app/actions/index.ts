@@ -2,7 +2,6 @@
 export const ERROR = "ERROR";
 export const CLEAR_REQUESTS = "CLEAR_REQUESTS";
 export const TOGGLE_CHECKBOX = "TOGGLE_CHECKBOX";
-export const INTERCEPT_CHECKED = "INTERCEPT_CHECKED";
 export const STATUSCODE_CHANGE = "STATUSCODE_CHANGE";
 export const RESP_TEXT_CHANGE = "RESP_TEXT_CHANGE";
 export const CONTENT_TYPE_CHANGE = "CONTENT_TYPE_CHANGE";
@@ -25,9 +24,6 @@ export function clearFields(tabId: number) {
 }
 export function handleCheckToggle(tabId: number, reqId: number, checked: boolean) {
   return { type: TOGGLE_CHECKBOX, payload: { tabId, reqId, checked } };
-}
-export function handleCheckedRequests(tabId: number, requests: Array<any>) {
-  return { type: INTERCEPT_CHECKED, payload: { requests, tabId } };
 }
 export function handleStatusCodeChange(value: string, requestId: string, tabId: number) {
   return { type: STATUSCODE_CHANGE, payload: { value, requestId, tabId } };
