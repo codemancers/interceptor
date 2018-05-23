@@ -43,13 +43,12 @@ class Intercept {
   interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState().data[tabId];
     let checkedReqs;
-    if (presentState) {
-      checkedReqs = presentState.requests.filter((req: chrome.webRequest.WebRequestBodyDetails) => {
-        return presentState.checkedReqs[req.requestId] && tabId;
-      });
-    } else {
+    if (!presentState) {
       return;
     }
+    checkedReqs = presentState.requests.filter((req: chrome.webRequest.WebRequestBodyDetails) => {
+      return presentState.checkedReqs[req.requestId] && tabId;
+    });
 
     const requestObj = {
       message: message,
