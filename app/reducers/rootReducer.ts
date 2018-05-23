@@ -73,8 +73,6 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
           [action.payload.reqId]: action.payload.checked
         }
       });
-    case actionType.INTERCEPT_CHECKED:
-      return { ...state };
     case actionType.RESP_TEXT_CHANGE:
       return extendStateData(state, action.payload, {
         responseText: {
