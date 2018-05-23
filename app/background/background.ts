@@ -77,10 +77,8 @@ class BackgroundWorker {
   };
 
   updateBadgeText = (tabId: number, requestsLength: number) => {
-    chrome.browserAction.setBadgeText({
-      text: `${requestsLength}`,
-      tabId: tabId
-    });
+    const text = `${requestsLength}`;
+    chrome.browserAction.setBadgeText({ text, tabId });
   };
 
   callback = (details: any) => {
