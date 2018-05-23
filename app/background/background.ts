@@ -1,8 +1,8 @@
 import { wrapStore } from "react-chrome-redux";
 
 import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
-import store from "./../store/popup_store";
-export const createStore = store({ ...INITIAL_POPUP_STATE });
+import createStore from "./../store/popup_store";
+export const store = createStore({ ...INITIAL_POPUP_STATE });
 import { toggleListeningRequests, updateRequests } from "./../actions";
 
 interface TabRecord {
@@ -15,7 +15,7 @@ interface Recordings {
   [index: number]: TabRecord;
 }
 
-wrapStore(createStore, {
+wrapStore(store, {
   portName: "INTERCEPTOR"
 });
 
@@ -97,7 +97,7 @@ class BackgroundWorker {
         return;
       }
       tabRecords.requests.push(details);
-      createStore.dispatch(updateRequests(details.tabId, tabRecords.requests));
+      store.dispatch(updateRequests(details.tabId, tabRecords.requests));
       this.updateBadgeText(this.currentTab, tabRecords.requests.length);
       this.data[this.currentTab] = tabRecords;
     }
@@ -105,7 +105,7 @@ class BackgroundWorker {
 
   startTrackingRequests = (tabId: number) => {
     this.data[this.currentTab].enabled = true;
-    createStore.dispatch(toggleListeningRequests(tabId, true));
+    store.dispatch(toggleListeningRequests(tabId, true));
     chrome.webRequest.onBeforeSendHeaders.addListener(
       //For getting responseHeaders : use onHeadersReceived Event
       this.callback,
@@ -119,7 +119,7 @@ class BackgroundWorker {
 
   stopTrackingRequests = (tabId: number) => {
     this.data[this.currentTab].enabled = false;
-    createStore.dispatch(toggleListeningRequests(tabId, false));
+    store.dispatch(toggleListeningRequests(tabId, false));
   };
 }
 
