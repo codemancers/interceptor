@@ -7,8 +7,8 @@ export function enableLogging(tabId: number) {
 export function disableLogging(tabId: number) {
   chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", tabId });
 }
-export function setBadgeTextToZero(tabId: number) {
-  chrome.runtime.sendMessage({ message: "SET_BADGE_ZERO", tabId: tabId });
+export function updateBadgeCount(tabId: number) {
+  chrome.runtime.sendMessage({ message: "UPDATE_BADGE_COUNT", tabId: tabId });
 }
 export function interceptChecked(tabId: number, requests: Array<any>) {
   chrome.tabs.sendMessage(tabId, {

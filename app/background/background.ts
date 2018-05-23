@@ -46,7 +46,7 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
-        case "SET_BADGE_ZERO": {
+        case "UPDATE_BADGE_COUNT": {
           this.updateBadgeText(request.tabId, 0);
           break;
         }

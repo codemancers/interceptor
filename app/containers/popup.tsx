@@ -47,7 +47,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props
       .clearFields(this.props.currentTab)
       .then(() => {
-        MessageService.setBadgeTextToZero(this.props.currentTab);
+        MessageService.updateBadgeCount(this.props.currentTab);
       })
       .catch((err: any) => {
         console.log(err);
