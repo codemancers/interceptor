@@ -27,7 +27,6 @@ export interface RequestObj {
   handleSwitch: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
-  console.log(props);
   const columns = [
     {
       Header: "Request URL",

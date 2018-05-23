@@ -22,194 +22,119 @@ const initialTabProperties = {
   statusCodes: {}
 };
 
+function extendStateData(state, action, props) {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      [action.payload.tabId]: {
+        ...state.data[action.payload.tabId],
+        ...props
+      }
+    }
+  };
+}
+
 //ACTION CONSTANTS
 export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
   switch (action.type) {
-    case actionType.INITIALISE_DEFAULTS: {
+    case actionType.INITIALISE_DEFAULTS:
       return {
         ...state,
-        currentUrl: action.payload.currentUrl,
-        currentTab: action.payload.currentTab,
         data: {
           ...state.data,
           [action.payload.currentTab]: {
             ...(state.data[action.payload.currentTab] || initialTabProperties)
           }
-        }
+        },
+        currentUrl: action.payload.currentUrl,
+        currentTab: action.payload.currentTab
       };
-    }
     case actionType.ERROR:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            errorMessage: action.payload.errorMessage,
-            enabledStatus: false
-          }
-        }
-      };
+      return extendStateData(state, action, {
+        errorMessage: action.payload.errorMessage,
+        enabledStatus: false
+      });
     case actionType.CLEAR_REQUESTS:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            requests: []
-          }
-        }
-      };
+      return extendStateData(state, action, {
+        requests: []
+      });
     case actionType.TOGGLE_CHECKBOX:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            checkedReqs: {
-              ...state.data[action.payload.tabId].checkedReqs,
-              [action.payload.reqId]: action.payload.checked
-            }
-          }
+      return extendStateData(state, action, {
+        checkedReqs: {
+          ...state.data[action.payload.tabId].checkedReqs,
+          [action.payload.reqId]: action.payload.checked
         }
-      };
+      });
+    case actionType.CLEAR_REQUESTS:
+      return extendStateData(state, action, {
+        checkedReqs: {
+          ...state.data[action.payload.tabId].checkedReqs,
+          [action.payload.reqId]: action.payload.checked
+        }
+      });
     case actionType.INTERCEPT_CHECKED:
       return { ...state };
     case actionType.RESP_TEXT_CHANGE:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            responseText: {
-              ...state.data[action.payload.tabId].responseText,
-              [action.payload.requestId]: action.payload.value
-            }
-          }
+      return extendStateData(state, action, {
+        responseText: {
+          ...state.data[action.payload.tabId].responseText,
+          [action.payload.requestId]: action.payload.value
         }
-      };
+      });
     case actionType.STATUSCODE_CHANGE:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            statusCodes: {
-              ...state.data[action.payload.tabId].statusCodes,
-              [action.payload.requestId]: action.payload.value
-            }
-          }
+      return extendStateData(state, action, {
+        statusCodes: {
+          ...state.data[action.payload.tabId].statusCodes,
+          [action.payload.requestId]: action.payload.value
         }
-      };
+      });
     case actionType.CONTENT_TYPE_CHANGE:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            contentType: {
-              ...state.data[action.payload.tabId].contentType,
-              [action.payload.requestId]: action.payload.value
-            }
-          }
+      return extendStateData(state, action, {
+        contentType: {
+          ...state.data[action.payload.tabId].contentType,
+          [action.payload.requestId]: action.payload.value
         }
-      };
+      });
     case actionType.PAGINATION_CHANGE:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            PageDetails: {
-              ...state.data[action.payload.tabId].PageDetails,
-              [action.payload.field]: action.payload.value
-            }
-          }
+      return extendStateData(state, action, {
+        PageDetails: {
+          ...state.data[action.payload.tabId].PageDetails,
+          [action.payload.field]: action.payload.value
         }
-      };
-    case actionType.UPDATE_MESSAGE: {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            interceptStatus: action.payload.message
-          }
-        }
-      };
-    }
+      });
+    case actionType.UPDATE_MESSAGE:
+      return extendStateData(state, action, {
+        interceptStatus: action.payload.message
+      });
     case actionType.UPDATE_INTERCEPTOR_STATUS:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            isInterceptorOn: action.payload.value
-          }
+      return extendStateData(state, action, {
+        isInterceptorOn: action.payload.value
+      });
+    case actionType.FETCH_DATA_SUCCESS:
+      return extendStateData(state, action, {
+        responseData: {
+          ...state.data[action.payload.tabId].responseData,
+          [action.payload.requestId]: action.payload.response
         }
-      };
-    case actionType.FETCH_DATA_SUCCESS: {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            responseData: {
-              ...state.data[action.payload.tabId].responseData,
-              [action.payload.requestId]: action.payload.response
-            }
-          }
-        }
-      };
-    }
+      });
     case actionType.FETCH_DATA_FAILURE: {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            responseError: {
-              ...state.data[action.payload.tabId].responseError,
-              [action.payload.requestId]: action.payload.error
-            }
-          }
+      return extendStateData(state, action, {
+        responseError: {
+          ...state.data[action.payload.tabId].responseError,
+          [action.payload.requestId]: action.payload.error
         }
-      };
+      });
     }
     case actionType.TOGGLE_LISTENING: {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            enabledStatus: action.payload.enabledStatus
-          }
-        }
-      };
+      return extendStateData(state, action, {
+        enabledStatus: action.payload.enabledStatus
+      });
     }
-    case actionType.UPDATE_REQUEST: {
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.payload.tabId]: {
-            ...state.data[action.payload.tabId],
-            requests: action.payload.requests
-          }
-        }
-      };
-    }
+    case actionType.UPDATE_REQUEST:
+      return extendStateData(state, action, {
+        requests: action.payload.requests
+      });
     default:
       return state;
   }
