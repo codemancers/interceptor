@@ -54,37 +54,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       });
   };
 
-  handleCheckToggle = (tabId: number, reqId: number, presentCheckedState: boolean): void => {
-    this.props.handleCheckToggle(tabId, reqId, presentCheckedState);
-  };
-
-  handleRespTextChange = (value: string, requestId: string, tabId: number): void => {
-    this.props.handleRespTextChange(value, requestId, tabId);
-  };
-
-  handleStatusCodeChange = (value: string, requestId: string, tabId: number): void => {
-    this.props.handleStatusCodeChange(value, requestId, tabId);
-  };
-
-  handleContentTypeChange = (value: string, requestId: string, tabId: number): void => {
-    this.props.handleContentTypeChange(value, requestId, tabId);
-  };
-
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
     MessageService.interceptChecked(this.props.currentTab, requests);
-  };
-
-  handlePaginationChange = (newPageNo_rowSize: string, tabId: number, field: string): void => {
-    this.props.handlePaginationChange(newPageNo_rowSize, tabId, field);
   };
 
   disableInterceptor = (tabId: number): void => {
     MessageService.disableInterceptor(tabId);
   };
 
-  updateInterceptorStatus = (tabId: number, interceptMode: boolean) => {
-    this.props.updateInterceptorStatus(tabId, interceptMode);
-  };
   updateBadgeIcon = (tabId: number, disabledStatus: boolean) => {
     MessageService.updateBadgeIcon(tabId, disabledStatus);
   };
@@ -166,15 +143,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
           <RequestList
             data={props.data}
-            handleCheckToggle={this.handleCheckToggle}
+            handleCheckToggle={props.handleCheckToggle}
             handleCheckedRequests={this.handleCheckedRequests}
-            handleRespTextChange={this.handleRespTextChange}
-            handleStatusCodeChange={this.handleStatusCodeChange}
+            handleRespTextChange={props.handleRespTextChange}
+            handleStatusCodeChange={props.handleStatusCodeChange}
             handleContentTypeChange={props.handleContentTypeChange}
             handlePaginationChange={props.handlePaginationChange}
             currentTabId={props.currentTab}
             clearRequests={this.clearRequests}
-            updateInterceptorStatus={this.updateInterceptorStatus}
+            updateInterceptorStatus={props.updateInterceptorStatus}
             handleSwitch={this.handleSwitch}
             fetchResponse={props.fetchResponse}
           />
