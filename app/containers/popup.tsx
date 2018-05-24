@@ -31,9 +31,9 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
-    const props = this.props;
-    if (this.isUrlInValid(this.props.currentUrl)) {
-      props.errorNotify(`Cannot Start Listening on ${this.props.currentUrl}`, props.currentTab);
+    const { props } = this;
+    if (this.isUrlInValid(props.currentUrl)) {
+      props.errorNotify(`Cannot Start Listening on ${props.currentUrl}`, props.currentTab);
       return;
     }
     if (props.data.enabledStatus) {
@@ -67,25 +67,26 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleSwitch = () => {
-    if (this.props.data.isInterceptorOn) {
-      this.props
-        .updateInterceptorStatus(this.props.currentTab, false)
+    const { props } = this;
+    if (props.data.isInterceptorOn) {
+      props
+        .updateInterceptorStatus(props.currentTab, false)
         .then(() => {
-          this.disableInterceptor(this.props.currentTab);
-          this.updateBadgeIcon(this.props.currentTab, true);
+          this.disableInterceptor(props.currentTab);
+          this.updateBadgeIcon(props.currentTab, true);
         })
         .catch((err: any) => {
           // something broke in the background store
           console.log(err);
         });
     } else {
-      this.props.updateInterceptorStatus(this.props.currentTab, true);
-      this.updateBadgeIcon(this.props.currentTab, false);
+      props.updateInterceptorStatus(props.currentTab, true);
+      this.updateBadgeIcon(props.currentTab, false);
     }
   };
 
   render() {
-    const props = this.props;
+    const { props } = this;
     if (!props.data) {
       return null;
     }
@@ -122,7 +123,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             </a>
             <button
               title={
-                this.props.data.enabledStatus
+                props.data.enabledStatus
                   ? "Stop Listening to Requests"
                   : "Start Listening to Requests"
               }
@@ -130,7 +131,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               onClick={this.handleClick}
               className={buttonClass}
             >
-              {this.props.data.enabledStatus ? "Stop Listening" : "Start Listening"}
+              {props.data.enabledStatus ? "Stop Listening" : "Start Listening"}
             </button>
           </div>
         </header>
