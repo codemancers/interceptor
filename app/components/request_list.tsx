@@ -90,6 +90,8 @@ const RequestList: React.SFC<RequestObj> = props => {
     }
   );
 
+  console.log(props.data);
+
   return (
     <div>
       <div className="grid-container response-action">
@@ -119,8 +121,8 @@ const RequestList: React.SFC<RequestObj> = props => {
         showPaginationTop={false}
         showPaginationBottom={true}
         defaultPageSize={10}
-        page={props.data.PageDetails ? props.data.PageDetails.currentPageNumber : 0}
-        pageSize={props.data.PageDetails ? props.data.PageDetails.currentRowSize : 10}
+        page={props.data.PageDetails.currentPageNumber}
+        pageSize={props.data.PageDetails.currentRowSize}
         onPageChange={changedPageNo =>
           props.handlePaginationChange(changedPageNo, props.currentTabId, "currentPageNumber")
         }

@@ -12,7 +12,10 @@ const initialTabProperties = {
   requests: [],
   interceptStatus: "",
   errorMessage: "",
-  PageDetails: [],
+  PageDetails: {
+    currentRowSize: 10,
+    currentPageNumber: 0
+  },
   checkedReqs: {},
   contentType: {},
   isInterceptorOn: true,
