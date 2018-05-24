@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const Switch = (props = { isOn: true, handleSwitch: () => {} }) => {
+export const Switch: React.SFC<Switch> = props => {
   let classNames = ["switch", props.isOn ? "switch_is-on" : "switch_is-off"].join(" ");
   return (
     <div className="toggle-switch-container">
@@ -12,7 +12,7 @@ export const Switch = (props = { isOn: true, handleSwitch: () => {} }) => {
   );
 };
 
-const ToggleButton = (props: ToggleButton) => {
+const ToggleButton: React.SFC<ToggleButton> = props => {
   let classNames = [
     "toggle-button",
     props.isOn ? "toggle-button_position-right" : "toggle-button_position-left"
@@ -23,3 +23,16 @@ const ToggleButton = (props: ToggleButton) => {
 interface ToggleButton {
   isOn: boolean;
 }
+
+interface Switch {
+  isOn: boolean;
+  handleSwitch: (event: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+Switch.defaultProps = {
+  isOn: true
+};
+
+ToggleButton.defaultProps = {
+  isOn: true
+};
