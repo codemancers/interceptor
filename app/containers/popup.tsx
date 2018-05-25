@@ -3,7 +3,7 @@ import * as cx from "classnames";
 import { connect } from "react-redux";
 
 import * as MessageService from "./../message_service";
-import RequestList from "./../components/request_list";
+import RequestList from "./../components/RequestList";
 import { POPUP_PROPS } from "./../types";
 import * as actionTypes from "./../actions";
 

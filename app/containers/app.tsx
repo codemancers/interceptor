@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { Store } from "react-chrome-redux";
 import { initialiseDefaults } from "./../actions";
 
-import Popup from "./popup";
+import Popup from "./Popup";
 
 const queryParams: chrome.tabs.QueryInfo = {
   active: true,

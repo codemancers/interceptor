@@ -1,6 +1,6 @@
 import * as React from "react";
 import { InterceptTextBox } from "./InterceptTextBox";
-import { RequestObj } from "./../request_list";
+import { RequestObj } from "./../RequestList";
 
 export const InterceptForm: React.SFC<RequestObj> = props => {
   return (

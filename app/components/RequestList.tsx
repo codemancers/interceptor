@@ -90,8 +90,6 @@ const RequestList: React.SFC<RequestObj> = props => {
     }
   );
 
-  console.log(props.data);
-
   return (
     <div>
       <div className="grid-container response-action">
