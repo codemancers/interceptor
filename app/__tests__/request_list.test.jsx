@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import RequestList from "./../components/RequestList";
 
 const commonProps = {
-  data: {
+  tabRecord: {
     PageDetails: [],
     checkedReqs: {},
     contentType: {},
@@ -38,7 +38,7 @@ describe("RequestList initial state", () => {
     wrapper = shallow(<RequestList {...commonProps} />);
   });
   test("Request list must be empty", () => {
-    expect(commonProps.data.requests).toHaveLength(0);
+    expect(commonProps.tabRecord.requests).toHaveLength(0);
   });
 
   test("Only one ReactTable component should be present", () => {

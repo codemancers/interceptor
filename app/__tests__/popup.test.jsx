@@ -6,7 +6,7 @@ import * as MessageService from "../message_service";
 
 jest.mock("../message_service");
 const createTestProps = props => ({
-  data: {
+  tabRecord: {
     PageDetails: [],
     checkedReqs: {},
     contentType: {},
@@ -73,7 +73,7 @@ describe("Popup", () => {
     });
 
     test("on stop button click, should trigger disable message and updateField", () => {
-      let localProps = createTestProps({ data: { enabledStatus: true } });
+      let localProps = createTestProps({ tabRecord: { enabledStatus: true } });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
         .find("button")
@@ -86,7 +86,7 @@ describe("Popup", () => {
   describe("on error", () => {
     test("should render error message", () => {
       jest.clearAllMocks();
-      let localProps = createTestProps({ data: { errorMessage: "Error" } });
+      let localProps = createTestProps({ tabRecord: { errorMessage: "Error" } });
       wrapper = shallow(<Popup {...localProps} />);
       expect(wrapper.find(".popup-error-message").text()).toEqual(expect.stringMatching("Error"));
     });
@@ -119,7 +119,7 @@ describe("Popup", () => {
     });
     test("Should display Success message on successfull intercept", () => {
       let localProps = createTestProps({
-        data: {
+        tabRecord: {
           interceptStatus: "Interception Success!"
         }
       });
@@ -129,7 +129,7 @@ describe("Popup", () => {
 
     test("Should not display Success message on unsucesfull intercept", () => {
       let localProps = createTestProps({
-        data: {
+        tabRecord: {
           interceptStatus: ""
         }
       });

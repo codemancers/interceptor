@@ -5,7 +5,7 @@ import { InterceptTextBox } from "./../components/Intercept_Components/Intercept
 const createTestProps = (props = {}) => ({
   // common props
   currentTabId: 2347,
-  data: {
+  tabRecord: {
     PageDetails: [],
     checkedReqs: {},
     contentType: {},
