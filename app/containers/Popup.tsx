@@ -30,28 +30,22 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     return !tabUrl || isChromeUrl(tabUrl);
   };
 
-  handleClick = (_: React.MouseEvent<HTMLButtonElement>): void => {
+  toggleListening = (): void => {
     const { props } = this;
     if (this.isUrlInValid(props.currentUrl)) {
       props.errorNotify(`Cannot Start Listening on ${props.currentUrl}`, props.currentTab);
       return;
     }
-    if (props.data.enabledStatus) {
+    if (props.tabRecord.enabledStatus) {
       MessageService.disableLogging(props.currentTab);
     } else {
       MessageService.enableLogging(props.currentTab);
     }
   };
 
-  clearRequests = (_: React.MouseEvent<HTMLButtonElement>): void => {
-    this.props
-      .clearFields(this.props.currentTab)
-      .then(() => {
-        MessageService.updateBadgeCount(this.props.currentTab);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
+  clearRequests = (): void => {
+    this.props.clearFields(this.props.currentTab);
+    MessageService.updateBadgeCount(this.props.currentTab);
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
@@ -66,19 +60,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.updateBadgeIcon(tabId, disabledStatus);
   };
 
-  handleSwitch = () => {
+  handleToggleSwitch = () => {
     const { props } = this;
-    if (props.data.isInterceptorOn) {
-      props
-        .updateInterceptorStatus(props.currentTab, false)
-        .then(() => {
-          this.disableInterceptor(props.currentTab);
-          this.updateBadgeIcon(props.currentTab, true);
-        })
-        .catch((err: any) => {
-          // something broke in the background store
-          console.log(err);
-        });
+    if (props.tabRecord.isInterceptorOn) {
+      props.updateInterceptorStatus(props.currentTab, false);
+      this.disableInterceptor(props.currentTab);
+      this.updateBadgeIcon(props.currentTab, true);
     } else {
       props.updateInterceptorStatus(props.currentTab, true);
       this.updateBadgeIcon(props.currentTab, false);
@@ -87,12 +74,13 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
   render() {
     const { props } = this;
-    if (!props.data) {
-      return null;
+    const { tabRecord } = props;
+    if (!tabRecord) {
+      return "Loading...";
     }
     const buttonClass = cx("btn btn-block", {
-      "button-start-listening btn-secondary": !props.data.enabledStatus,
-      "button-stop-listening btn-danger": props.data.enabledStatus
+      "button-start-listening btn-secondary": !tabRecord.enabledStatus,
+      "button-stop-listening btn-danger": tabRecord.enabledStatus
     });
     return (
       <div className="popup">
@@ -123,27 +111,27 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             </a>
             <button
               title={
-                props.data.enabledStatus
+                tabRecord.enabledStatus
                   ? "Stop Listening to Requests"
                   : "Start Listening to Requests"
               }
               type="button"
-              onClick={this.handleClick}
+              onClick={this.toggleListening}
               className={buttonClass}
             >
-              {props.data.enabledStatus ? "Stop Listening" : "Start Listening"}
+              {tabRecord.enabledStatus ? "Stop Listening" : "Start Listening"}
             </button>
           </div>
         </header>
 
         <div>
-          {props.data.errorMessage ? (
-            <p className="popup-error-message popup-error"> {props.data.errorMessage} </p>
-          ) : null}
-          {props.data.interceptStatus && <div id="success-msg">{props.data.interceptStatus}</div>}
+          {tabRecord.errorMessage && (
+            <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
+          )}
+          {tabRecord.interceptStatus && <div id="success-msg">{tabRecord.interceptStatus}</div>}
 
           <RequestList
-            data={props.data}
+            tabRecord={tabRecord}
             handleCheckToggle={props.handleCheckToggle}
             handleCheckedRequests={this.handleCheckedRequests}
             handleRespTextChange={props.handleRespTextChange}
@@ -153,7 +141,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             currentTabId={props.currentTab}
             clearRequests={this.clearRequests}
             updateInterceptorStatus={props.updateInterceptorStatus}
-            handleSwitch={this.handleSwitch}
+            handleSwitch={this.handleToggleSwitch}
             fetchResponse={props.fetchResponse}
           />
         </div>
@@ -164,7 +152,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
 const mapStateToProps = (state: POPUP_PROPS) => {
   return {
-    data: state.data[state.currentTab],
+    tabRecord: state.tabRecord[state.currentTab],
     currentTab: state.currentTab,
     currentUrl: state.currentUrl
   };

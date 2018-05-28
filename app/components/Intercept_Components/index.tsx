@@ -6,7 +6,7 @@ export const InterceptForm: React.SFC<RequestObj> = props => {
   return (
     <div>
       <InterceptTextBox
-        data={props.data}
+        tabRecord={props.tabRecord}
         rowProps={props.rowProps.row}
         handleRespTextChange={props.handleRespTextChange}
         handleStatusCodeChange={props.handleStatusCodeChange}

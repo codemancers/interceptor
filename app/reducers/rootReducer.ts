@@ -2,7 +2,7 @@ import { POPUP_PROPS, Action } from "../types";
 import * as actionType from "../actions";
 
 export const INITIAL_POPUP_STATE: POPUP_PROPS = {
-  data: {},
+  tabRecord: {},
   currentUrl: "",
   currentTab: -1
 };
@@ -28,10 +28,10 @@ const initialTabProperties = {
 function extendStateData(state: POPUP_PROPS, payload: any, props: any) {
   return {
     ...state,
-    data: {
-      ...state.data,
+    tabRecord: {
+      ...state.tabRecord,
       [payload.tabId]: {
-        ...state.data[payload.tabId],
+        ...state.tabRecord[payload.tabId],
         ...props
       }
     }
@@ -44,10 +44,10 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.INITIALISE_DEFAULTS:
       return {
         ...state,
-        data: {
-          ...state.data,
+        tabRecord: {
+          ...state.tabRecord,
           [action.payload.currentTab]: {
-            ...(state.data[action.payload.currentTab] || initialTabProperties)
+            ...(state.tabRecord[action.payload.currentTab] || initialTabProperties)
           }
         },
         currentUrl: action.payload.currentUrl,
@@ -65,42 +65,42 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.TOGGLE_CHECKBOX:
       return extendStateData(state, action.payload, {
         checkedReqs: {
-          ...state.data[action.payload.tabId].checkedReqs,
+          ...state.tabRecord[action.payload.tabId].checkedReqs,
           [action.payload.reqId]: action.payload.checked
         }
       });
     case actionType.CLEAR_REQUESTS:
       return extendStateData(state, action.payload, {
         checkedReqs: {
-          ...state.data[action.payload.tabId].checkedReqs,
+          ...state.tabRecord[action.payload.tabId].checkedReqs,
           [action.payload.reqId]: action.payload.checked
         }
       });
     case actionType.RESP_TEXT_CHANGE:
       return extendStateData(state, action.payload, {
         responseText: {
-          ...state.data[action.payload.tabId].responseText,
+          ...state.tabRecord[action.payload.tabId].responseText,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.STATUSCODE_CHANGE:
       return extendStateData(state, action.payload, {
         statusCodes: {
-          ...state.data[action.payload.tabId].statusCodes,
+          ...state.tabRecord[action.payload.tabId].statusCodes,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.CONTENT_TYPE_CHANGE:
       return extendStateData(state, action.payload, {
         contentType: {
-          ...state.data[action.payload.tabId].contentType,
+          ...state.tabRecord[action.payload.tabId].contentType,
           [action.payload.requestId]: action.payload.value
         }
       });
     case actionType.PAGINATION_CHANGE:
       return extendStateData(state, action.payload, {
         PageDetails: {
-          ...state.data[action.payload.tabId].PageDetails,
+          ...state.tabRecord[action.payload.tabId].PageDetails,
           [action.payload.field]: action.payload.value
         }
       });
@@ -115,14 +115,14 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     case actionType.FETCH_DATA_SUCCESS:
       return extendStateData(state, action.payload, {
         responseData: {
-          ...state.data[action.payload.tabId].responseData,
+          ...state.tabRecord[action.payload.tabId].responseData,
           [action.payload.requestId]: action.payload.response
         }
       });
     case actionType.FETCH_DATA_FAILURE: {
       return extendStateData(state, action.payload, {
         responseError: {
-          ...state.data[action.payload.tabId].responseError,
+          ...state.tabRecord[action.payload.tabId].responseError,
           [action.payload.requestId]: action.payload.error
         }
       });

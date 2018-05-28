@@ -5,7 +5,7 @@ enum interceptStatus {
 export interface POPUP_PROPS {
   currentTab: number;
   currentUrl: string;
-  data: any;
+  tabRecord: any;
 }
 
 export interface interceptOn {

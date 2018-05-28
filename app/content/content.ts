@@ -41,7 +41,7 @@ class Intercept {
     });
   };
   interceptSelected = (message: string, tabId: number) => {
-    const presentState = this.store.getState().data[tabId];
+    const presentState = this.store.getState().tabRecord[tabId];
     let checkedReqs;
     if (!presentState) {
       return;

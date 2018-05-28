@@ -7,7 +7,7 @@ import { Switch } from "./Switch";
 
 export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
-  data: any;
+  tabRecord: any;
   currentTabId: number;
   requestId?: number;
   url?: string;
@@ -71,7 +71,7 @@ const RequestList: React.SFC<RequestObj> = props => {
           <input
             type="checkbox"
             className="checkbox"
-            checked={props.data.checkedReqs[original.requestId]}
+            checked={props.tabRecord.checkedReqs[original.requestId]}
             onChange={e => {
               props.handleCheckToggle(props.currentTabId, original.requestId, e.target.checked);
             }}
@@ -84,16 +84,16 @@ const RequestList: React.SFC<RequestObj> = props => {
       className: "text-center"
     }
   ];
-  const enabledRequests = props.data.requests.filter(
+  const enabledRequests = props.tabRecord.requests.filter(
     (request: chrome.webRequest.WebRequestFullDetails) => {
-      return props.data.checkedReqs[request.requestId];
+      return props.tabRecord.checkedReqs[request.requestId];
     }
   );
 
   return (
     <div>
       <div className="grid-container response-action">
-        <Switch isOn={props.data.isInterceptorOn} handleSwitch={props.handleSwitch} />
+        <Switch isOn={props.tabRecord.isInterceptorOn} handleSwitch={props.handleSwitch} />
         <div className="text-right">
           <InterceptAllButton
             disabled={!enabledRequests.length}
@@ -113,14 +113,14 @@ const RequestList: React.SFC<RequestObj> = props => {
       </div>
 
       <ReactTable
-        data={props.data.requests}
+        data={props.tabRecord.requests}
         columns={columns}
         showPagination={true}
         showPaginationTop={false}
         showPaginationBottom={true}
         defaultPageSize={10}
-        page={props.data.PageDetails.currentPageNumber}
-        pageSize={props.data.PageDetails.currentRowSize}
+        page={props.tabRecord.PageDetails.currentPageNumber}
+        pageSize={props.tabRecord.PageDetails.currentRowSize}
         onPageChange={changedPageNo =>
           props.handlePaginationChange(changedPageNo, props.currentTabId, "currentPageNumber")
         }
@@ -130,7 +130,7 @@ const RequestList: React.SFC<RequestObj> = props => {
         collapseOnDataChange={false}
         SubComponent={row => (
           <InterceptForm
-            data={props.data}
+            tabRecord={props.tabRecord}
             currentTabId={props.currentTabId}
             rowProps={row}
             handleStatusCodeChange={props.handleStatusCodeChange}
