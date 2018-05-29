@@ -6,6 +6,7 @@ export interface POPUP_PROPS {
   currentTab: number;
   currentUrl: string;
   tabRecord: any;
+  requestRecords: any;
 }
 
 export interface interceptOn {

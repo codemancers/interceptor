@@ -3,7 +3,7 @@ import { wrapStore } from "react-chrome-redux";
 import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
 import createStore from "./../store/popup_store";
 export const store = createStore({ ...INITIAL_POPUP_STATE });
-import { toggleListeningRequests, updateRequests } from "./../actions";
+import { toggleListeningRequests, updateRequest } from "./../actions";
 
 interface TabRecord {
   tabId: number;
@@ -95,7 +95,7 @@ class BackgroundWorker {
         return;
       }
       tabRecords.requests.push(details);
-      store.dispatch(updateRequests(details.tabId, tabRecords.requests));
+      store.dispatch(updateRequest(details.tabId, details));
       this.updateBadgeText(this.currentTab, tabRecords.requests.length);
       this.data[this.currentTab] = tabRecords;
     }

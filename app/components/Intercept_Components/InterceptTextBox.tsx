@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RequestHeaderList } from "./RequestHeaderList";
 interface InterceptTextBox {
-  tabRecord: any;
+  requestRecords: any;
   rowProps: any;
   fetchResponse: any;
   handleRespTextChange: any;
@@ -11,23 +11,19 @@ interface InterceptTextBox {
 }
 
 export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
-  console.log(props.tabRecord);
   const requestId = props.rowProps.checkbox.requestId;
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
-  const responseTextValue = props.tabRecord.responseText[requestId] || defaultResponseText;
-  const statusCodeValue = props.tabRecord.statusCodes[requestId] || defaultStatusCode;
-  const contentTypeValue = props.tabRecord.contentType[requestId] || defaultContentType;
+  const responseTextValue = props.requestRecords.responseText || defaultResponseText;
+  const statusCodeValue = props.requestRecords.statusCode || defaultStatusCode;
+  const contentTypeValue = props.requestRecords.contentType || defaultContentType;
 
   return (
     <div className="form-container">
       <div>
-        {props.tabRecord.responseError[requestId] ? (
-          <p className="popup-error-message popup-error">
-            {" "}
-            {props.tabRecord.responseError[requestId]}{" "}
-          </p>
+        {props.requestRecords.serverError ? (
+          <p className="popup-error-message popup-error"> {props.requestRecords.serverError} </p>
         ) : null}
       </div>
       <div className="grid-container form">
@@ -50,7 +46,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             name="responseText"
             className="responseText"
             defaultValue={responseTextValue}
-            key={props.tabRecord.responseData[requestId]}
+            key={props.requestRecords.serverResponse}
             title="Mocked Response Text"
             //value={textAreaValue}
             onChange={event => {

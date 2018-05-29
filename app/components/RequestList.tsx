@@ -8,6 +8,7 @@ import { Switch } from "./Switch";
 export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
   tabRecord: any;
+  requestRecords: any;
   currentTabId: number;
   requestId?: number;
   url?: string;
@@ -130,7 +131,7 @@ const RequestList: React.SFC<RequestObj> = props => {
         collapseOnDataChange={false}
         SubComponent={row => (
           <InterceptForm
-            tabRecord={props.tabRecord}
+            requestRecords={props.tabRecord.requestRecords[row.original.requestId]}
             currentTabId={props.currentTabId}
             rowProps={row}
             handleStatusCodeChange={props.handleStatusCodeChange}

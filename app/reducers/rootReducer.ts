@@ -17,22 +17,66 @@ const initialTabProperties = {
     currentPageNumber: 0
   },
   checkedReqs: {},
-  contentType: {},
   isInterceptorOn: true,
-  responseData: {},
-  responseError: {},
-  responseText: {},
-  statusCodes: {}
+  requestRecords: {}
 };
 
-function extendStateData(state: POPUP_PROPS, payload: any, props: any) {
+const initialRequestProperties = {
+  serverResponse: "",
+  responseError: "",
+  serverError: "",
+  contentType: "",
+  responseText: "",
+  statusCode: ""
+};
+
+function extendTabRecords(state: POPUP_PROPS, payload: any, newTabRecords: any) {
   return {
     ...state,
     tabRecord: {
       ...state.tabRecord,
       [payload.tabId]: {
         ...state.tabRecord[payload.tabId],
-        ...props
+        ...newTabRecords
+      }
+    }
+  };
+}
+
+function requestsReducer(state: POPUP_PROPS, payload: any, newRequest: any) {
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requests: [...state.tabRecord[payload.tabId].requests, ...newRequest],
+        requestRecords: {
+          ...state.tabRecord[payload.tabId].requestRecords,
+          [payload.request.requestId]: {
+            ...(state.tabRecord[payload.tabId].requestRecords[payload.tabId] ||
+              initialRequestProperties)
+          }
+        }
+      }
+    }
+  };
+}
+
+function extendRequestRecords(state: POPUP_PROPS, payload: any, newRequestRecords: any) {
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requestRecords: {
+          ...state.tabRecord[payload.tabId].requestRecords,
+          [payload.requestId]: {
+            ...state.tabRecord[payload.tabId].requestRecords[payload.requestId],
+            ...newRequestRecords
+          }
+        }
       }
     }
   };
@@ -54,88 +98,65 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         currentTab: action.payload.currentTab
       };
     case actionType.ERROR:
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
       });
     case actionType.CLEAR_REQUESTS:
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         requests: []
       });
     case actionType.TOGGLE_CHECKBOX:
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         checkedReqs: {
           ...state.tabRecord[action.payload.tabId].checkedReqs,
           [action.payload.reqId]: action.payload.checked
         }
       });
-    case actionType.CLEAR_REQUESTS:
-      return extendStateData(state, action.payload, {
-        checkedReqs: {
-          ...state.tabRecord[action.payload.tabId].checkedReqs,
-          [action.payload.reqId]: action.payload.checked
-        }
-      });
+
     case actionType.RESP_TEXT_CHANGE:
-      return extendStateData(state, action.payload, {
-        responseText: {
-          ...state.tabRecord[action.payload.tabId].responseText,
-          [action.payload.requestId]: action.payload.value
-        }
+      return extendRequestRecords(state, action.payload, {
+        responseText: action.payload.value
       });
     case actionType.STATUSCODE_CHANGE:
-      return extendStateData(state, action.payload, {
-        statusCodes: {
-          ...state.tabRecord[action.payload.tabId].statusCodes,
-          [action.payload.requestId]: action.payload.value
-        }
+      return extendRequestRecords(state, action.payload, {
+        statusCode: action.payload.value
       });
     case actionType.CONTENT_TYPE_CHANGE:
-      return extendStateData(state, action.payload, {
-        contentType: {
-          ...state.tabRecord[action.payload.tabId].contentType,
-          [action.payload.requestId]: action.payload.value
-        }
+      return extendRequestRecords(state, action.payload, {
+        contentType: action.payload.value
       });
     case actionType.PAGINATION_CHANGE:
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         PageDetails: {
           ...state.tabRecord[action.payload.tabId].PageDetails,
           [action.payload.field]: action.payload.value
         }
       });
-    case actionType.UPDATE_MESSAGE:
-      return extendStateData(state, action.payload, {
+    case actionType.UPDATE_MESSAGE: {
+      return extendTabRecords(state, action.payload, {
         interceptStatus: action.payload.message
       });
+    }
     case actionType.UPDATE_INTERCEPTOR_STATUS:
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         isInterceptorOn: action.payload.value
       });
     case actionType.FETCH_DATA_SUCCESS:
-      return extendStateData(state, action.payload, {
-        responseData: {
-          ...state.tabRecord[action.payload.tabId].responseData,
-          [action.payload.requestId]: action.payload.response
-        }
+      return extendRequestRecords(state, action.payload, {
+        serverResponse: action.payload.response
       });
-    case actionType.FETCH_DATA_FAILURE: {
-      return extendStateData(state, action.payload, {
-        responseError: {
-          ...state.tabRecord[action.payload.tabId].responseError,
-          [action.payload.requestId]: action.payload.error
-        }
+    case actionType.FETCH_DATA_FAILURE:
+      return extendRequestRecords(state, action.payload, {
+        serverError: action.payload.error
       });
-    }
     case actionType.TOGGLE_LISTENING: {
-      return extendStateData(state, action.payload, {
+      return extendTabRecords(state, action.payload, {
         enabledStatus: action.payload.enabledStatus
       });
     }
     case actionType.UPDATE_REQUEST:
-      return extendStateData(state, action.payload, {
-        requests: action.payload.requests
-      });
+      return requestsReducer(state, action.payload, [action.payload.request]);
     default:
       return state;
   }

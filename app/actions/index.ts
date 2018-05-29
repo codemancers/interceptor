@@ -58,11 +58,8 @@ export function fetchSuccess(data: string, requestId: string, tabId: number) {
 export function fetchFailure(error: string, requestId: string, tabId: number) {
   return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId, tabId } };
 }
-export function updateRequests(
-  tabId: number,
-  requests: Array<chrome.webRequest.WebRequestDetails>
-) {
-  return { type: UPDATE_REQUEST, payload: { tabId, requests } };
+export function updateRequest(tabId: number, request: Array<chrome.webRequest.WebRequestDetails>) {
+  return { type: UPDATE_REQUEST, payload: { tabId, request } };
 }
 export function toggleListeningRequests(tabId: number, enabledStatus: boolean) {
   return { type: TOGGLE_LISTENING, payload: { tabId, enabledStatus } };

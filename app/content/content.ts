@@ -17,13 +17,12 @@ export interface contentType {
   [contentType: number]: string;
 }
 interface selectedReqs {
-  contentType: contentType;
   interceptEnabledForTab: boolean;
+  checkedTabRecords: any;
   message: string;
   requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>;
-  responseText: responseField;
-  statusCodes: statusCodes;
   tabId: number;
+  checkedReqs: Array<Number>;
 }
 export type GenericCallbackWithoutParams = () => void;
 class Intercept {
@@ -42,30 +41,35 @@ class Intercept {
   };
   interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState().tabRecord[tabId];
-    let checkedReqs;
     if (!presentState) {
       return;
     }
-    checkedReqs = presentState.requests.filter((req: chrome.webRequest.WebRequestBodyDetails) => {
-      return presentState.checkedReqs[req.requestId] && tabId;
-    });
 
+    const requestsToIntercept = presentState.requests.filter(
+      (req: chrome.webRequest.WebRequestBodyDetails) => {
+        return presentState.checkedReqs[req.requestId] && tabId;
+      }
+    );
+    const checkedReqs = Object.entries(presentState.checkedReqs).map(([key, value]) => key);
+    const checkedTabRecords = checkedReqs.map((requestId: number) => {
+      return { [requestId]: presentState.requestRecords[requestId] };
+    });
+    console.log(checkedTabRecords);
     const requestObj = {
       message: message,
       interceptEnabledForTab: presentState.isInterceptorOn,
-      requestsToIntercept: checkedReqs,
-      responseText: presentState.responseText,
-      statusCodes: presentState.statusCodes,
-      contentType: presentState.contentType,
+      requestsToIntercept: requestsToIntercept,
+      checkedReqs: checkedReqs,
+      checkedTabRecords: checkedTabRecords,
       tabId: tabId
     };
     if (message !== "DISABLE_INTERCEPTOR") {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
-        requestObj.requestsToIntercept.find(
-          (req: chrome.webRequest.WebRequestBodyDetails) => req.tabId !== requestObj.tabId
-        )
+        requestObj.requestsToIntercept.find((req: chrome.webRequest.WebRequestBodyDetails) => {
+          req.tabId !== requestObj.tabId;
+        })
       ) {
         return;
       }
@@ -106,9 +110,9 @@ class Intercept {
   };
 
   runInterceptor = (selectedReqs: selectedReqs) => {
-    let responseTexts = selectedReqs.responseText || {};
-    let statusCodes = selectedReqs.statusCodes || {};
-    let contentType = selectedReqs.contentType || {};
+    let responseTexts = selectedReqs.checkedTabRecords || {};
+    let statusCodes = selectedReqs.checkedTabRecords || {};
+    let contentType = selectedReqs.checkedTabRecords || {};
     this.setDefaultValues(responseTexts, selectedReqs.requestsToIntercept, "");
     this.setDefaultValues(statusCodes, selectedReqs.requestsToIntercept, "200");
     this.setDefaultValues(contentType, selectedReqs.requestsToIntercept, "application/json");
@@ -144,7 +148,7 @@ class Intercept {
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
                 if( matchUrl(xhr.url, request.url ) && xhr.method === request.method){
-                  xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+                  xhr.respond(Number(checkedTabRecords.statusCode[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
                 }
              })
            })
