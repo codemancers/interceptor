@@ -5,19 +5,13 @@ import { InterceptTextBox } from "./../components/Intercept_Components/Intercept
 const createTestProps = (props = {}) => ({
   // common props
   currentTabId: 2347,
-  tabRecord: {
-    PageDetails: [],
-    checkedReqs: {},
-    contentType: {},
-    enabledStatus: true,
-    errorMessage: "",
-    interceptStatus: "",
-    isInterceptorOn: true,
-    requests: [],
-    responseData: {},
-    responseError: {},
-    responseText: {},
-    statusCodes: {}
+  requestRecords: {
+    contentType: "",
+    responseError: "",
+    responseText: "",
+    serverError: "",
+    serverResponse: "",
+    statusCode: ""
   },
   fetchResponse: jest.fn(),
   handleContentTypeChange: jest.fn(),
