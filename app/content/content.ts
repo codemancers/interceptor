@@ -53,7 +53,6 @@ class Intercept {
 
     const checkedReqs = presentState.checkedReqs;
     let storeRequestRecords = presentState.requestRecords;
-    console.log("checkedReqs", checkedReqs, "storeRequestRecords", storeRequestRecords);
     let checkedTabRecords = {};
     for (let checkedReqId in checkedReqs) {
       if (checkedReqs[checkedReqId]) {
@@ -91,7 +90,6 @@ class Intercept {
         (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") &&
         requestObj.interceptEnabledForTab
       ) {
-        console.log(requestObj);
         this.runInterceptor(requestObj);
         this.store.dispatch(sendMessageToUI("Interception Success!", requestObj.tabId));
       } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
