@@ -30,9 +30,9 @@ interface Switch {
 }
 
 Switch.defaultProps = {
-  isOn: true
+  isOn: false
 };
 
 ToggleButton.defaultProps = {
-  isOn: true
+  isOn: false
 };
