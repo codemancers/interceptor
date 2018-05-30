@@ -119,9 +119,7 @@ describe("Popup", () => {
     });
     test("Should display Success message on successfull intercept", () => {
       let localProps = createTestProps({
-        tabRecord: {
-          interceptStatus: "Interception Success!"
-        }
+        interceptStatus: "Interception Success!"
       });
       wrapper = shallow(<Popup {...localProps} />);
       expect(wrapper.find("#success-msg").text()).toEqual("Interception Success!");

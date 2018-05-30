@@ -64,6 +64,10 @@ export function updateRequest(tabId: number, request: Array<chrome.webRequest.We
 export function toggleListeningRequests(tabId: number, enabledStatus: boolean) {
   return { type: TOGGLE_LISTENING, payload: { tabId, enabledStatus } };
 }
-export function initialiseDefaults(currentTab: number, currentUrl: string) {
-  return { type: INITIALISE_DEFAULTS, payload: { currentTab, currentUrl } };
+export function initialiseDefaults(
+  currentTab: number,
+  currentUrl: string,
+  interceptStatus: string
+) {
+  return { type: INITIALISE_DEFAULTS, payload: { currentTab, currentUrl, interceptStatus } };
 }

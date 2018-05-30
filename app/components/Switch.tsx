@@ -5,7 +5,7 @@ export const Switch: React.SFC<Switch> = props => {
   return (
     <div className="toggle-switch-container">
       <span>Toggle Interception</span>
-      <div className={classNames} onClick={props.handleSwitch}>
+      <div className={classNames} onClick={props.handleSwitchToggle}>
         <ToggleButton isOn={props.isOn} />
       </div>
     </div>
@@ -26,7 +26,7 @@ interface ToggleButton {
 
 interface Switch {
   isOn: boolean;
-  handleSwitch: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleSwitchToggle: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 Switch.defaultProps = {

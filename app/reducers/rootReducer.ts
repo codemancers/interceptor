@@ -10,7 +10,6 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
 const initialTabProperties = {
   enabledStatus: false,
   requests: [],
-  interceptStatus: "",
   errorMessage: "",
   PageDetails: {
     currentRowSize: 10,
@@ -95,7 +94,8 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
           }
         },
         currentUrl: action.payload.currentUrl,
-        currentTab: action.payload.currentTab
+        currentTab: action.payload.currentTab,
+        interceptStatus: action.payload.interceptStatus
       };
     case actionType.ERROR:
       return extendTabRecords(state, action.payload, {
@@ -134,9 +134,7 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         }
       });
     case actionType.UPDATE_MESSAGE: {
-      return extendTabRecords(state, action.payload, {
-        interceptStatus: action.payload.message
-      });
+      return { ...state, interceptStatus: action.payload.message };
     }
     case actionType.UPDATE_INTERCEPTOR_STATUS:
       return extendTabRecords(state, action.payload, {

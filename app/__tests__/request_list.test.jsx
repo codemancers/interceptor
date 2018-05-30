@@ -26,7 +26,7 @@ const commonProps = {
   handlePaginationChange: jest.fn(),
   handleRespTextChange: jest.fn(),
   handleStatusCodeChange: jest.fn(),
-  handleSwitch: jest.fn(),
+  handleSwitchToggle: jest.fn(),
   updateInterceptorStatus: jest.fn()
 };
 let wrapper;

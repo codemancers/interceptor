@@ -18,6 +18,7 @@ interface DispatchProps {
   updateInterceptorStatus: typeof actionTypes.updateInterceptorStatus;
   fetchResponse: typeof actionTypes.fetchResponse;
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
+  sendMessageToUI: typeof actionTypes.sendMessageToUI;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -60,14 +61,22 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     MessageService.updateBadgeIcon(tabId, disabledStatus);
   };
 
-  handleToggleSwitch = () => {
+  handleSwitchToggle = () => {
     const { props } = this;
     if (props.tabRecord.isInterceptorOn) {
-      props.updateInterceptorStatus(props.currentTab, false);
-      this.disableInterceptor(props.currentTab);
-      this.updateBadgeIcon(props.currentTab, true);
+      props
+        .updateInterceptorStatus(props.currentTab, false)
+        .then(() => {
+          this.disableInterceptor(props.currentTab);
+          this.updateBadgeIcon(props.currentTab, true);
+        })
+        .catch((err: any) => {
+          // something broke in the background store
+          console.log(err);
+        });
     } else {
       props.updateInterceptorStatus(props.currentTab, true);
+      props.sendMessageToUI("Interception Enabled!", props.currentTab);
       this.updateBadgeIcon(props.currentTab, false);
     }
   };
@@ -128,7 +137,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           {tabRecord.errorMessage && (
             <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
           )}
-          {tabRecord.interceptStatus && <div id="success-msg">{tabRecord.interceptStatus}</div>}
+          {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
           <RequestList
             tabRecord={tabRecord}
@@ -141,7 +150,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             currentTabId={props.currentTab}
             clearRequests={this.clearRequests}
             updateInterceptorStatus={props.updateInterceptorStatus}
-            handleSwitch={this.handleToggleSwitch}
+            handleSwitchToggle={this.handleSwitchToggle}
             fetchResponse={props.fetchResponse}
           />
         </div>
@@ -154,7 +163,8 @@ const mapStateToProps = (state: POPUP_PROPS) => {
   return {
     tabRecord: state.tabRecord[state.currentTab],
     currentTab: state.currentTab,
-    currentUrl: state.currentUrl
+    currentUrl: state.currentUrl,
+    interceptStatus: state.interceptStatus
   };
 };
 
@@ -168,7 +178,8 @@ const mapDispatchToProps: DispatchProps = {
   handlePaginationChange: actionTypes.handlePaginationChange,
   updateInterceptorStatus: actionTypes.updateInterceptorStatus,
   fetchResponse: actionTypes.fetchResponse,
-  toggleListeningRequests: actionTypes.toggleListeningRequests
+  toggleListeningRequests: actionTypes.toggleListeningRequests,
+  sendMessageToUI: actionTypes.sendMessageToUI
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

@@ -23,7 +23,7 @@ export interface RequestObj {
   clearRequests?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   updateInterceptorStatus?: (tabId: number) => void;
   fetchResponse: React.MouseEvent<HTMLSpanElement>;
-  handleSwitch: any;
+  handleSwitchToggle: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
   const columns = [
@@ -94,7 +94,10 @@ const RequestList: React.SFC<RequestObj> = props => {
   return (
     <div>
       <div className="grid-container response-action">
-        <Switch isOn={props.tabRecord.isInterceptorOn} handleSwitch={props.handleSwitch} />
+        <Switch
+          isOn={props.tabRecord.isInterceptorOn}
+          handleSwitchToggle={props.handleSwitchToggle}
+        />
         <div className="text-right">
           <InterceptAllButton
             disabled={!enabledRequests.length}
