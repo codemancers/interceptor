@@ -19,10 +19,8 @@ export interface contentType {
 interface selectedReqs {
   interceptEnabledForTab: boolean;
   checkedTabRecords: any;
-  message: string;
   requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>;
   tabId: number;
-  checkedReqs: Array<Number>;
 }
 export type GenericCallbackWithoutParams = () => void;
 class Intercept {
@@ -45,6 +43,10 @@ class Intercept {
       return;
     }
 
+    const isEmptyObject = (value: any) => {
+      return Object.keys(value).length === 0;
+    };
+
     const requestsToIntercept = presentState.requests.filter(
       (req: chrome.webRequest.WebRequestBodyDetails) => {
         return presentState.checkedReqs[req.requestId] && tabId;
@@ -66,18 +68,16 @@ class Intercept {
       }
     }
     const requestObj = {
-      message: message,
       interceptEnabledForTab: presentState.isInterceptorOn,
-      requestsToIntercept: requestsToIntercept,
-      checkedReqs: checkedReqs,
-      checkedTabRecords: checkedTabRecords,
-      tabId: tabId
+      requestsToIntercept,
+      checkedTabRecords,
+      tabId
     };
     if (message !== "DISABLE_INTERCEPTOR") {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
-        !checkedTabRecords ||
+        isEmptyObject(checkedTabRecords) ||
         requestObj.requestsToIntercept.find((req: chrome.webRequest.WebRequestBodyDetails) => {
           req.tabId !== requestObj.tabId;
         })
