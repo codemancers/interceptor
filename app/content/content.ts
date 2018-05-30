@@ -50,11 +50,22 @@ class Intercept {
         return presentState.checkedReqs[req.requestId] && tabId;
       }
     );
-    const checkedReqs = Object.entries(presentState.checkedReqs).map(([key, value]) => key);
-    const checkedTabRecords = checkedReqs.map((requestId: number) => {
-      return { [requestId]: presentState.requestRecords[requestId] };
-    });
-    console.log(checkedTabRecords);
+
+    const checkedReqs = presentState.checkedReqs;
+    let storeRequestRecords = presentState.requestRecords;
+    console.log("checkedReqs", checkedReqs, "storeRequestRecords", storeRequestRecords);
+    let checkedTabRecords = {};
+    for (let checkedReqId in checkedReqs) {
+      if (checkedReqs[checkedReqId]) {
+        if (!storeRequestRecords[checkedReqId].contentType) {
+          storeRequestRecords[checkedReqId].contentType = "application/json";
+        }
+        if (!storeRequestRecords[checkedReqId].statusCode) {
+          storeRequestRecords[checkedReqId].statusCode = "200";
+        }
+        checkedTabRecords[checkedReqId] = storeRequestRecords[checkedReqId];
+      }
+    }
     const requestObj = {
       message: message,
       interceptEnabledForTab: presentState.isInterceptorOn,
@@ -67,6 +78,7 @@ class Intercept {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
+        !checkedTabRecords ||
         requestObj.requestsToIntercept.find((req: chrome.webRequest.WebRequestBodyDetails) => {
           req.tabId !== requestObj.tabId;
         })
@@ -79,6 +91,7 @@ class Intercept {
         (message === "INTERCEPT_CHECKED" || message === "PAGE_REFRESHED") &&
         requestObj.interceptEnabledForTab
       ) {
+        console.log(requestObj);
         this.runInterceptor(requestObj);
         this.store.dispatch(sendMessageToUI("Interception Success!", requestObj.tabId));
       } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
@@ -86,19 +99,6 @@ class Intercept {
         this.store.dispatch(sendMessageToUI("Interception Disabled!", requestObj.tabId));
       }
     });
-  };
-
-  setDefaultValues = (
-    responseField: responseField,
-    requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>,
-    defaultResponseValue: string
-  ) => {
-    requestsToIntercept.forEach((req: chrome.webRequest.WebRequestBodyDetails) => {
-      if (!responseField[Number(req.requestId)]) {
-        responseField[Number(req.requestId)] = defaultResponseValue;
-      }
-    });
-    return responseField;
   };
 
   removeScriptFromDom = (querySelector: string) => {
@@ -110,13 +110,6 @@ class Intercept {
   };
 
   runInterceptor = (selectedReqs: selectedReqs) => {
-    let responseTexts = selectedReqs.checkedTabRecords || {};
-    let statusCodes = selectedReqs.checkedTabRecords || {};
-    let contentType = selectedReqs.checkedTabRecords || {};
-    this.setDefaultValues(responseTexts, selectedReqs.requestsToIntercept, "");
-    this.setDefaultValues(statusCodes, selectedReqs.requestsToIntercept, "200");
-    this.setDefaultValues(contentType, selectedReqs.requestsToIntercept, "application/json");
-
     var selectedInterceptCode = `
      (function(){
        if (window.interceptor) {
@@ -148,7 +141,7 @@ class Intercept {
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
                 if( matchUrl(xhr.url, request.url ) && xhr.method === request.method){
-                  xhr.respond(Number(checkedTabRecords.statusCode[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+                  xhr.respond(Number(requestArray.checkedTabRecords[request.requestId].statusCode), { "Content-Type": requestArray.checkedTabRecords[request.requestId].statusCode },requestArray.checkedTabRecords[request.requestId].responseText.toString())
                 }
              })
            })
