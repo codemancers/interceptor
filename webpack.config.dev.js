@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const TsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 let pathsToClean = ["dist"];
@@ -54,7 +54,7 @@ module.exports = {
       {from: "stylesheets/*"},
       {from: "images/*"}
     ]),
-    new ForkTsCheckerWebpackPlugin({
+    new TsCheckerWebpackPlugin({
       tsconfig: path.resolve("tsconfig.json"),
       memoryLimit: 512,
       diagnosticFormatter: "ts-loader",
