@@ -45,8 +45,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   clearRequests = (): void => {
+    MessageService.clearData(this.props.currentTab);
     this.props.clearFields(this.props.currentTab);
-    MessageService.updateBadgeCount(this.props.currentTab);
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {

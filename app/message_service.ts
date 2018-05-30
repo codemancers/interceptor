@@ -7,8 +7,8 @@ export function enableLogging(tabId: number) {
 export function disableLogging(tabId: number) {
   chrome.runtime.sendMessage({ message: "DISABLE_LOGGING", tabId });
 }
-export function updateBadgeCount(tabId: number) {
-  chrome.runtime.sendMessage({ message: "UPDATE_BADGE_COUNT", tabId: tabId });
+export function clearData(tabId: number) {
+  chrome.runtime.sendMessage({ message: "CLEAR_DATA", tabId });
 }
 export function interceptChecked(tabId: number, requests: Array<any>) {
   chrome.tabs.sendMessage(tabId, {

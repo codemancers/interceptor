@@ -46,16 +46,16 @@ class BackgroundWorker {
         };
       }
       switch (request.message) {
-        case "UPDATE_BADGE_COUNT": {
-          this.updateBadgeText(request.tabId, 0);
-          break;
-        }
         case "ENABLE_LOGGING": {
           this.startTrackingRequests(request.tabId);
           break;
         }
         case "DISABLE_LOGGING": {
           this.stopTrackingRequests(request.tabId);
+          break;
+        }
+        case "CLEAR_DATA": {
+          this.clearData(request.tabId);
           break;
         }
         case "UPDATE_BADGE_ICON": {
@@ -117,6 +117,10 @@ class BackgroundWorker {
   stopTrackingRequests = (tabId: number) => {
     this.data[this.currentTab].enabled = false;
     store.dispatch(toggleListeningRequests(tabId, false));
+  };
+  clearData = (tabId: number) => {
+    this.data[this.currentTab].requests = [];
+    this.updateBadgeText(tabId, 0);
   };
 }
 
