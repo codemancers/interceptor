@@ -31,7 +31,12 @@
   },
   "jest": {
     "verbose": true,
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
     "globals": {
       "__DEV__": true,
       "__RCTProfileIsProfiling": false
@@ -48,8 +53,7 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/webpack -p --config webpack.config.prod.js",
-    "watch":
-      "./node_modules/.bin/webpack --config webpack.config.dev.js --watch --progress --colors",
+    "watch": "./node_modules/.bin/webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -64,7 +68,6 @@
     "react-redux": "^5.0.6",
     "react-table": "^6.7.6",
     "redux": "3.5.2",
-    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
