@@ -3,6 +3,7 @@ import * as cx from "classnames";
 import { connect } from "react-redux";
 
 import * as MessageService from "./../message_service";
+import { Logo } from "./../components/Logo";
 import RequestList from "./../components/RequestList";
 import { POPUP_PROPS } from "./../types";
 import * as actionTypes from "./../actions";
@@ -95,29 +96,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       <div className="popup">
         <header>
           <div className="grid-container">
-            <a className="logo" href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="Interceptor"
-                role="Image"
-                viewBox="0 0 32 32"
-                width="16"
-                height="16"
-              >
-                <rect fill="#3A539B" width="32" height="32" x="0" y="0" />
-                <path
-                  fill="#ffffff"
-                  d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z"
-                />
-                <path
-                  fill="#ffffff"
-                  d="m 18.125,13.875 -4.25,4.25 9.03125,9.03125 4.25,-4.25 L 18.125,13.875 z"
-                />
-                <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
-                <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
-              </svg>
-              <span>INTERCEPTOR</span>
-            </a>
+            <Logo />
             <button
               title={
                 tabRecord.enabledStatus
@@ -182,4 +161,7 @@ const mapDispatchToProps: DispatchProps = {
   sendMessageToUI: actionTypes.sendMessageToUI
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Popup);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Popup);

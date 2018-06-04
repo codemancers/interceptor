@@ -45,6 +45,10 @@ describe("Popup", () => {
       expect(wrapper).toBeDefined();
     });
 
+    test("Contains one Logo component", () => {
+      expect(wrapper.find("Logo")).toHaveLength(1);
+    });
+
     test("Contains one button elements", () => {
       expect(wrapper.find("button")).toHaveLength(1);
     });
