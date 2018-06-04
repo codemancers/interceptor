@@ -6,16 +6,11 @@ const commonProps = {
   tabRecord: {
     PageDetails: [],
     checkedReqs: {},
-    contentType: {},
     enabledStatus: true,
     errorMessage: "",
     interceptStatus: "",
     isInterceptorOn: true,
-    requests: [],
-    responseData: {},
-    responseError: {},
-    responseText: {},
-    statusCodes: {}
+    requests: []
   },
   clearRequests: jest.fn(),
   currentTabId: 2328,

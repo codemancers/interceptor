@@ -9,16 +9,11 @@ const createTestProps = props => ({
   tabRecord: {
     PageDetails: [],
     checkedReqs: {},
-    contentType: {},
     enabledStatus: false,
     errorMessage: "",
     interceptStatus: "",
     isInterceptorOn: true,
-    requests: [],
-    responseData: {},
-    responseError: {},
-    responseText: {},
-    statusCodes: {}
+    requests: []
   },
   currentTab: 1,
   currentUrl: "http://www.google.com",
