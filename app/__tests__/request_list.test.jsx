@@ -1,5 +1,5 @@
 import * as React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import RequestList from "./../components/RequestList";
 
 const commonProps = {
@@ -41,6 +41,10 @@ describe("RequestList initial state", () => {
     expect(commonProps.tabRecord.requests).toHaveLength(0);
   });
 
+  test("Should contain one Switch component", () => {
+    expect(wrapper.find("Switch")).toHaveLength(1);
+  });
+
   test("Only one ReactTable component should be present", () => {
     wrapper = shallow(<RequestList {...commonProps} />);
     expect(wrapper.find("ReactTable")).toHaveLength(1);
@@ -51,7 +55,19 @@ describe("RequestList initial state", () => {
     expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
   });
 
-  test("on clear button click, should trigger clearData and clearField", () => {
+  test("Should contain one Clear button", () => {
+    expect(wrapper.find(".btn-clear")).toHaveLength(1);
+  });
+});
+
+describe("on Click Events", () => {
+  const wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<RequestList {...commonProps} />);
+    jest.clearAllMocks();
+  });
+
+  test("on clear button click, should trigger props.clearRequests", () => {
     wrapper
       .find(".btn-clear")
       .first()

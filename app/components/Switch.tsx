@@ -29,6 +29,8 @@ interface Switch {
   handleSwitchToggle: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
+Switch.displayName = "Switch";
+
 Switch.defaultProps = {
   isOn: false
 };
