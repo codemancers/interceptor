@@ -52,8 +52,8 @@
     "url": "https://github.com/code-mancers/interceptor.git"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack -p --config webpack.config.prod.js",
-    "watch": "./node_modules/.bin/webpack --config webpack.config.dev.js --watch --progress --colors",
+    "build": "webpack -p --config webpack.config.prod.js",
+    "watch": "webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch"
   },
