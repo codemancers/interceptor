@@ -35,6 +35,8 @@ export const RequestHeaderList: React.SFC<RequestHeadersProps> = props => {
   );
 };
 
+RequestHeaderList.displayName = "RequestHeaderList";
+
 RequestHeaderList.defaultProps = {
   name: "",
   value: "",

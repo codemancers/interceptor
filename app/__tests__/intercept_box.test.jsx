@@ -46,6 +46,9 @@ describe("Input and select Field tests", () => {
     test("It contains a select element to change content-type", () => {
       expect(wrapper.find(".content-type-select")).toHaveLength(1);
     });
+    test("It contains one RequestHeaderList component", () => {
+      expect(wrapper.find("RequestHeaderList")).toHaveLength(1);
+    });
   });
 
   describe("Show default values for response, status and content-type", () => {
@@ -83,6 +86,10 @@ describe("Input and select Field tests", () => {
     test("handleContentTypeChange should be called on content-type field change", () => {
       wrapper.find(".content-type-select").simulate("change", { target: { value: "text/html" } });
       expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123, 2347);
+    });
+    test("props.fetchResponse should be called on Fetch Response button click", () => {
+      wrapper.find(".fetch-responsetext").simulate("click");
+      expect(props.fetchResponse).toHaveBeenCalledWith({ requestId: 123 }, 2347);
     });
   });
 });

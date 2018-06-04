@@ -54,11 +54,11 @@ describe("Popup", () => {
       expect(wrapper.find("button")).toHaveLength(1);
     });
 
-    test("should render RequestList component", () => {
+    test("Contains one RequestList component", () => {
       expect(wrapper.find("RequestList")).toHaveLength(1);
     });
 
-    test("on start button click, should trigger enable message and updateField", () => {
+    test("On start button click, should pass message 'EnableLogging' with tabId", () => {
       wrapper
         .find("button")
         .first()
@@ -67,12 +67,12 @@ describe("Popup", () => {
     });
   });
 
-  describe("on enabled", () => {
+  describe("On enabled", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    test("on stop button click, should trigger disable message and updateField", () => {
+    test("on Stop button click, should pass message 'disableLogging' with tabId", () => {
       let localProps = createTestProps({ tabRecord: { enabledStatus: true } });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
@@ -83,7 +83,7 @@ describe("Popup", () => {
     });
   });
 
-  describe("on error", () => {
+  describe("On error", () => {
     test("should render error message", () => {
       jest.clearAllMocks();
       let localProps = createTestProps({ tabRecord: { errorMessage: "Error" } });
@@ -92,7 +92,7 @@ describe("Popup", () => {
     });
   });
 
-  describe("on invalid url", () => {
+  describe("On invalid url", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -101,7 +101,6 @@ describe("Popup", () => {
         currentUrl: "chrome://version"
       });
       wrapper = shallow(<Popup {...localProps} />);
-      MessageService.getRequests.mockClear();
       wrapper
         .find("button")
         .first()
@@ -110,6 +109,7 @@ describe("Popup", () => {
         "Cannot Start Listening on chrome://version",
         1
       );
+      expect(wrapper.find("button").hasClass("button-start-listening")).toEqual(true);
     });
   });
 
