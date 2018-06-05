@@ -92,22 +92,21 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       "button-start-listening btn-secondary": !tabRecord.enabledStatus,
       "button-stop-listening btn-danger": tabRecord.enabledStatus
     });
+    const buttonLabel = (enabledStatus: boolean) => {
+      return enabledStatus ? "Stop Listening" : "Start Listening";
+    };
+
     return (
       <div className="popup">
         <header>
           <div className="grid-container">
             <Logo />
             <button
-              title={
-                tabRecord.enabledStatus
-                  ? "Stop Listening to Requests"
-                  : "Start Listening to Requests"
-              }
-              type="button"
+              title={buttonLabel(tabRecord.enabledStatus) + " to Requests"}
               onClick={this.toggleListening}
               className={buttonClass}
             >
-              {tabRecord.enabledStatus ? "Stop Listening" : "Start Listening"}
+              {buttonLabel(tabRecord.enabledStatus)}
             </button>
           </div>
         </header>
