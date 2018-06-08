@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const Logo = () => (
+export const Logo: React.SFC<{}> = () => (
   <a className="logo" href="#">
     <svg
       xmlns="http://www.w3.org/2000/svg"
