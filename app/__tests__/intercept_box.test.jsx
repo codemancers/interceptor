@@ -1,21 +1,28 @@
 import * as React from "react";
-import {shallow} from "enzyme";
-import {InterceptTextBox} from "./../components/Intercept_Components/InterceptTextBox";
+import { shallow } from "enzyme";
+import { InterceptTextBox } from "./../components/Intercept_Components/InterceptTextBox";
 
 const createTestProps = (props = {}) => ({
   // common props
-  handleIntercept: jest.fn(),
+  currentTabId: 2347,
+  requestRecords: {
+    contentType: "",
+    responseError: "",
+    responseText: "",
+    serverError: "",
+    serverResponse: "",
+    statusCode: ""
+  },
+  fetchResponse: jest.fn(),
+  handleContentTypeChange: jest.fn(),
   handleRespTextChange: jest.fn(),
   handleStatusCodeChange: jest.fn(),
-  handleContentTypeChange: jest.fn(),
   rowProps: {
-    checkbox: {
-      requestId: 123
-    }
+    checkbox: { requestId: 123 }
   },
-  // allow to override common props
   ...props
 });
+// allow to override common props
 
 describe("Input and select Field tests", () => {
   let wrapper, props;
@@ -38,6 +45,9 @@ describe("Input and select Field tests", () => {
     });
     test("It contains a select element to change content-type", () => {
       expect(wrapper.find(".content-type-select")).toHaveLength(1);
+    });
+    test("It contains one RequestHeaderList component", () => {
+      expect(wrapper.find("RequestHeaderList")).toHaveLength(1);
     });
   });
 
@@ -66,16 +76,20 @@ describe("Input and select Field tests", () => {
       wrapper = shallow(<InterceptTextBox {...props} />);
     });
     test("handleRespTextChange should be called on response field change", () => {
-      wrapper.find(".responseText").simulate("change", {target: {value: "h"}});
-      expect(props.handleRespTextChange).toHaveBeenCalledWith("h", 123);
+      wrapper.find(".responseText").simulate("change", { target: { value: "h" } });
+      expect(props.handleRespTextChange).toHaveBeenCalledWith("h", 123, 2347);
     });
     test("handleStatusCodeChange should be called on status field change", () => {
-      wrapper.find(".select-status").simulate("change", {target: {value: "404"}});
-      expect(props.handleStatusCodeChange).toHaveBeenCalledWith("404", 123);
+      wrapper.find(".select-status").simulate("change", { target: { value: "404" } });
+      expect(props.handleStatusCodeChange).toHaveBeenCalledWith("404", 123, 2347);
     });
     test("handleContentTypeChange should be called on content-type field change", () => {
-      wrapper.find(".content-type-select").simulate("change", {target: {value: "text/html"}});
-      expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123);
+      wrapper.find(".content-type-select").simulate("change", { target: { value: "text/html" } });
+      expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123, 2347);
+    });
+    test("props.fetchResponse should be called on Fetch Response button click", () => {
+      wrapper.find(".fetch-responsetext").simulate("click");
+      expect(props.fetchResponse).toHaveBeenCalledWith({ requestId: 123 }, 2347);
     });
   });
 });

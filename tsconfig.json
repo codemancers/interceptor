@@ -4,6 +4,7 @@
     "module": "commonjs",
     "target": "es5",
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "jsx": "react",
     "outDir": "./dist",
     "noFallthroughCasesInSwitch": true,
@@ -16,21 +17,19 @@
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "lib": ["es2016", "es2015", "dom", "dom.iterable","es6"],
-    "typeRoots": [ "node_modules/@types" ],
+    "lib": ["es2016", "es2015", "dom", "dom.iterable", "es6"],
+    "typeRoots": ["node_modules/@types"]
   },
-  "jsx":true,
-  "file_exclude_patterns": ["*.js, *.js.map","*.json"],
-  "include": [
-        "app"
-    ],
+  "jsx": true,
+  "file_exclude_patterns": ["*.js, *.js.map", "*.json"],
+  "include": ["app"],
   "exclude": [
-        "node_modules",
-        "app/__mocks__",
-        "app/__tests__",
-        "app/images",
-        "app/lib",
-        "app/stylesheets",
-    ],
+    "node_modules",
+    "app/__mocks__",
+    "app/__tests__",
+    "app/images",
+    "app/lib",
+    "app/stylesheets"
+  ],
   "types": ["jasmine", "chrome"]
 }

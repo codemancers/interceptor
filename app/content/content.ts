@@ -17,12 +17,9 @@ export interface contentType {
   [contentType: number]: string;
 }
 interface selectedReqs {
-  contentType: contentType;
   interceptEnabledForTab: boolean;
-  message: string;
+  checkedTabRecords: any;
   requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>;
-  responseText: responseField;
-  statusCodes: statusCodes;
   tabId: number;
 }
 export type GenericCallbackWithoutParams = () => void;
@@ -41,24 +38,49 @@ class Intercept {
     });
   };
   interceptSelected = (message: string, tabId: number) => {
-    const presentState = this.store.getState();
-    const checkedReqs = presentState.requests.filter( (req:chrome.webRequest.WebRequestBodyDetails) => {
-      return presentState.checkedReqs[req.requestId] && tabId;
-    });
+    const presentState = this.store.getState().tabRecord[tabId];
+    if (!presentState) {
+      return;
+    }
+
+    const isEmptyObject = (value: any) => {
+      return Object.keys(value).length === 0;
+    };
+
+    const requestsToIntercept = presentState.requests.filter(
+      (req: chrome.webRequest.WebRequestBodyDetails) => {
+        return presentState.checkedReqs[req.requestId] && tabId;
+      }
+    );
+
+    const checkedReqs = presentState.checkedReqs;
+    let storeRequestRecords = presentState.requestRecords;
+    let checkedTabRecords = {};
+    for (let checkedReqId in checkedReqs) {
+      if (checkedReqs[checkedReqId]) {
+        if (!storeRequestRecords[checkedReqId].contentType) {
+          storeRequestRecords[checkedReqId].contentType = "application/json";
+        }
+        if (!storeRequestRecords[checkedReqId].statusCode) {
+          storeRequestRecords[checkedReqId].statusCode = "200";
+        }
+        checkedTabRecords[checkedReqId] = storeRequestRecords[checkedReqId];
+      }
+    }
     const requestObj = {
-      message: message,
-      interceptEnabledForTab: presentState.isInterceptorOn[tabId],
-      requestsToIntercept: checkedReqs,
-      responseText: presentState.responseText,
-      statusCodes: presentState.statusCodes,
-      contentType: presentState.contentType,
-      tabId: tabId
+      interceptEnabledForTab: presentState.isInterceptorOn,
+      requestsToIntercept,
+      checkedTabRecords,
+      tabId
     };
     if (message !== "DISABLE_INTERCEPTOR") {
       if (
         requestObj.requestsToIntercept.length < 1 ||
         !requestObj.tabId ||
-        requestObj.requestsToIntercept.find( (req:chrome.webRequest.WebRequestBodyDetails) => req.tabId !== requestObj.tabId)
+        isEmptyObject(checkedTabRecords) ||
+        requestObj.requestsToIntercept.find((req: chrome.webRequest.WebRequestBodyDetails) => {
+          req.tabId !== requestObj.tabId;
+        })
       ) {
         return;
       }
@@ -69,43 +91,23 @@ class Intercept {
         requestObj.interceptEnabledForTab
       ) {
         this.runInterceptor(requestObj);
-        this.store.dispatch(sendMessageToUI("Interception Success!"));
+        this.store.dispatch(sendMessageToUI("Interception Success!", requestObj.tabId));
       } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
         this.disableInterceptor();
-        this.store.dispatch(sendMessageToUI("Interception Disabled!"));
+        this.store.dispatch(sendMessageToUI("Interception Disabled!", requestObj.tabId));
       }
     });
-  };
-
-  setDefaultValues = (
-    responseField: responseField,
-    requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>,
-    defaultResponseValue: string
-  ) => {
-    requestsToIntercept.forEach((req: chrome.webRequest.WebRequestBodyDetails) => {
-      if (!responseField[Number(req.requestId)]) {
-        responseField[Number(req.requestId)] = defaultResponseValue;
-      }
-    });
-    return responseField;
   };
 
   removeScriptFromDom = (querySelector: string) => {
     while (document.querySelectorAll(querySelector).length) {
       let elemToRemove = document.querySelector(querySelector) as Node;
-      const parentElement:(Node | null) = elemToRemove.parentNode;
+      const parentElement: Node | null = elemToRemove.parentNode;
       parentElement.removeChild(elemToRemove);
     }
   };
 
   runInterceptor = (selectedReqs: selectedReqs) => {
-    let responseTexts = selectedReqs.responseText || {};
-    let statusCodes = selectedReqs.statusCodes || {};
-    let contentType = selectedReqs.contentType || {};
-    this.setDefaultValues(responseTexts, selectedReqs.requestsToIntercept, "");
-    this.setDefaultValues(statusCodes, selectedReqs.requestsToIntercept, "200");
-    this.setDefaultValues(contentType, selectedReqs.requestsToIntercept, "application/json");
-
     var selectedInterceptCode = `
      (function(){
        if (window.interceptor) {
@@ -137,7 +139,7 @@ class Intercept {
            this.server.respondWith((xhr, id) => {
              const respondUrl = requestArray.requestsToIntercept.find((request) => {
                 if( matchUrl(xhr.url, request.url ) && xhr.method === request.method){
-                  xhr.respond(Number(requestArray.statusCodes[request.requestId]), { "Content-Type": requestArray.contentType[request.requestId] },requestArray.responseText[request.requestId].toString())
+                  xhr.respond(Number(requestArray.checkedTabRecords[request.requestId].statusCode), { "Content-Type": requestArray.checkedTabRecords[request.requestId].statusCode },requestArray.checkedTabRecords[request.requestId].responseText.toString())
                 }
              })
            })

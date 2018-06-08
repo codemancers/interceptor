@@ -1,11 +1,10 @@
-import {createStore, applyMiddleware, Middleware} from "redux";
-import {createLogger} from "redux-logger";
+import { createStore, applyMiddleware, Middleware } from "redux";
+import { createLogger } from "redux-logger";
 import thunkMiddleware from "redux-thunk";
 import aliases from "./aliases";
-import {alias} from "react-chrome-redux";
-import {reducer} from "./../reducers/rootReducer";
+import { alias } from "react-chrome-redux";
+import { reducer } from "./../reducers/rootReducer";
 import { POPUP_PROPS } from "../types";
-
 
 let enhancer: any;
 if (process.env.NODE_ENV !== "production") {

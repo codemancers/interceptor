@@ -1,17 +1,13 @@
 import * as React from "react";
 import { RequestHeaderList } from "./RequestHeaderList";
-import { responseField, statusCodes, contentType } from "./../../content/content";
 interface InterceptTextBox {
+  requestRecords: any;
   rowProps: any;
-  responseText: responseField;
-  statusCodes: statusCodes;
-  contentType: contentType;
-  responseError: responseField;
   fetchResponse: any;
-  responseData: responseField;
   handleRespTextChange: any;
   handleStatusCodeChange: any;
   handleContentTypeChange: any;
+  currentTabId: number;
 }
 
 export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
@@ -19,15 +15,15 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
   const defaultResponseText = "";
   const defaultStatusCode = "200";
   const defaultContentType = "application/json";
-  const responseTextValue = props.responseText[requestId] || defaultResponseText;
-  const statusCodeValue = props.statusCodes[requestId] || defaultStatusCode;
-  const contentTypeValue = props.contentType[requestId] || defaultContentType;
+  const responseTextValue = props.requestRecords.responseText || defaultResponseText;
+  const statusCodeValue = props.requestRecords.statusCode || defaultStatusCode;
+  const contentTypeValue = props.requestRecords.contentType || defaultContentType;
 
   return (
     <div className="form-container">
       <div>
-        {props.responseError[requestId] ? (
-          <p className="popup-error-message popup-error"> {props.responseError[requestId]} </p>
+        {props.requestRecords.serverError ? (
+          <p className="popup-error-message popup-error"> {props.requestRecords.serverError} </p>
         ) : null}
       </div>
       <div className="grid-container form">
@@ -43,18 +39,18 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             title="Fetch Response Text"
             className="fetch-responsetext btn-sm btn-primary"
             onClick={() => {
-              props.fetchResponse(props.rowProps.checkbox);
+              props.fetchResponse(props.rowProps.checkbox, props.currentTabId);
             }}
           />
           <textarea
             name="responseText"
             className="responseText"
             defaultValue={responseTextValue}
-            key={props.responseData[requestId]}
+            key={props.requestRecords.serverResponse}
             title="Mocked Response Text"
             //value={textAreaValue}
             onChange={event => {
-              props.handleRespTextChange(event.target.value, requestId);
+              props.handleRespTextChange(event.target.value, requestId, props.currentTabId);
             }}
           />
         </div>
@@ -64,7 +60,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             value={contentTypeValue}
             className="content-type-select"
             onChange={event => {
-              props.handleContentTypeChange(event.target.value, requestId);
+              props.handleContentTypeChange(event.target.value, requestId, props.currentTabId);
             }}
           >
             <option value="application/json">application/json</option>
@@ -75,12 +71,14 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             <option value="text/plain">text/plain</option>
             <option value="application/pdf">application/pdf</option>
           </select>
-          <label className="mt15" htmlFor="">Select Status</label>
+          <label className="mt15" htmlFor="">
+            Select Status
+          </label>
           <select
             value={statusCodeValue}
             className="select-status"
             onChange={event => {
-              props.handleStatusCodeChange(event.target.value, requestId);
+              props.handleStatusCodeChange(event.target.value, requestId, props.currentTabId);
             }}
           >
             <option value="100">100 - Continue</option>
@@ -132,11 +130,4 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
     </div>
   );
 };
-
-InterceptTextBox.defaultProps = {
-  responseText: [],
-  statusCodes: [],
-  contentType: [],
-  responseData: {},
-  responseError: {}
-};
+InterceptTextBox.defaultProps = {};

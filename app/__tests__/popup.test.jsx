@@ -1,27 +1,32 @@
 import * as React from "react";
-import {shallow} from "enzyme";
-import {Popup} from "./../containers/popup";
+import { shallow } from "enzyme";
+import { Popup } from "./../containers/Popup";
 
 import * as MessageService from "../message_service";
 
 jest.mock("../message_service");
-
 const createTestProps = props => ({
-  // common props
-  tabUrl: "http://google.com",
-  updateFields: jest.fn(),
-  updateField: jest.fn(),
-  errorNotify: jest.fn(),
-  startListening: jest.fn(),
-  stopListening: jest.fn(),
-  tabId: 1,
-  enabled: false,
-  requests: [],
-  errorMessage: "",
-  interceptStatus: "",
-  isInterceptorOn : {
-    1 : true
+  tabRecord: {
+    PageDetails: [],
+    checkedReqs: {},
+    enabledStatus: false,
+    errorMessage: "",
+    interceptStatus: "",
+    isInterceptorOn: true,
+    requests: []
   },
+  currentTab: 1,
+  currentUrl: "http://www.google.com",
+  clearFields: jest.fn(),
+  handleCheckToggle: jest.fn(),
+  handleCheckedRequests: jest.fn(),
+  handleContentTypeChange: jest.fn(),
+  errorNotify: jest.fn(),
+  handlePaginationChange: jest.fn(),
+  handleRespTextChange: jest.fn(),
+  handleStatusCodeChange: jest.fn(),
+  toggleListeningRequests: jest.fn(),
+  updateInterceptorStatus: jest.fn(),
   // allow to override common props
   ...props
 });
@@ -40,78 +45,70 @@ describe("Popup", () => {
       expect(wrapper).toBeDefined();
     });
 
+    test("Contains one Logo component", () => {
+      expect(wrapper.find("Logo")).toHaveLength(1);
+    });
+
     test("Contains one button elements", () => {
       expect(wrapper.find("button")).toHaveLength(1);
     });
 
-    test("should render RequestList component", () => {
+    test("Contains one RequestList component", () => {
       expect(wrapper.find("RequestList")).toHaveLength(1);
     });
 
-    test("on start button click, should trigger enable message and updateField", () => {
+    test("On start button click, should pass message 'EnableLogging' with tabId", () => {
       wrapper
         .find("button")
         .first()
         .simulate("click");
-      expect(MessageService.getRequests).toHaveBeenCalled();
-      expect(MessageService.enableLogging).toHaveBeenCalledWith(
-        "http://google.com",
-        1
-      );
-      expect(props.updateFields).toHaveBeenCalledTimes(1);
+      expect(MessageService.enableLogging).toHaveBeenCalledWith(1);
     });
   });
 
-  describe("on enabled", () => {
+  describe("On enabled", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    test("on stop button click, should trigger disable message and updateField", () => {
-      let localProps = createTestProps({enabled: true});
+    test("on Stop button click, should pass message 'disableLogging' with tabId", () => {
+      let localProps = createTestProps({ tabRecord: { enabledStatus: true } });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
         .find("button")
         .first()
         .simulate("click");
-      expect(localProps.updateField).toHaveBeenCalledWith("enabled", false);
-      expect(MessageService.disableLogging).toHaveBeenCalledWith(
-        "http://google.com",
-        1
-      );
+      expect(MessageService.disableLogging).toHaveBeenCalledWith(1);
     });
   });
 
-  describe("on error", () => {
+  describe("On error", () => {
     test("should render error message", () => {
       jest.clearAllMocks();
-      let localProps = createTestProps({errorMessage: "Error"});
+      let localProps = createTestProps({ tabRecord: { errorMessage: "Error" } });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find(".popup-error-message").text()).toEqual(
-        expect.stringMatching("Error")
-      );
+      expect(wrapper.find(".popup-error-message").text()).toEqual(expect.stringMatching("Error"));
     });
   });
 
-  describe("on invalid url", () => {
+  describe("On invalid url", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
     test("should call errorNotify and disable interception", () => {
       let localProps = createTestProps({
-        tabUrl: "chrome://version",
+        currentUrl: "chrome://version"
       });
       wrapper = shallow(<Popup {...localProps} />);
-      MessageService.getRequests.mockClear()
       wrapper
         .find("button")
         .first()
         .simulate("click");
       expect(localProps.errorNotify).toHaveBeenCalledWith(
-        "Cannot Start Listening on chrome://version"
+        "Cannot Start Listening on chrome://version",
+        1
       );
-      expect(MessageService.disableLogging).not.toHaveBeenCalled()
-      expect(MessageService.getRequests).not.toHaveBeenCalled()
+      expect(wrapper.find("button").hasClass("button-start-listening")).toEqual(true);
     });
   });
 
@@ -124,15 +121,17 @@ describe("Popup", () => {
         interceptStatus: "Interception Success!"
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg").text()).toEqual("Interception Success!")
+      expect(wrapper.find("#success-msg").text()).toEqual("Interception Success!");
     });
 
     test("Should not display Success message on unsucesfull intercept", () => {
       let localProps = createTestProps({
-        interceptStatus: ""
+        tabRecord: {
+          interceptStatus: ""
+        }
       });
       wrapper = shallow(<Popup {...localProps} />);
-      expect(wrapper.find("#success-msg").exists()).toBeFalsy()
+      expect(wrapper.find("#success-msg").exists()).toBeFalsy();
     });
   });
-})
+});

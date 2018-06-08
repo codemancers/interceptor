@@ -3,6 +3,8 @@ import { fetchSuccess, fetchFailure, handleRespTextChange } from "./../actions";
 
 interface payload {
   requestDetails: chrome.webRequest.WebRequestHeadersDetails;
+  tabId: number;
+  payload: any;
 }
 interface reqHeaderNameValuePair {
   name: string;
@@ -11,7 +13,7 @@ interface reqHeaderNameValuePair {
 
 const fetchDataAlias = (payload: payload) => {
   return (dispatch: any) => {
-    const { method, url, requestId, requestHeaders } = payload.requestDetails;
+    const { method, url, requestId, requestHeaders, tabId } = payload.payload.requestDetails;
     const requestHeadersObject = requestHeaders
       ? requestHeaders.reduce(
           (accumulatedObj = {}, reqHeaderNameValuePair: reqHeaderNameValuePair) => {
@@ -28,12 +30,14 @@ const fetchDataAlias = (payload: payload) => {
     })
       .then((data: axios.AxiosResponse) => {
         const stringifiedData = JSON.stringify(data.data);
-        dispatch(fetchSuccess("", requestId));
-        dispatch(handleRespTextChange(stringifiedData, requestId));
-        dispatch(fetchSuccess(stringifiedData, requestId));
+        dispatch(fetchSuccess("", requestId, tabId));
+        dispatch(handleRespTextChange(stringifiedData, requestId, tabId));
+        dispatch(fetchSuccess(stringifiedData, requestId, tabId));
       })
       .catch(() => {
-        dispatch(fetchFailure("Couldn't connect to server. Check your connection.", requestId));
+        dispatch(
+          fetchFailure("Couldn't connect to server. Check your connection.", requestId, tabId)
+        );
       });
   };
 };

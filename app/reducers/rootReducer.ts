@@ -1,94 +1,160 @@
 import { POPUP_PROPS, Action } from "../types";
-export const INITIAL_POPUP_STATE: POPUP_PROPS = {
-  enabled: false,
-  tabId: -1,
-  tabUrl: "",
-  errorMessage: "",
-  requests: [],
-  checkedReqs: {},
-  responseText: {},
-  statusCodes: {},
-  contentType: {},
-  PageDetails: [],
-  interceptStatus: "",
-  isInterceptorOn: {},
-  responseData: {},
-  responseError: {}
-};
-
-//ACTION CONSTANTS
 import * as actionType from "../actions";
 
-export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
-  switch (action.type) {
-    case actionType.START_LISTENING:
-      return { ...state, enabled: action.payload };
-    case actionType.UPDATE_FIELD:
-      return { ...state, [action.payload.name]: action.payload.value };
-    case actionType.UPDATE_FIELDS:
-      return { ...state, ...action.payload };
-    case actionType.STOP_LISTENING:
-      return { ...state, enabled: action.payload };
-    case actionType.ERROR:
-      return { ...state, errorMessage: action.errorMessage, enabled: false };
-    case actionType.CLEAR_REQUESTS:
-      return { ...state, requests: [] };
-    case actionType.TOGGLE_CHECKBOX:
-      return {
-        ...state,
-        checkedReqs: {
-          ...state.checkedReqs,
-          [action.payload.reqId]: action.payload.checked
-        }
-      };
-    case actionType.INTERCEPT_CHECKED:
-      return { ...state };
-    case actionType.RESP_TEXT_CHANGE:
-      return {
-        ...state,
-        responseText: { ...state.responseText, [action.payload.requestId]: action.payload.value }
-      };
-    case actionType.STATUSCODE_CHANGE:
-      return {
-        ...state,
-        statusCodes: { ...state.statusCodes, [action.payload.requestId]: action.payload.value }
-      };
-    case actionType.CONTENT_TYPE_CHANGE:
-      return {
-        ...state,
-        contentType: { ...state.contentType, [action.payload.requestId]: action.payload.value }
-      };
-    case actionType.PAGINATION_CHANGE:
-      return {
-        ...state,
-        PageDetails: {
-          ...state.PageDetails,
-          [action.payload.tabId]: {
-            ...state.PageDetails[action.payload.tabId],
-            [action.payload.field]: action.payload.value
+export const INITIAL_POPUP_STATE: POPUP_PROPS = {
+  tabRecord: {},
+  currentUrl: "",
+  currentTab: -1
+};
+
+const initialTabProperties = {
+  enabledStatus: false,
+  requests: [],
+  errorMessage: "",
+  PageDetails: {
+    currentRowSize: 10,
+    currentPageNumber: 0
+  },
+  checkedReqs: {},
+  isInterceptorOn: true,
+  requestRecords: {}
+};
+
+const initialRequestProperties = {
+  serverResponse: "",
+  responseError: "",
+  serverError: "",
+  contentType: "",
+  responseText: "",
+  statusCode: ""
+};
+
+function extendTabRecords(state: POPUP_PROPS, payload: any, newTabRecords: any) {
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        ...newTabRecords
+      }
+    }
+  };
+}
+
+function requestsReducer(state: POPUP_PROPS, payload: any, newRequest: any) {
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requests: [...state.tabRecord[payload.tabId].requests, ...newRequest],
+        requestRecords: {
+          ...state.tabRecord[payload.tabId].requestRecords,
+          [payload.request.requestId]: {
+            ...(state.tabRecord[payload.tabId].requestRecords[payload.tabId] ||
+              initialRequestProperties)
           }
         }
+      }
+    }
+  };
+}
+
+function extendRequestRecords(state: POPUP_PROPS, payload: any, newRequestRecords: any) {
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requestRecords: {
+          ...state.tabRecord[payload.tabId].requestRecords,
+          [payload.requestId]: {
+            ...state.tabRecord[payload.tabId].requestRecords[payload.requestId],
+            ...newRequestRecords
+          }
+        }
+      }
+    }
+  };
+}
+
+//ACTION CONSTANTS
+export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
+  switch (action.type) {
+    case actionType.INITIALISE_DEFAULTS:
+      return {
+        ...state,
+        tabRecord: {
+          ...state.tabRecord,
+          [action.payload.currentTab]: {
+            ...(state.tabRecord[action.payload.currentTab] || initialTabProperties)
+          }
+        },
+        currentUrl: action.payload.currentUrl,
+        currentTab: action.payload.currentTab,
+        interceptStatus: action.payload.interceptStatus
       };
+    case actionType.ERROR:
+      return extendTabRecords(state, action.payload, {
+        errorMessage: action.payload.errorMessage,
+        enabledStatus: false
+      });
+    case actionType.CLEAR_REQUESTS:
+      return extendTabRecords(state, action.payload, {
+        requests: []
+      });
+    case actionType.TOGGLE_CHECKBOX:
+      return extendTabRecords(state, action.payload, {
+        checkedReqs: {
+          ...state.tabRecord[action.payload.tabId].checkedReqs,
+          [action.payload.reqId]: action.payload.checked
+        }
+      });
+
+    case actionType.RESP_TEXT_CHANGE:
+      return extendRequestRecords(state, action.payload, {
+        responseText: action.payload.value
+      });
+    case actionType.STATUSCODE_CHANGE:
+      return extendRequestRecords(state, action.payload, {
+        statusCode: action.payload.value
+      });
+    case actionType.CONTENT_TYPE_CHANGE:
+      return extendRequestRecords(state, action.payload, {
+        contentType: action.payload.value
+      });
+    case actionType.PAGINATION_CHANGE:
+      return extendTabRecords(state, action.payload, {
+        PageDetails: {
+          ...state.tabRecord[action.payload.tabId].PageDetails,
+          [action.payload.field]: action.payload.value
+        }
+      });
     case actionType.UPDATE_MESSAGE: {
-      return { ...state, interceptStatus: action.message };
+      return { ...state, interceptStatus: action.payload.message };
     }
     case actionType.UPDATE_INTERCEPTOR_STATUS:
-      return {
-        ...state,
-        isInterceptorOn: { ...state.isInterceptorOn, [action.payload.tabId]: action.payload.value }
-      };
-    case actionType.FETCH_DATA_SUCCESS: {
-      return {
-        ...state,
-        responseData: { ...state.responseData, [action.payload.requestId]: action.payload.response }
-      };
+      return extendTabRecords(state, action.payload, {
+        isInterceptorOn: action.payload.value
+      });
+    case actionType.FETCH_DATA_SUCCESS:
+      return extendRequestRecords(state, action.payload, {
+        serverResponse: action.payload.response
+      });
+    case actionType.FETCH_DATA_FAILURE:
+      return extendRequestRecords(state, action.payload, {
+        serverError: action.payload.error
+      });
+    case actionType.TOGGLE_LISTENING: {
+      return extendTabRecords(state, action.payload, {
+        enabledStatus: action.payload.enabledStatus
+      });
     }
-    case actionType.FETCH_DATA_FAILURE: {
-      return {
-        ...state,
-        responseError: { ...state.responseError, [action.payload.requestId]: action.payload.error }
-      };
-    }
+    case actionType.UPDATE_REQUEST:
+      return requestsReducer(state, action.payload, [action.payload.request]);
     default:
       return state;
   }
