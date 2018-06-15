@@ -49,8 +49,8 @@ describe("Popup", () => {
       expect(wrapper.find("Logo")).toHaveLength(1);
     });
 
-    test("Contains one button elements", () => {
-      expect(wrapper.find("button")).toHaveLength(1);
+    test("Contains two button elements", () => {
+      expect(wrapper.find("button")).toHaveLength(2);
     });
 
     test("Contains one RequestList component", () => {
@@ -108,7 +108,12 @@ describe("Popup", () => {
         "Cannot Start Listening on chrome://version",
         1
       );
-      expect(wrapper.find("button").hasClass("button-start-listening")).toEqual(true);
+      expect(
+        wrapper
+          .find("button")
+          .at(0)
+          .hasClass("button-start-listening")
+      ).toEqual(true);
     });
   });
 
