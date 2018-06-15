@@ -5,7 +5,7 @@ export const Modal = ({ handleClose, show, children }) => {
     <div className={showHideClassName}>
       <section className="modal-main">
         {children}
-        <button className="modal-close-btn" onClick={handleClose}>
+        <button className="modal-close-btn btn-sm btn" onClick={handleClose}>
           X
         </button>
       </section>

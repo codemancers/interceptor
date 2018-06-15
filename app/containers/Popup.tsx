@@ -167,11 +167,18 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               id="method-input-modal"
               onChange={e => this.updateModalMethod(e.target.value)}
             />
-            <button onClick={() => this.addRequest(this.state.modalUrl, this.state.modalMethod)}>
+            <button
+              className="btn btn-sm btn-primary btn-add-rule"
+              onClick={() => this.addRequest(this.state.modalUrl, this.state.modalMethod)}
+            >
               Add Rule
             </button>
           </Modal>
-          <button type="button" onClick={this.toggleModal}>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm btn-add-rule"
+            onClick={this.toggleModal}
+          >
             Add Rule
           </button>
 
