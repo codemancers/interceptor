@@ -1,9 +1,11 @@
 import * as React from "react";
+import * as uuid from "uuid";
 import * as cx from "classnames";
 import { connect } from "react-redux";
 
 import * as MessageService from "./../message_service";
 import { Logo } from "./../components/Logo";
+import { Modal } from "./../components/ModalWrapper";
 import RequestList from "./../components/RequestList";
 import { POPUP_PROPS } from "./../types";
 import * as actionTypes from "./../actions";
@@ -20,6 +22,7 @@ interface DispatchProps {
   fetchResponse: typeof actionTypes.fetchResponse;
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
+  updateRequest: typeof actionTypes.updateRequest;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -28,6 +31,11 @@ const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
+  state = {
+    showModal: false,
+    modalMethod: "",
+    modalUrl: ""
+  };
   isUrlInValid = (tabUrl: string) => {
     return !tabUrl || isChromeUrl(tabUrl);
   };
@@ -82,6 +90,33 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
+  updateModalMethod = value => {
+    this.setState({ modalMethod: value });
+  };
+
+  updateModalUrl = value => {
+    this.setState({ modalUrl: value });
+  };
+
+  toggleModal = () => {
+    this.setState(currentState => {
+      return {
+        showModal: !currentState.showModal
+      };
+    });
+  };
+
+  addRequest = (url: string, method: string) => {
+    const requestObject = {
+      method,
+      requestId: uuid().replace(/-/g, ""),
+      tabId: this.props.currentTab,
+      type: "xmlhttprequest",
+      url
+    };
+    this.props.updateRequest(this.props.currentTab, requestObject);
+  };
+
   render() {
     const { props } = this;
     const { tabRecord } = props;
@@ -114,6 +149,31 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
+
+          <Modal show={this.state.showModal} handleClose={this.toggleModal}>
+            <label htmlFor="modal-url">URL</label>
+            <input
+              className="form-control"
+              type="text"
+              name="modal-url"
+              id="url-input-modal"
+              onChange={e => this.updateModalUrl(e.target.value)}
+            />
+            <label htmlFor="modal-method">Method</label>
+            <input
+              className="form-control"
+              type="text"
+              name="modal-method"
+              id="method-input-modal"
+              onChange={e => this.updateModalMethod(e.target.value)}
+            />
+            <button onClick={() => this.addRequest(this.state.modalUrl, this.state.modalMethod)}>
+              Add Rule
+            </button>
+          </Modal>
+          <button type="button" onClick={this.toggleModal}>
+            Add Rule
+          </button>
 
           <RequestList
             tabRecord={tabRecord}
@@ -155,7 +215,8 @@ const mapDispatchToProps: DispatchProps = {
   updateInterceptorStatus: actionTypes.updateInterceptorStatus,
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
-  sendMessageToUI: actionTypes.sendMessageToUI
+  sendMessageToUI: actionTypes.sendMessageToUI,
+  updateRequest: actionTypes.updateRequest
 };
 
 export default connect(

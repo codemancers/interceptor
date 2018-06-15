@@ -78,6 +78,7 @@
     "redux": "3.5.2",
     "redux-thunk": "^2.2.0",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "typescript": "^2.8.3",
+    "uuid": "^3.2.1"
   }
 }
