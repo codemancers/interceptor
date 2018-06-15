@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import * as MessageService from "./../message_service";
 import { Logo } from "./../components/Logo";
-import { Modal } from "./../components/ModalWrapper";
+import { AddRuleModal } from "./../components/AddRuleModal";
 import RequestList from "./../components/RequestList";
 import { POPUP_PROPS } from "./../types";
 import * as actionTypes from "./../actions";
@@ -114,6 +114,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       type: "xmlhttprequest",
       url
     };
+    console.log(requestObject);
     this.props.updateRequest(this.props.currentTab, requestObject);
   };
 
@@ -150,36 +151,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
-          <Modal show={this.state.showModal} handleClose={this.toggleModal}>
-            <label htmlFor="modal-url">URL</label>
-            <input
-              className="form-control"
-              type="text"
-              name="modal-url"
-              id="url-input-modal"
-              onChange={e => this.updateModalUrl(e.target.value)}
-            />
-            <label htmlFor="modal-method">Method</label>
-            <div>
-              <select
-                defaultValue="GET"
-                value={this.state.modalMethod}
-                className="modal-method"
-                onChange={e => this.updateModalMethod(e.target.value)}
-              >
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="OPTIONS">OPTIONS</option>
-                <option value="PUT">PUT</option>
-              </select>
-            </div>
-            <button
-              className="btn btn-sm btn-primary btn-add-rule"
-              onClick={() => this.addRequest(this.state.modalUrl, this.state.modalMethod)}
-            >
-              Add Rule
-            </button>
-          </Modal>
+          <AddRuleModal
+            showModal={this.state.showModal}
+            handleClose={this.toggleModal}
+            updateModalUrl={this.updateModalUrl}
+            updateModalMethod={this.updateModalMethod}
+            addRequest={this.addRequest}
+            modalUrl={this.state.modalUrl}
+            modalMethod={this.state.modalMethod}
+          />
           <button
             type="button"
             className="btn btn-primary btn-sm btn-add-rule"
