@@ -33,7 +33,7 @@ const isChromeUrl = (url: string) => {
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   state = {
     showModal: false,
-    modalMethod: "",
+    modalMethod: "GET",
     modalUrl: ""
   };
   isUrlInValid = (tabUrl: string) => {
@@ -160,13 +160,19 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               onChange={e => this.updateModalUrl(e.target.value)}
             />
             <label htmlFor="modal-method">Method</label>
-            <input
-              className="form-control"
-              type="text"
-              name="modal-method"
-              id="method-input-modal"
-              onChange={e => this.updateModalMethod(e.target.value)}
-            />
+            <div>
+              <select
+                defaultValue="GET"
+                value={this.state.modalMethod}
+                className="modal-method"
+                onChange={e => this.updateModalMethod(e.target.value)}
+              >
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="OPTIONS">OPTIONS</option>
+                <option value="PUT">PUT</option>
+              </select>
+            </div>
             <button
               className="btn btn-sm btn-primary btn-add-rule"
               onClick={() => this.addRequest(this.state.modalUrl, this.state.modalMethod)}
