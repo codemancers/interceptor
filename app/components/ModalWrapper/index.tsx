@@ -4,7 +4,7 @@ export const Modal = ({ handleClose, show, children }) => {
     return null;
   }
   return (
-    <section className="modal-main">
+    <section className="modal">
       {children}
       <button className="modal-close-btn btn-sm btn" onClick={handleClose}>
         X
