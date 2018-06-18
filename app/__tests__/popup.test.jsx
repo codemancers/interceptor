@@ -64,6 +64,9 @@ describe("Popup", () => {
         .simulate("click");
       expect(MessageService.enableLogging).toHaveBeenCalledWith(1);
     });
+    test("contains a AddRuleModal HOC component", () => {
+      expect(wrapper.find("AddRuleModal")).toHaveLength(1);
+    });
   });
 
   describe("On enabled", () => {

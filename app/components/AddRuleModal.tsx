@@ -36,3 +36,5 @@ export const AddRuleModal: React.SFC<{}> = props => {
     </Modal>
   );
 };
+
+AddRuleModal.displayName = "AddRuleModal";
