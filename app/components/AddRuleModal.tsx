@@ -29,7 +29,7 @@ export const AddRuleModal: React.SFC<{}> = props => {
       </div>
       <button
         className="btn btn-sm btn-primary btn-add-rule"
-        onClick={props.addRequest(props.modalUrl, props.modalMethod}
+        onClick={() => props.addRequest(props.modalUrl, props.modalMethod)}
       >
         Add Rule
       </button>
