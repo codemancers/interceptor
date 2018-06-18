@@ -90,12 +90,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
-  updateModalMethod = value => {
-    this.setState({ modalMethod: value });
+  updateModalMethod = event => {
+    this.setState({ modalMethod: event.target.value });
   };
 
-  updateModalUrl = value => {
-    this.setState({ modalUrl: value });
+  updateModalUrl = event => {
+    this.setState({ modalUrl: event.target.value });
   };
 
   toggleModal = () => {
@@ -114,7 +114,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       type: "xmlhttprequest",
       url
     };
-    console.log(requestObject);
     this.props.updateRequest(this.props.currentTab, requestObject);
   };
 
