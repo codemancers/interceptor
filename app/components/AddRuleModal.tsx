@@ -3,21 +3,23 @@ import { Modal } from "./ModalWrapper";
 export const AddRuleModal: React.SFC<{}> = props => {
   return (
     <Modal show={props.showModal} handleClose={props.handleClose}>
-      <label htmlFor="modal-url">URL</label>
+      <label htmlFor="url-input-modal">URL</label>
       <input
         className="form-control"
         type="text"
-        name="modal-url"
+        name="request_url"
         id="url-input-modal"
-        onChange={e => props.updateModalUrl(e.target.value)}
+        onChange={props.updateModalUrl}
       />
-      <label htmlFor="modal-method">Method</label>
+      <label htmlFor="modal-request-method">Method</label>
       <div>
         <select
+          name="request_method"
+          id="modal-request-method"
           defaultValue="GET"
           value={props.modalMethod}
           className="modal-method"
-          onChange={e => props.updateModalMethod(e.target.value)}
+          onChange={props.updateModalMethod}
         >
           <option value="GET">GET</option>
           <option value="POST">POST</option>
@@ -27,7 +29,7 @@ export const AddRuleModal: React.SFC<{}> = props => {
       </div>
       <button
         className="btn btn-sm btn-primary btn-add-rule"
-        onClick={() => props.addRequest(props.modalUrl, props.modalMethod)}
+        onClick={props.addRequest(props.modalUrl, props.modalMethod}
       >
         Add Rule
       </button>
