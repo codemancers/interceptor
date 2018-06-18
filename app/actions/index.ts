@@ -14,6 +14,9 @@ export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 export const UPDATE_REQUEST = "UPDATE_REQUEST";
 export const TOGGLE_LISTENING = "TOGGLE_LISTENING";
 export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
+export const HANDLE_MODAL_METHOD_CHANGE = "HANDLE_MODAL_METHOD_CHANGE";
+export const HANDLE_MODAL_URL_CHANGE = "HANDLE_MODAL_URL_CHANGE";
+export const TOGGLE_SHOW_MODAL = "TOGGLE_SHOW_MODAL";
 
 // Action Creators
 export function errorNotify(errorMessage: string, tabId: number) {
@@ -69,5 +72,29 @@ export function initialiseDefaults(
   currentUrl: string,
   interceptStatus: string
 ) {
-  return { type: INITIALISE_DEFAULTS, payload: { currentTab, currentUrl, interceptStatus } };
+  return {
+    type: INITIALISE_DEFAULTS,
+    payload: { currentTab, currentUrl, interceptStatus }
+  };
 }
+
+export const updateModalMethod = (value, tabId) => {
+  return {
+    type: HANDLE_MODAL_METHOD_CHANGE,
+    payload: { value, tabId }
+  };
+};
+
+export const updateModalUrl = (value, tabId) => {
+  return {
+    type: HANDLE_MODAL_URL_CHANGE,
+    payload: { value, tabId }
+  };
+};
+
+export const toggleModal = (showModal, tabId) => {
+  return {
+    type: TOGGLE_SHOW_MODAL,
+    payload: { showModal, tabId }
+  };
+};

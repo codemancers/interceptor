@@ -9,7 +9,7 @@ export const AddRuleModal: React.SFC<{}> = props => {
         type="text"
         name="request_url"
         id="url-input-modal"
-        onChange={props.updateModalUrl}
+        onChange={e => props.updateModalUrl(e.target.value, props.tabId)}
       />
       <label htmlFor="modal-request-method">Method</label>
       <div>
@@ -19,7 +19,7 @@ export const AddRuleModal: React.SFC<{}> = props => {
           defaultValue="GET"
           value={props.modalMethod}
           className="modal-method"
-          onChange={props.updateModalMethod}
+          onChange={e => props.updateModalMethod(e.target.value, props.tabId)}
         >
           <option value="GET">GET</option>
           <option value="POST">POST</option>
