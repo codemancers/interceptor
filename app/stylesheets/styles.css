@@ -142,14 +142,6 @@
   -o-transform: translate(0,-25%);
   transform: translate(0,-25%);
 }
-
-.display-block {
-  display: block;
-}
-
-.display-none {
-  display: none;
-}
 .modal-close-btn{
   position: absolute;
   top: 10px;
