@@ -23,6 +23,9 @@ interface DispatchProps {
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
   updateRequest: typeof actionTypes.updateRequest;
+  updateModalMethod: typeof actionTypes.updateModalMethod;
+  updateModalUrl: typeof actionTypes.updateModalUrl;
+  toggleModal: typeof actionTypes.toggleModal;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -31,11 +34,6 @@ const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
-  state = {
-    showModal: false,
-    modalMethod: "GET",
-    modalUrl: ""
-  };
   isUrlInValid = (tabUrl: string) => {
     return !tabUrl || isChromeUrl(tabUrl);
   };
@@ -90,23 +88,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
-  updateModalMethod = event => {
-    this.setState({ modalMethod: event.target.value });
-  };
-
-  updateModalUrl = event => {
-    this.setState({ modalUrl: event.target.value });
-  };
-
-  toggleModal = () => {
-    this.setState(currentState => {
-      return {
-        showModal: !currentState.showModal
-      };
-    });
-  };
-
-  addRequest = (url: string, method: string) => {
+  addRequest = (url: string, method: string, tabId: number) => {
     const requestObject = {
       method,
       requestId: uuid().replace(/-/g, ""),
@@ -115,6 +97,10 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       url
     };
     this.props.updateRequest(this.props.currentTab, requestObject);
+  };
+
+  toggleModal = () => {
+    this.props.toggleModal(!this.props.tabRecord.showModal, this.props.currentTab);
   };
 
   render() {
@@ -151,13 +137,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
           <AddRuleModal
-            showModal={this.state.showModal}
+            showModal={tabRecord.showModal}
             handleClose={this.toggleModal}
-            updateModalUrl={this.updateModalUrl}
-            updateModalMethod={this.updateModalMethod}
+            updateModalUrl={props.updateModalUrl}
+            updateModalMethod={props.updateModalMethod}
             addRequest={this.addRequest}
-            modalUrl={this.state.modalUrl}
-            modalMethod={this.state.modalMethod}
+            modalUrl={tabRecord.modalUrl}
+            modalMethod={tabRecord.modalMethod}
+            tabId={props.currentTab}
           />
           <button
             type="button"
@@ -208,7 +195,10 @@ const mapDispatchToProps: DispatchProps = {
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
-  updateRequest: actionTypes.updateRequest
+  updateRequest: actionTypes.updateRequest,
+  updateModalMethod: actionTypes.updateModalMethod,
+  updateModalUrl: actionTypes.updateModalUrl,
+  toggleModal: actionTypes.toggleModal
 };
 
 export default connect(
