@@ -113,7 +113,7 @@ describe("Popup", () => {
           .find("button")
           .at(0)
           .hasClass("button-start-listening")
-      ).toEqual(true);
+      ).toBeTruthy();
     });
   });
 
