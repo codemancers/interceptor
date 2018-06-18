@@ -12,3 +12,5 @@ export const Modal = ({ handleClose, show, children }) => {
     </section>
   );
 };
+
+Modal.displayName = "Modal";
