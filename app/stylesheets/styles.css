@@ -85,21 +85,28 @@
 }
 .modal {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  position: fixed;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  top: 0;
-  left: 0;
-  width:100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
   z-index:100;
   -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
   box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  border: 1px solid #999;
   border: 1px solid rgba(0,0,0,.2);
   border-radius: 6px;
+  position:fixed;
+  background: white;
+  width: 80%;
+  height: auto;
+  top:30%;
+  left:10%;
+  padding: 20px;
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  -webkit-transform: translate(0,-25%);
+  -ms-transform: translate(0,-25%);
+  -o-transform: translate(0,-25%);
+  transform: translate(0,-25%);
 }
 .modal label{
   display: inline-block;
@@ -124,23 +131,6 @@
   -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
-.modal-main {
-  position:fixed;
-  background: white;
-  width: 80%;
-  height: auto;
-  top:30%;
-  left:10%;
-  padding: 20px;
-  -webkit-transition: -webkit-transform .3s ease-out;
-  -o-transition: -o-transform .3s ease-out;
-  transition: transform .3s ease-out;
-  -webkit-transform: translate(0,-25%);
-  -ms-transform: translate(0,-25%);
-  -o-transform: translate(0,-25%);
-  transform: translate(0,-25%);
 }
 .modal-close-btn{
   position: absolute;
