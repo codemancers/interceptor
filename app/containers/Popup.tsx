@@ -135,14 +135,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   }
 }
 
-const mapStateToProps = (state: POPUP_PROPS) => {
-  return {
-    tabRecord: state.tabRecord[state.currentTab],
-    currentTab: state.currentTab,
-    currentUrl: state.currentUrl,
-    interceptStatus: state.interceptStatus
-  };
-};
+const mapStateToProps = (state: POPUP_PROPS) => ({
+  tabRecord: state.tabRecord[state.currentTab],
+  currentTab: state.currentTab,
+  currentUrl: state.currentUrl,
+  interceptStatus: state.interceptStatus
+});
 
 const mapDispatchToProps: DispatchProps = {
   errorNotify: actionTypes.errorNotify,
