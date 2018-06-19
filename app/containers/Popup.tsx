@@ -86,7 +86,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     const { props } = this;
     const { tabRecord } = props;
     if (!tabRecord) {
-      return "Loading...";
+      return null;
     }
     const buttonClass = cx("btn btn-block", {
       "button-start-listening btn-secondary": !tabRecord.enabledStatus,
@@ -111,7 +111,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
         <div>
           {tabRecord.errorMessage && (
-            <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
+            <p className="popup-error-message popup-error">{tabRecord.errorMessage}</p>
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
@@ -158,7 +158,4 @@ const mapDispatchToProps: DispatchProps = {
   sendMessageToUI: actionTypes.sendMessageToUI
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Popup);
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);
