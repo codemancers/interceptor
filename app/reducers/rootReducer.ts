@@ -8,9 +8,9 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
 };
 
 const initialTabProperties = {
-  showModal: false,
-  modalUrl: "",
-  modalMethod: "GET",
+  showAddRequest: false,
+  addRequestUrl: "",
+  addRequestMethod: "GET",
   enabledStatus: false,
   requests: [],
   errorMessage: "",
@@ -102,15 +102,15 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       };
     case actionType.HANDLE_MODAL_METHOD_CHANGE:
       return extendTabRecords(state, action.payload, {
-        modalMethod: action.payload.value
+        addRequestMethod: action.payload.value
       });
     case actionType.HANDLE_MODAL_URL_CHANGE:
       return extendTabRecords(state, action.payload, {
-        modalUrl: action.payload.value
+        addRequestUrl: action.payload.value
       });
-    case actionType.TOGGLE_SHOW_MODAL: {
+    case actionType.TOGGLE_SHOW_ADD_REQUEST: {
       return extendTabRecords(state, action.payload, {
-        showModal: action.payload.showModal
+        showAddRequest: action.payload.showAddRequest
       });
     }
     case actionType.ERROR:

@@ -1,8 +1,5 @@
 import * as React from "react";
-export const Modal = ({ handleClose, show, children }) => {
-  if (!show) {
-    return null;
-  }
+export const Modal = ({ handleClose, children }) => {
   return (
     <section className="modal">
       {children}
