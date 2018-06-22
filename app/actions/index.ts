@@ -16,7 +16,7 @@ export const TOGGLE_LISTENING = "TOGGLE_LISTENING";
 export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
 export const HANDLE_MODAL_METHOD_CHANGE = "HANDLE_MODAL_METHOD_CHANGE";
 export const HANDLE_MODAL_URL_CHANGE = "HANDLE_MODAL_URL_CHANGE";
-export const TOGGLE_SHOW_MODAL = "TOGGLE_SHOW_MODAL";
+export const TOGGLE_SHOW_ADD_REQUEST = "TOGGLE_SHOW_ADD_REQUEST";
 
 // Action Creators
 export function errorNotify(errorMessage: string, tabId: number) {
@@ -78,23 +78,24 @@ export function initialiseDefaults(
   };
 }
 
-export const updateModalMethod = (value, tabId) => {
+export const updateAddRequestMethod = (value: string, tabId: number) => {
   return {
     type: HANDLE_MODAL_METHOD_CHANGE,
     payload: { value, tabId }
   };
 };
 
-export const updateModalUrl = (value, tabId) => {
+export const updateAddRequestUrl = (value: string, tabId: number) => {
   return {
     type: HANDLE_MODAL_URL_CHANGE,
     payload: { value, tabId }
   };
 };
 
-export const toggleModal = (showModal, tabId) => {
+export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => {
+  console.log(showAddRequest);
   return {
-    type: TOGGLE_SHOW_MODAL,
-    payload: { showModal, tabId }
+    type: TOGGLE_SHOW_ADD_REQUEST,
+    payload: { showAddRequest, tabId }
   };
 };

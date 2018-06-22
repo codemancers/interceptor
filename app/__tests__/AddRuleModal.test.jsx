@@ -4,12 +4,11 @@ import { AddRuleModal } from "./../components/AddRuleModal";
 
 const createTestProps = props => ({
   handleClose: jest.fn(),
-  showModal: false,
-  modalMethod: "GET",
+  addRequestMethod: "GET",
   addRequest: jest.fn(),
-  modalUrl: "www.codemancers.com",
-  updateModalMethod: jest.fn(),
-  updateModalUrl: jest.fn()
+  addRequestUrl: "www.codemancers.com",
+  updateAddRequestMethod: jest.fn(),
+  updateAddRequestUrl: jest.fn()
   // allow to override common props
   ...props
 });
@@ -28,9 +27,9 @@ describe("AddRuleModal component test", () => {
       expect(wrapper.find("Modal")).toHaveLength(1);
     });
     test("Contains a input, select and a button element", () => {
-      expect(wrapper.find("input")).toBeTruthy();
-      expect(wrapper.find("select")).toBeTruthy();
-      expect(wrapper.find("button")).toBeTruthy();
+      expect(wrapper.find("input")).toHaveLength(1);
+      expect(wrapper.find("select")).toHaveLength(1);
+      expect(wrapper.find("button")).toHaveLength(1);
     });
   });
     describe("onChange and click events", () => {
@@ -40,14 +39,14 @@ describe("AddRuleModal component test", () => {
         .find("input")
         .first()
         .simulate("change", { target: { value: "a" } });
-      expect(props.updateModalUrl).toHaveBeenCalledTimes(1);
+      expect(props.updateAddRequestUrl).toHaveBeenCalledTimes(1);
     });
     test("onChange method input", ()=> {
       wrapper
       .find("select")
       .first()
       .simulate("change", { target: { value: "a" } });
-    expect(props.updateModalMethod).toHaveBeenCalledTimes(1);
+    expect(props.updateAddRequestMethod).toHaveBeenCalledTimes(1);
     });
 
     test("onClick of addRule button, props.addRequest must be called", ()=> {

@@ -7,6 +7,7 @@ import * as MessageService from "../message_service";
 jest.mock("../message_service");
 const createTestProps = props => ({
   tabRecord: {
+    showAddRequest: true,
     PageDetails: [],
     checkedReqs: {},
     enabledStatus: false,

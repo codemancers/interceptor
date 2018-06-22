@@ -23,9 +23,9 @@ interface DispatchProps {
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
   updateRequest: typeof actionTypes.updateRequest;
-  updateModalMethod: typeof actionTypes.updateModalMethod;
-  updateModalUrl: typeof actionTypes.updateModalUrl;
-  toggleModal: typeof actionTypes.toggleModal;
+  updateAddRequestMethod: typeof actionTypes.updateAddRequestMethod;
+  updateAddRequestUrl: typeof actionTypes.updateAddRequestUrl;
+  toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -99,8 +99,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.updateRequest(this.props.currentTab, requestObject);
   };
 
-  toggleModal = () => {
-    this.props.toggleModal(!this.props.tabRecord.showModal, this.props.currentTab);
+  toggleAddRequestForm = () => {
+    this.props.toggleAddRequestForm(!this.props.tabRecord.showAddRequest, this.props.currentTab);
   };
 
   render() {
@@ -136,20 +136,21 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
-          <AddRuleModal
-            showModal={tabRecord.showModal}
-            handleClose={this.toggleModal}
-            updateModalUrl={props.updateModalUrl}
-            updateModalMethod={props.updateModalMethod}
-            addRequest={this.addRequest}
-            modalUrl={tabRecord.modalUrl}
-            modalMethod={tabRecord.modalMethod}
-            tabId={props.currentTab}
-          />
+          {tabRecord.showAddRequest && (
+            <AddRuleModal
+              handleClose={this.toggleAddRequestForm}
+              updateAddRequestUrl={props.updateAddRequestUrl}
+              updateAddRequestMethod={props.updateAddRequestMethod}
+              addRequest={this.addRequest}
+              addRequestUrl={tabRecord.addRequestUrl}
+              addRequestMethod={tabRecord.addRequestMethod}
+              tabId={props.currentTab}
+            />
+          )}
           <button
             type="button"
             className="btn btn-primary btn-sm btn-add-rule"
-            onClick={this.toggleModal}
+            onClick={this.toggleAddRequestForm}
           >
             Add Rule
           </button>
@@ -196,12 +197,9 @@ const mapDispatchToProps: DispatchProps = {
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
   updateRequest: actionTypes.updateRequest,
-  updateModalMethod: actionTypes.updateModalMethod,
-  updateModalUrl: actionTypes.updateModalUrl,
-  toggleModal: actionTypes.toggleModal
+  updateAddRequestMethod: actionTypes.updateAddRequestMethod,
+  updateAddRequestUrl: actionTypes.updateAddRequestUrl,
+  toggleAddRequestForm: actionTypes.toggleAddRequestForm
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Popup);
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);
