@@ -167,7 +167,7 @@ class Intercept {
         }
       })();`;
     let script = document.createElement("script");
-    script.defer = true;
+    script.defer = false;
     script.id = "disableInterceptorScript";
     script.type = "text/javascript";
     script.textContent = selectedInterceptCode;
