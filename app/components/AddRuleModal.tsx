@@ -1,6 +1,21 @@
 import * as React from "react";
 import { Modal } from "./ModalWrapper";
 export const AddRuleModal: React.SFC<{}> = props => {
+  const isUrl = str => {
+    try {
+      new URL(str);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const urlValid = () => {
+    const IsUrl: boolean = isUrl(props.addRequestUrl);
+    IsUrl
+      ? props.addRequest(props.addRequestUrl, props.addRequestMethod)
+      : props.errorNotify(`Please Enter a valid URL`, props.tabId);
+  };
   return (
     <Modal handleClose={props.handleClose}>
       <label htmlFor="url-input-modal">URL</label>
@@ -27,10 +42,7 @@ export const AddRuleModal: React.SFC<{}> = props => {
           <option value="PUT">PUT</option>
         </select>
       </div>
-      <button
-        className="btn btn-sm btn-primary btn-add-rule"
-        onClick={() => props.addRequest(props.addRequestUrl, props.addRequestMethod)}
-      >
+      <button className="btn btn-sm btn-primary btn-add-rule" onClick={urlValid}>
         Add Rule
       </button>
     </Modal>
