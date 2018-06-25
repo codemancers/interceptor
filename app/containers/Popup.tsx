@@ -145,6 +145,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               addRequestUrl={tabRecord.addRequestUrl}
               addRequestMethod={tabRecord.addRequestMethod}
               tabId={props.currentTab}
+              errorNotify={props.errorNotify}
             />
           )}
           <button
