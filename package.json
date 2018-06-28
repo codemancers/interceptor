@@ -1,4 +1,21 @@
 {
+  "name": "interceptor",
+  "version": "0.0.2",
+  "description":
+    "A browser extension that mocks AJAX request at the browser level so you can run front ends without really starting a backend server.",
+  "license": "MIT",
+  "homepage": "https://github.com/code-mancers/interceptor#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code-mancers/interceptor"
+  },
+  "keywords": [
+    "interceptor",
+    "mock-ajax-frontend",
+    "mock-xhr-frontend",
+    "chrome",
+    "firefox-extension"
+  ],
   "private": true,
   "devDependencies": {
     "@types/chrome": "^0.0.65",
@@ -31,12 +48,7 @@
   },
   "jest": {
     "verbose": true,
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
     "globals": {
       "__DEV__": true,
       "__RCTProfileIsProfiling": false
@@ -46,10 +58,6 @@
     },
     "setupTestFrameworkScriptFile": "<rootDir>/app/__tests__/setup.ts",
     "testRegex": "/__tests__/.*\\.test\\.(jsx|js)$"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/code-mancers/interceptor.git"
   },
   "scripts": {
     "build": "webpack -p --config webpack.config.prod.js",
