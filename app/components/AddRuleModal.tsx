@@ -5,7 +5,7 @@ interface AddRuleModalProps {
   addRequest: (url: string, method: string) => void;
   addRequestMethod: string;
   addRequestUrl: string;
-  errorNotify: (message:string, tabId:number) => void);
+  errorNotify: (message:string, tabId:number) => void;
   handleClose: () => void;
   tabId: number;
   updateAddRequestMethod: (value:string, tabId:number) => void;

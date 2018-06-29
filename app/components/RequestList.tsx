@@ -26,15 +26,28 @@ export interface RequestObj {
   handleSwitchToggle: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
+  const renderEditable = (cellInfo: any) => (
+    <div
+      style={{ backgroundColor: "#fafafa" }}
+      className="url"
+      title={cellInfo.original.url}
+      contentEditable
+      suppressContentEditableWarning
+      onBlur={e => {
+        const data = [...props.tabRecord.requests];
+        data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+      }}
+      dangerouslySetInnerHTML={{
+        __html: cellInfo.original.url
+      }}
+    />
+  );
+
   const columns = [
     {
       Header: "Request URL",
       accessor: "url",
-      Cell: ({ original }: any) => (
-        <div className="url" title={original.url}>
-          {original.url}
-        </div>
-      ),
+      Cell: renderEditable,
       filterable: true,
       filterMethod: (filter: any, rows: any) => {
         return matchSorter(rows, filter.value, {
