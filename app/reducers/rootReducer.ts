@@ -45,6 +45,21 @@ function extendTabRecords(state: POPUP_PROPS, payload: any, newTabRecords: any) 
   };
 }
 
+function changeRequestUrl(state: POPUP_PROPS, payload: any) {
+  const requests = [...state.tabRecord[payload.tabId].requests];
+  requests[payload.index].url = payload.value;
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requests: requests
+      }
+    }
+  };
+}
+
 function requestsReducer(state: POPUP_PROPS, payload: any, newRequest: any) {
   return {
     ...state,
@@ -171,6 +186,8 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     }
     case actionType.UPDATE_REQUEST:
       return requestsReducer(state, action.payload, [action.payload.request]);
+    case actionType.CHANGE_URL_TABLE:
+      return changeRequestUrl(state, action.payload);
     default:
       return state;
   }

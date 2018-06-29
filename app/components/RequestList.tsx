@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
+import ContentEditable from "react-simple-contenteditable";
 import { InterceptForm } from "./../components/Intercept_Components/index";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
@@ -14,6 +15,7 @@ export interface RequestObj {
   url?: string;
   method?: string;
   rowProps?: any;
+  handleChangeUrl: (value: string, tabId: number, index: number) => void;
   handleCheckedRequests?: (requests: Array<chrome.webRequest.WebRequestDetails>) => void;
   handleRespTextChange?: () => (value: string, reqId: string) => void;
   handleStatusCodeChange?: (value: string, reqId: string) => void;
@@ -26,22 +28,18 @@ export interface RequestObj {
   handleSwitchToggle: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
-  const renderEditable = (cellInfo: any) => (
-    <div
-      style={{ backgroundColor: "#fafafa" }}
-      className="url"
-      title={cellInfo.original.url}
-      contentEditable
-      suppressContentEditableWarning
-      onBlur={e => {
-        const data = [...props.tabRecord.requests];
-        data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-      }}
-      dangerouslySetInnerHTML={{
-        __html: cellInfo.original.url
-      }}
-    />
-  );
+  const renderEditable = (cellInfo: any) => {
+    return (
+      <ContentEditable
+        tagName="div"
+        className="url"
+        html={cellInfo.original.url}
+        title={cellInfo.original.url}
+        contentEditable="plaintext-only"
+        onChange={(e, value) => props.handleChangeUrl(value, props.currentTabId, cellInfo.index)}
+      />
+    );
+  };
 
   const columns = [
     {

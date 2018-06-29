@@ -17,6 +17,7 @@ export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
 export const HANDLE_MODAL_METHOD_CHANGE = "HANDLE_MODAL_METHOD_CHANGE";
 export const HANDLE_MODAL_URL_CHANGE = "HANDLE_MODAL_URL_CHANGE";
 export const TOGGLE_SHOW_ADD_REQUEST = "TOGGLE_SHOW_ADD_REQUEST";
+export const CHANGE_URL_TABLE = "CHANGE_URL_TABLE";
 
 // Action Creators
 export function errorNotify(errorMessage: string, tabId: number) {
@@ -97,4 +98,8 @@ export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => 
     type: TOGGLE_SHOW_ADD_REQUEST,
     payload: { showAddRequest, tabId }
   };
+};
+
+export const handleChangeUrl = (value: string, tabId: number, index: number) => {
+  return { type: CHANGE_URL_TABLE, payload: { value, tabId, index } };
 };
