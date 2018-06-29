@@ -93,7 +93,6 @@ export const updateAddRequestUrl = (value: string, tabId: number) => {
 };
 
 export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => {
-  console.log(showAddRequest);
   return {
     type: TOGGLE_SHOW_ADD_REQUEST,
     payload: { showAddRequest, tabId }

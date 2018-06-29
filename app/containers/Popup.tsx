@@ -88,7 +88,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
-  addRequest = (url: string, method: string, tabId: number) => {
+  addRequest = (url: string, method: string) => {
     const requestObject = {
       method,
       requestId: uuid().replace(/-/g, ""),
