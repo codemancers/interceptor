@@ -1,6 +1,6 @@
 {
   "name": "interceptor",
-  "version": "0.0.2",
+  "version": "0.2.1",
   "description":
     "A browser extension that mocks AJAX request at the browser level so you can run front ends without really starting a backend server.",
   "license": "MIT",
