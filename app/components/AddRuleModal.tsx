@@ -1,7 +1,18 @@
 import * as React from "react";
 import { Modal } from "./ModalWrapper";
-export const AddRuleModal: React.SFC<{}> = props => {
-  const isUrl = str => {
+
+interface AddRuleModalProps {
+  addRequest: (url: string, method: string) => void;
+  addRequestMethod: string;
+  addRequestUrl: string;
+  errorNotify: (message:string, tabId:number) => void);
+  handleClose: () => void;
+  tabId: number;
+  updateAddRequestMethod: (value:string, tabId:number) => void;
+  updateAddRequestUrl: (value: string, tabId:number) => void;
+}
+export const AddRuleModal: React.SFC<{}> = (props: AddRuleModalProps) => {
+  const isUrl = (str: string) => {
     try {
       new URL(str);
       return true;
@@ -31,7 +42,6 @@ export const AddRuleModal: React.SFC<{}> = props => {
         <select
           name="request_method"
           id="modal-request-method"
-          defaultValue="GET"
           value={props.addRequestMethod}
           className="modal-method"
           onChange={e => props.updateAddRequestMethod(e.target.value, props.tabId)}
@@ -50,3 +60,9 @@ export const AddRuleModal: React.SFC<{}> = props => {
 };
 
 AddRuleModal.displayName = "AddRuleModal";
+
+AddRuleModal.defaultProps =  {
+  addRequestMethod: "GET",
+  addRequestUrl: "",
+  tabId: -1,
+}
