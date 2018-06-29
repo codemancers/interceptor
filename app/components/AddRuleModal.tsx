@@ -11,7 +11,7 @@ interface AddRuleModalProps {
   updateAddRequestMethod: (value:string, tabId:number) => void;
   updateAddRequestUrl: (value: string, tabId:number) => void;
 }
-export const AddRuleModal: React.SFC<{}> = (props: AddRuleModalProps) => {
+export const AddRuleModal: React.SFC<AddRuleModalProps> = (props) => {
   const isUrl = (str: string) => {
     try {
       new URL(str);

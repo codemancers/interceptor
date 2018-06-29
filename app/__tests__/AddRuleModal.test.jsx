@@ -8,7 +8,8 @@ const createTestProps = props => ({
   addRequest: jest.fn(),
   addRequestUrl: "www.codemancers.com",
   updateAddRequestMethod: jest.fn(),
-  updateAddRequestUrl: jest.fn()
+  updateAddRequestUrl: jest.fn(),
+  errorNotify:jest.fn()
   // allow to override common props
   ...props
 });
@@ -49,13 +50,21 @@ describe("AddRuleModal component test", () => {
     expect(props.updateAddRequestMethod).toHaveBeenCalledTimes(1);
     });
 
-    test("onClick of addRule button, props.addRequest must be called", ()=> {
+    test("onClick of addRule button and for invalid, props.errorNotify must be called", ()=> {
+      wrapper
+      .find(".btn-add-rule")
+      .first()
+      .simulate("click")
+
+    expect(props.errorNotify).toHaveBeenCalledTimes(1);
+    });
+
+    test("onClick of addRule button and for invalid, props.errorNotify must be called", ()=> {
       wrapper
       .find(".btn-add-rule")
       .first()
       .simulate("click");
-    expect(props.addRequest).toHaveBeenCalledTimes(1);
-    expect(props.addRequest).toBeCalledWith("www.codemancers.com", "GET")
+    expect(props.errorNotify).toHaveBeenCalledTimes(1);
     });
 })
 
