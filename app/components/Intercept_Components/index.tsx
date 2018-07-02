@@ -12,6 +12,8 @@ export const InterceptForm: React.SFC<RequestObj> = props => (
       handleContentTypeChange={props.handleContentTypeChange}
       currentTabId={props.currentTabId}
       fetchResponse={props.fetchResponse}
+      handleChangeUrl={props.handleChangeUrl}
+      index={props.index}
     />
   </div>
 );

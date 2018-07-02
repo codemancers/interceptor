@@ -28,24 +28,15 @@ export interface RequestObj {
   handleSwitchToggle: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
-  const renderEditable = (cellInfo: any) => {
-    return (
-      <ContentEditable
-        tagName="div"
-        className="url"
-        html={cellInfo.original.url}
-        title={cellInfo.original.url}
-        contentEditable="plaintext-only"
-        onChange={(e, value) => props.handleChangeUrl(value, props.currentTabId, cellInfo.index)}
-      />
-    );
-  };
-
   const columns = [
     {
       Header: "Request URL",
       accessor: "url",
-      Cell: renderEditable,
+      Cell: ({ original }: any) => (
+        <div className="url" title={original.url}>
+          {original.url}
+        </div>
+      ),
       filterable: true,
       filterMethod: (filter: any, rows: any) => {
         return matchSorter(rows, filter.value, {
@@ -143,17 +134,21 @@ const RequestList: React.SFC<RequestObj> = props => {
           props.handlePaginationChange(changedRowSize, props.currentTabId, "currentRowSize")
         }
         collapseOnDataChange={false}
-        SubComponent={row => (
-          <InterceptForm
-            requestRecords={props.tabRecord.requestRecords[row.original.requestId]}
-            currentTabId={props.currentTabId}
-            rowProps={row}
-            handleStatusCodeChange={props.handleStatusCodeChange}
-            handleRespTextChange={props.handleRespTextChange}
-            handleContentTypeChange={props.handleContentTypeChange}
-            fetchResponse={props.fetchResponse}
-          />
-        )}
+        SubComponent={row => {
+          return (
+            <InterceptForm
+              requestRecords={props.tabRecord.requestRecords[row.original.requestId]}
+              currentTabId={props.currentTabId}
+              rowProps={row}
+              handleStatusCodeChange={props.handleStatusCodeChange}
+              handleRespTextChange={props.handleRespTextChange}
+              handleContentTypeChange={props.handleContentTypeChange}
+              fetchResponse={props.fetchResponse}
+              index={row.index}
+              handleChangeUrl={props.handleChangeUrl}
+            />
+          );
+        }}
       />
     </div>
   );
