@@ -20,6 +20,7 @@ const createTestProps = (props = {}) => ({
   rowProps: {
     checkbox: { requestId: 123 }
   },
+  fetchFailure: jest.fn()
   ...props
 });
 // allow to override common props
@@ -87,8 +88,9 @@ describe("Input and select Field tests", () => {
       wrapper.find(".content-type-select").simulate("change", { target: { value: "text/html" } });
       expect(props.handleContentTypeChange).toHaveBeenCalledWith("text/html", 123, 2347);
     });
-    test("props.fetchResponse should be called on Fetch Response button click", () => {
+    test("props.fetchResponse and should be called on Fetch Response button click and error message should be cleared", () => {
       wrapper.find(".fetch-responsetext").simulate("click");
+      expect(props.fetchFailure).toHaveBeenCalledWith("", 123 , 2347);
       expect(props.fetchResponse).toHaveBeenCalledWith({ requestId: 123 }, 2347);
     });
   });
