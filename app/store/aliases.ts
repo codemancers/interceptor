@@ -29,7 +29,9 @@ const fetchDataAlias = (payload: payload) => {
       requestHeadersObject
     })
       .then((data: axios.AxiosResponse) => {
-        const stringifiedData = JSON.stringify(data.data);
+        const stringifiedData = data.headers["content-type"].includes("json")
+          ? JSON.stringify(data.data, null, 2)
+          : JSON.stringify(data.data);
         dispatch(fetchSuccess("", requestId, tabId));
         dispatch(handleRespTextChange(stringifiedData, requestId, tabId));
         dispatch(fetchSuccess(stringifiedData, requestId, tabId));
