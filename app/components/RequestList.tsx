@@ -141,6 +141,7 @@ const RequestList: React.SFC<RequestObj> = props => {
             handleRespTextChange={props.handleRespTextChange}
             handleContentTypeChange={props.handleContentTypeChange}
             fetchResponse={props.fetchResponse}
+            fetchFailure={props.fetchFailure}
           />
         )}
       />

@@ -20,6 +20,7 @@ interface DispatchProps {
   fetchResponse: typeof actionTypes.fetchResponse;
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
+  fetchFailure: typeof actionTypes.fetchFailure;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -128,6 +129,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             updateInterceptorStatus={props.updateInterceptorStatus}
             handleSwitchToggle={this.handleSwitchToggle}
             fetchResponse={props.fetchResponse}
+            fetchFailure={props.fetchFailure}
           />
         </div>
       </div>
@@ -155,10 +157,8 @@ const mapDispatchToProps: DispatchProps = {
   updateInterceptorStatus: actionTypes.updateInterceptorStatus,
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
-  sendMessageToUI: actionTypes.sendMessageToUI
+  sendMessageToUI: actionTypes.sendMessageToUI,
+  fetchFailure: actionTypes.fetchFailure
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Popup);
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);
