@@ -36,7 +36,11 @@ const fetchDataAlias = (payload: payload) => {
       })
       .catch(() => {
         dispatch(
-          fetchFailure("Couldn't connect to server. Check your connection.", requestId, tabId)
+          fetchFailure(
+            "Couldn't connect to server. Check your connection and try again.",
+            requestId,
+            tabId
+          )
         );
       });
   };
