@@ -28,10 +28,10 @@ const fetchDataAlias = (payload: payload) => {
       url,
       requestHeadersObject
     })
-      .then((data: axios.AxiosResponse) => {
-        const stringifiedData = data.headers["content-type"].includes("json")
-          ? JSON.stringify(data.data, null, 2)
-          : JSON.stringify(data.data);
+      .then(({ data, headers }: axios.AxiosResponse) => {
+        const stringifiedData = headers["content-type"].includes("json")
+          ? JSON.stringify(data, null, 2)
+          : data;
         dispatch(fetchSuccess("", requestId, tabId));
         dispatch(handleRespTextChange(stringifiedData, requestId, tabId));
         dispatch(fetchSuccess(stringifiedData, requestId, tabId));
