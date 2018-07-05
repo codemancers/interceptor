@@ -12,6 +12,7 @@ const initialTabProperties = {
   addRequestUrl: "",
   addRequestMethod: "GET",
   enabledStatus: false,
+  addRuleError: "",
   requests: [],
   errorMessage: "",
   PageDetails: {
@@ -132,6 +133,10 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       return extendTabRecords(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
+      });
+    case actionType.ADD_RULE_ERROR:
+      return extendTabRecords(state, action.payload, {
+        addRuleError: action.payload.errorMessage
       });
     case actionType.CLEAR_REQUESTS:
       return extendTabRecords(state, action.payload, {

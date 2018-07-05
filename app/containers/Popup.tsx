@@ -28,6 +28,7 @@ interface DispatchProps {
   toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
   handleChangeUrl: typeof actionTypes.handleChangeUrl;
   fetchFailure: typeof actionTypes.fetchFailure;
+  addRuleErrorNotify: typeof actionTypes.addRuleErrorNotify;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -137,7 +138,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
-
           {tabRecord.showAddRequest && (
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
@@ -147,7 +147,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               addRequestUrl={tabRecord.addRequestUrl}
               addRequestMethod={tabRecord.addRequestMethod}
               tabId={props.currentTab}
-              errorNotify={props.errorNotify}
+              addRuleErrorNotify={props.addRuleErrorNotify}
+              addRuleError={props.tabRecord.addRuleError}
             />
           )}
           <button
@@ -206,7 +207,8 @@ const mapDispatchToProps: DispatchProps = {
   updateAddRequestUrl: actionTypes.updateAddRequestUrl,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
   handleChangeUrl: actionTypes.handleChangeUrl,
-  fetchFailure: actionTypes.fetchFailure
+  fetchFailure: actionTypes.fetchFailure,
+  addRuleErrorNotify: actionTypes.addRuleErrorNotify
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
