@@ -27,6 +27,7 @@ interface DispatchProps {
   updateAddRequestUrl: typeof actionTypes.updateAddRequestUrl;
   toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
   handleChangeUrl: typeof actionTypes.handleChangeUrl;
+  fetchFailure: typeof actionTypes.fetchFailure;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -171,6 +172,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             handleSwitchToggle={this.handleSwitchToggle}
             fetchResponse={props.fetchResponse}
             handleChangeUrl={props.handleChangeUrl}
+            fetchFailure={props.fetchFailure}
           />
         </div>
       </div>
@@ -204,6 +206,7 @@ const mapDispatchToProps: DispatchProps = {
   updateAddRequestUrl: actionTypes.updateAddRequestUrl,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
   handleChangeUrl: actionTypes.handleChangeUrl
+  fetchFailure: actionTypes.fetchFailure
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

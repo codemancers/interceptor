@@ -4535,7 +4535,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-match-sorter@^2.2.0:
+match-sorter@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-2.2.3.tgz#5fc142821fed543f352fb7edce2603970919d225"
   dependencies:
@@ -5904,9 +5904,9 @@ react-simple-contenteditable@^0.0.5:
   dependencies:
     react "^15.4.2"
 
-react-table@^6.7.6:
-  version "6.8.2"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.2.tgz#3a5aefabc85953300d16786fa307c30610db9adc"
+react-table@^6.8.6:
+  version "6.8.6"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.6.tgz#a0ad8b4839319052d5befc012603fb161e52ede3"
   dependencies:
     classnames "^2.2.5"
 

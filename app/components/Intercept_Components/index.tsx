@@ -14,6 +14,7 @@ export const InterceptForm: React.SFC<RequestObj> = props => (
       fetchResponse={props.fetchResponse}
       handleChangeUrl={props.handleChangeUrl}
       index={props.index}
+      fetchFailure={props.fetchFailure}
     />
   </div>
 );

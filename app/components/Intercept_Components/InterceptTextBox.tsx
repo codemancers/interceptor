@@ -10,6 +10,7 @@ interface InterceptTextBox {
   handleStatusCodeChange: any;
   handleContentTypeChange: any;
   currentTabId: number;
+  fetchFailure: any;
 }
 
 export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
@@ -46,6 +47,8 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
             title="Fetch Response Text"
             className="fetch-responsetext btn-sm btn-primary"
             onClick={() => {
+              //empty the earlier set error before requesting for data again
+              props.fetchFailure("", requestId, props.currentTabId);
               props.fetchResponse(props.rowProps.checkbox, props.currentTabId);
             }}
           />
