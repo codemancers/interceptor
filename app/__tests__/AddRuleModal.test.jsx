@@ -9,7 +9,7 @@ const createTestProps = props => ({
   addRequestUrl: "http://www.codemancers.com",
   updateAddRequestMethod: jest.fn(),
   updateAddRequestUrl: jest.fn(),
-  errorNotify:jest.fn(),
+  addRuleErrorNotify:jest.fn(),
   tabId: 4545
   // allow to override common props
   ...props
@@ -51,23 +51,28 @@ describe("AddRuleModal component test", () => {
     expect(props.updateAddRequestMethod).toHaveBeenCalledTimes(1);
     });
 
-    test("onClick of addRule button and for Valid URL, props.errorNotify must be called", ()=> {
+    test("onClick of addRule button and for Valid URL, props.addRequest must be called with proper params and reset fields", ()=> {
       wrapper
       .find(".btn-add-rule")
       .first()
       .simulate("click");
+    //to clear out the earlier error message
+    expect(props.addRuleErrorNotify).toHaveBeenCalledWith("", 4545)
     expect(props.addRequest).toHaveBeenCalledTimes(1);
     expect(props.addRequest).toHaveBeenCalledWith("http://www.codemancers.com", "GET")
+    //to reset url and method fields to empty strings
+    expect(props.updateAddRequestUrl).toHaveBeenCalledWith("",4545)
+    expect(props.updateAddRequestMethod).toHaveBeenCalledWith("GET", 4545)
     });
 
-    test("onClick of addRule button and for Valid URL, props.errorNotify must be called", ()=> {
+    test("onClick of addRule button and for Valid URL, props.addRuleErrorNotify must be called", ()=> {
       const wrapperWithInvalidUrl = shallow(<AddRuleModal {...props} addRequestUrl="www.codemancers.com" /> );
       wrapperWithInvalidUrl
       .find(".btn-add-rule")
       .first()
       .simulate("click");
-    expect(props.errorNotify).toHaveBeenCalledTimes(1);
-    expect(props.errorNotify).toHaveBeenCalledWith("Please Enter a valid URL", 4545)
+    expect(props.addRuleErrorNotify).toHaveBeenCalled();
+    expect(props.addRuleErrorNotify).toHaveBeenCalledWith("Please Enter a valid URL", 4545)
     });
 })
 
