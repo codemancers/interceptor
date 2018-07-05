@@ -205,7 +205,7 @@ const mapDispatchToProps: DispatchProps = {
   updateAddRequestMethod: actionTypes.updateAddRequestMethod,
   updateAddRequestUrl: actionTypes.updateAddRequestUrl,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
-  handleChangeUrl: actionTypes.handleChangeUrl
+  handleChangeUrl: actionTypes.handleChangeUrl,
   fetchFailure: actionTypes.fetchFailure
 };
 
