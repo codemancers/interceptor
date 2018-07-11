@@ -104,14 +104,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         <header>
           <div className="grid-container">
             <Logo />
-            <div
+            <button
               title={buttonLabel + " to Requests"}
               onClick={this.toggleListening}
               className={buttonClass}
             >
               <ButtonIcon width="1em" height="1em" />
               {buttonLabel}
-            </div>
+            </button>
           </div>
         </header>
 
