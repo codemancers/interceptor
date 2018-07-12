@@ -77,12 +77,12 @@
   },
  "lint-staged": {
    "linters":{
-       "app/**.js": ["eslint --fix", "git add"],
-       "app/**.{js,jsx,json,css}": [
+       "*.js": ["eslint --fix", "git add"],
+       "*.{js,jsx,css}": [
         "prettier --write",
         "git add"
       ],
-       "app/**.{ts,tsx}": ["prettier --parser typescript --write", "git add"]
+       "*.{ts,tsx}": ["prettier --parser typescript --write", "git add"]
    },
    "ignore": [
     "/node_modules/"
