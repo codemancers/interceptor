@@ -75,18 +75,16 @@
     "test:watch": "jest --watch",
     "precommit": "lint-staged"
   },
- "lint-staged": {
-   "linters":{
-       "*.{js,jsx,css}": [
+  "lint-staged": {
+    "linters":{
+       "*.{js}": [
         "prettier --config .prettierrc --write",
         "git add"
       ],
        "*.{ts,tsx}": ["prettier --config .prettierrc --parser typescript --write", "git add", "jest"]
-   },
-   "ignore": [
-    "/node_modules/"
-  ]
-},
+    },
+    "ignore": [ "/node_modules/"]
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
