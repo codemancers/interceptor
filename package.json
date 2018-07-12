@@ -46,6 +46,9 @@
     "webpack": "^4.8.1",
     "webpack-cli": "^2.0.11"
   },
+  "engines": {
+    "node": ">6.11.5"
+  },
   "jest": {
     "verbose": true,
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
