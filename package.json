@@ -81,7 +81,7 @@
         "prettier --config .prettierrc --write",
         "git add"
       ],
-       "*.{ts,tsx}": ["prettier --config .prettierrc --parser typescript --write", "git add"]
+       "*.{ts,tsx}": ["prettier --config .prettierrc --parser typescript --write", "git add", "jest"]
    },
    "ignore": [
     "/node_modules/"
