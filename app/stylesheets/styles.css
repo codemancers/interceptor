@@ -21,6 +21,9 @@
   line-height: 1.6;
   font-size: 14px;
 }
+.popup-error-message:before{
+  content:url('./../images/exclamation-circle-solid.svg');
+}
 
 .popup {
   width: 100%;

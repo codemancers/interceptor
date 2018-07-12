@@ -2,11 +2,14 @@ import * as React from "react";
 import * as cx from "classnames";
 import { connect } from "react-redux";
 
-import * as MessageService from "./../message_service";
-import { Logo } from "./../components/Logo";
-import RequestList from "./../components/RequestList";
-import { POPUP_PROPS } from "./../types";
-import * as actionTypes from "./../actions";
+import * as MessageService from "../message_service";
+import { Logo } from "../components/Logo";
+import RequestList from "../components/RequestList";
+import { POPUP_PROPS } from "../types";
+import * as actionTypes from "../actions";
+//icons
+import { PlayIcon } from "../components/Icons/PlayIcon";
+import { StopIcon } from "../components/Icons/StopIcon";
 
 interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
@@ -93,7 +96,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       "button-start-listening btn-secondary": !tabRecord.enabledStatus,
       "button-stop-listening btn-danger": tabRecord.enabledStatus
     });
-    const buttonLabel = tabRecord.enabledStatus ? "Stop Listening" : "Start Listening";
+    const buttonLabel = tabRecord.enabledStatus ? " Stop Listening" : " Start Listening";
+    const ButtonIcon = tabRecord.enabledStatus ? PlayIcon : StopIcon;
 
     return (
       <div className="popup">
@@ -105,6 +109,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               onClick={this.toggleListening}
               className={buttonClass}
             >
+              <ButtonIcon width="1em" height="1em" />
               {buttonLabel}
             </button>
           </div>
