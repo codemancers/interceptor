@@ -28,6 +28,7 @@ const createTestProps = props => ({
   handleStatusCodeChange: jest.fn(),
   toggleListeningRequests: jest.fn(),
   updateInterceptorStatus: jest.fn(),
+  clearFields: jest.fn()
   // allow to override common props
   ...props
 });
@@ -50,9 +51,20 @@ describe("Popup", () => {
       expect(wrapper.find("Logo")).toHaveLength(1);
     });
 
-
     test("Contains one button elements", () => {
       expect(wrapper.find(".btn-secondary")).toHaveLength(1);
+    });
+
+    test("Should contain one Switch component", () => {
+      expect(wrapper.find("Switch")).toHaveLength(1);
+    });
+
+    test("One InterceptButton component should be present", () => {
+      expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
+    });
+
+    test("Should contain one Clear button", () => {
+      expect(wrapper.find(".btn-clear")).toHaveLength(1);
     });
 
     test("Contains one RequestList component", () => {
@@ -136,6 +148,16 @@ describe("Popup", () => {
       });
       wrapper = shallow(<Popup {...localProps} />);
       expect(wrapper.find("#success-msg").exists()).toBeFalsy();
+    });
+
+    test("on clear button click, should trigger props.clearRequests", () => {
+      wrapper
+        .find(".btn-clear")
+        .first()
+        .simulate("click");
+        let localProps = createTestProps();
+        wrapper = shallow(<Popup {...localProps} />);
+        expect(localProps.clearFields).toHaveBeenCalledTimes(1);
     });
   });
 });

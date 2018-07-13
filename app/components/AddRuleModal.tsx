@@ -21,6 +21,16 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
     }
   };
 
+  const handleClose = () => {
+    //erase the previously set error message on each re-render
+    props.addRuleErrorNotify(``, props.tabId);
+    //reset the url to empty string and request method to "GET"
+    props.updateAddRequestUrl(``, props.tabId);
+    props.updateAddRequestMethod(`GET`, props.tabId);
+    //close the modal
+    props.handleClose();
+  };
+
   const urlValid = () => {
     const IsUrl: boolean = isUrl(props.addRequestUrl);
     if (IsUrl) {
@@ -35,18 +45,7 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
     }
   };
   return (
-    <Modal
-      handleClose={() => {
-        //erase the previously set error message on each re-render
-        props.addRuleErrorNotify(``, props.tabId);
-        //reset the url to empty string and request method to "GET"
-        props.updateAddRequestUrl(``, props.tabId);
-        props.updateAddRequestMethod(`GET`, props.tabId);
-        //close the modal
-        props.handleClose();
-      }}
-      modalTitle="Add Rule"
-    >
+    <Modal handleClose={handleClose} modalTitle="Add Rule">
       {props.addRuleError && (
         <p className="popup-error-message popup-error"> {props.addRuleError} </p>
       )}
@@ -79,10 +78,8 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
         </div>
       </div>
       <div className="modal-footer text-right">
-        <button
-          className="btn"
-        >
-          Cancle
+        <button className="btn" onClick={handleClose}>
+          Cancel
         </button>
         <button
           className="btn btn-primary"

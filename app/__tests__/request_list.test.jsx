@@ -12,7 +12,6 @@ const commonProps = {
     isInterceptorOn: true,
     requests: []
   },
-  clearRequests: jest.fn(),
   currentTabId: 2328,
   fetchResponse: jest.fn(),
   handleCheckToggle: jest.fn(),
@@ -36,22 +35,9 @@ describe("RequestList initial state", () => {
     expect(commonProps.tabRecord.requests).toHaveLength(0);
   });
 
-  test("Should contain one Switch component", () => {
-    expect(wrapper.find("Switch")).toHaveLength(1);
-  });
-
   test("Only one ReactTable component should be present", () => {
     wrapper = shallow(<RequestList {...commonProps} />);
     expect(wrapper.find("ReactTable")).toHaveLength(1);
-  });
-
-  test("One InterceptButton component should be present", () => {
-    wrapper = shallow(<RequestList {...commonProps} />);
-    expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
-  });
-
-  test("Should contain one Clear button", () => {
-    expect(wrapper.find(".btn-clear")).toHaveLength(1);
   });
 });
 
@@ -60,13 +46,5 @@ describe("on Click Events", () => {
   beforeEach(() => {
     wrapper = shallow(<RequestList {...commonProps} />);
     jest.clearAllMocks();
-  });
-
-  test("on clear button click, should trigger props.clearRequests", () => {
-    wrapper
-      .find(".btn-clear")
-      .first()
-      .simulate("click");
-    expect(commonProps.clearRequests).toHaveBeenCalledTimes(1);
   });
 });

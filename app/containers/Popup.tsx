@@ -12,6 +12,10 @@ import * as actionTypes from "../actions";
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
 
+import { InterceptAllButton } from "./../components/InterceptAllButton";
+import { Switch } from "./../components/Switch";
+import { AddRuleModal } from "./../components/AddRuleModal";
+
 interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
   clearFields: typeof actionTypes.clearFields;
@@ -81,6 +85,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         .then(() => {
           this.disableInterceptor(props.currentTab);
           this.updateBadgeIcon(props.currentTab, true);
+          props.sendMessageToUI("Interception Disabled", props.currentTab);
         })
         .catch((err: any) => {
           // something broke in the background store
@@ -88,7 +93,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         });
     } else {
       props.updateInterceptorStatus(props.currentTab, true);
-      props.sendMessageToUI("Interception Enabled!", props.currentTab);
+      props.sendMessageToUI("Interception Enabled", props.currentTab);
       this.updateBadgeIcon(props.currentTab, false);
     }
   };
@@ -120,6 +125,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     });
     const buttonLabel = tabRecord.enabledStatus ? " Stop Listening" : " Start Listening";
     const ButtonIcon = tabRecord.enabledStatus ? PlayIcon : StopIcon;
+    const enabledRequests = tabRecord.requests
+      ? tabRecord.requests.filter((request: chrome.webRequest.WebRequestFullDetails) => {
+          return tabRecord.checkedReqs[request.requestId];
+        })
+      : [];
 
     return (
       <div className="popup">
@@ -142,6 +152,33 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             <p className="popup-error-message popup-error"> {tabRecord.errorMessage} </p>
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
+
+          <div className="grid-container response-action">
+            <Switch
+              isOn={props.tabRecord.isInterceptorOn}
+              handleSwitchToggle={this.handleSwitchToggle}
+            />
+            <div className="text-right">
+              <button type="button" className="btn btn-sm" onClick={this.toggleAddRequestForm}>
+                Add Rule
+              </button>
+              <InterceptAllButton
+                disabled={!enabledRequests.length}
+                handleCheckedRequests={() => {
+                  return this.handleCheckedRequests(enabledRequests);
+                }}
+              />
+              <button
+                type="button"
+                title="Clear All Requests"
+                className="btn btn-sm btn-primary btn-clear"
+                onClick={this.clearRequests}
+              >
+                CLEAR
+              </button>
+            </div>
+          </div>
+
           {tabRecord.showAddRequest && (
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
@@ -155,26 +192,16 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               addRuleError={props.tabRecord.addRuleError}
             />
           )}
-          <button
-            type="button"
-            className="btn btn-sm"
-            onClick={this.toggleAddRequestForm}
-          >
-            Add Rule
-          </button>
 
           <RequestList
             tabRecord={tabRecord}
             handleCheckToggle={props.handleCheckToggle}
-            handleCheckedRequests={this.handleCheckedRequests}
             handleRespTextChange={props.handleRespTextChange}
             handleStatusCodeChange={props.handleStatusCodeChange}
             handleContentTypeChange={props.handleContentTypeChange}
             handlePaginationChange={props.handlePaginationChange}
             currentTabId={props.currentTab}
-            clearRequests={this.clearRequests}
             updateInterceptorStatus={props.updateInterceptorStatus}
-            handleSwitchToggle={this.handleSwitchToggle}
             fetchResponse={props.fetchResponse}
             handleChangeUrl={props.handleChangeUrl}
             fetchFailure={props.fetchFailure}

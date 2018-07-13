@@ -1,20 +1,13 @@
 import * as React from "react";
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
-import ContentEditable from "react-simple-contenteditable";
 import { InterceptForm } from "./../components/Intercept_Components";
-import { InterceptAllButton } from "./../components/InterceptAllButton";
-import { Switch } from "./Switch";
 
 export type onClickCallback = (e: React.MouseEvent<HTMLElement>) => void;
 export interface RequestObj {
   tabRecord: any;
   requestRecords: any;
   currentTabId: number;
-  requestId?: number;
-  url?: string;
-  method?: string;
-  rowProps?: any;
   handleChangeUrl: (value: string, tabId: number, index: number) => void;
   handleCheckedRequests?: (requests: Array<chrome.webRequest.WebRequestDetails>) => void;
   handleRespTextChange?: () => (value: string, reqId: string) => void;
@@ -22,10 +15,11 @@ export interface RequestObj {
   handleCheckToggle?: (tabId: number, reqId: number, checked: boolean) => void;
   handleContentTypeChange?: (value: string, reqId: string) => void;
   handlePaginationChange?: (rowSize: number, tabId: number, field: string) => void;
-  clearRequests?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   updateInterceptorStatus?: (tabId: number) => void;
   fetchResponse: React.MouseEvent<HTMLSpanElement>;
   handleSwitchToggle: any;
+  handleChangeUrl: any;
+  fetchFailure: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
   const columns = [
@@ -87,37 +81,9 @@ const RequestList: React.SFC<RequestObj> = props => {
       className: "text-center"
     }
   ];
-  const enabledRequests = props.tabRecord.requests.filter(
-    (request: chrome.webRequest.WebRequestFullDetails) => {
-      return props.tabRecord.checkedReqs[request.requestId];
-    }
-  );
 
   return (
     <div>
-      <div className="grid-container response-action">
-        <Switch
-          isOn={props.tabRecord.isInterceptorOn}
-          handleSwitchToggle={props.handleSwitchToggle}
-        />
-        <div className="text-right">
-          <InterceptAllButton
-            disabled={!enabledRequests.length}
-            handleCheckedRequests={() => {
-              return props.handleCheckedRequests(enabledRequests);
-            }}
-          />
-          <button
-            type="button"
-            title="Clear All Requests"
-            className="btn btn-sm btn-primary btn-clear"
-            onClick={props.clearRequests}
-          >
-            CLEAR
-          </button>
-        </div>
-      </div>
-
       <ReactTable
         data={props.tabRecord.requests}
         columns={columns}
