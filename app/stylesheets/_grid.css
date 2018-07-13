@@ -24,13 +24,15 @@ header .grid-container {
   grid-column: 2;
 }
 
-.full-url{
+.full-url {
   grid-row: 3;
   grid-column: 1/3;
 }
-.urlText{
+
+.urlText {
   word-break: break-all;
 }
+
 .response-action {
   grid-template-columns: 250px auto ;
 }

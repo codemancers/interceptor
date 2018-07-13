@@ -153,7 +153,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           )}
           <button
             type="button"
-            className="btn btn-primary btn-sm btn-add-rule"
+            className="btn btn-sm"
             onClick={this.toggleAddRequestForm}
           >
             Add Rule

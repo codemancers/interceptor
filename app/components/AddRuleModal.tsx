@@ -45,44 +45,56 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
         //close the modal
         props.handleClose();
       }}
+      modalTitle="Add Rule"
     >
       {props.addRuleError && (
         <p className="popup-error-message popup-error"> {props.addRuleError} </p>
       )}
-      <label htmlFor="url-input-modal">URL</label>
-      <input
-        className="form-control"
-        type="text"
-        name="request_url"
-        value={props.addRequestUrl}
-        id="url-input-modal"
-        onChange={e => props.updateAddRequestUrl(e.target.value, props.tabId)}
-      />
-      <label htmlFor="modal-request-method">Method</label>
-      <div>
-        <select
-          name="request_method"
-          id="modal-request-method"
-          value={props.addRequestMethod}
-          className="modal-method"
-          onChange={e => props.updateAddRequestMethod(e.target.value, props.tabId)}
-        >
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-          <option value="OPTIONS">OPTIONS</option>
-          <option value="PUT">PUT</option>
-        </select>
+      <div className="modal-body">
+        <div className="control-group">
+          <label htmlFor="url-input-modal">URL</label>
+          <input
+            className="form-control"
+            type="text"
+            name="request_url"
+            value={props.addRequestUrl}
+            id="url-input-modal"
+            onChange={e => props.updateAddRequestUrl(e.target.value, props.tabId)}
+          />
+        </div>
+        <div className="control-group">
+          <label htmlFor="modal-request-method">Method</label>
+          <select
+            name="request_method"
+            id="modal-request-method"
+            value={props.addRequestMethod}
+            className="modal-method form-control"
+            onChange={e => props.updateAddRequestMethod(e.target.value, props.tabId)}
+          >
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="OPTIONS">OPTIONS</option>
+            <option value="PUT">PUT</option>
+          </select>
+        </div>
       </div>
-      <button
-        className="btn btn-sm btn-primary btn-add-rule"
-        onClick={() => {
-          //erase the previously set error message on each re-render
-          props.addRuleErrorNotify(``, props.tabId);
-          urlValid();
-        }}
-      >
-        Add Rule
-      </button>
+      <div className="modal-footer text-right">
+        <button
+          className="btn"
+        >
+          Cancle
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            //erase the previously set error message on each re-render
+            props.addRuleErrorNotify(``, props.tabId);
+            urlValid();
+          }}
+        >
+          Add Rule
+        </button>
+      </div>
     </Modal>
   );
 };

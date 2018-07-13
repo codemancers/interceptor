@@ -1,11 +1,18 @@
 import * as React from "react";
-export const Modal = ({ handleClose, children }) => {
+export const Modal = ({ modalTitle, handleClose, children }) => {
   return (
     <section className="modal">
-      {children}
-      <button className="modal-close-btn btn-sm btn" onClick={handleClose}>
-        X
-      </button>
+      <div className="modal-content">
+        <div className="modal-header">
+          <span
+            onClick={handleClose}
+            className="modal-close">
+            &times;
+          </span>
+          <h4>{modalTitle}</h4>
+        </div>
+        {children}
+      </div>
     </section>
   );
 };
