@@ -50,8 +50,9 @@ describe("Popup", () => {
       expect(wrapper.find("Logo")).toHaveLength(1);
     });
 
-    test("Contains two button elements", () => {
-      expect(wrapper.find("button")).toHaveLength(2);
+
+    test("Contains one button elements", () => {
+      expect(wrapper.find(".btn-secondary")).toHaveLength(1);
     });
 
     test("Contains one RequestList component", () => {
@@ -60,7 +61,7 @@ describe("Popup", () => {
 
     test("On start button click, should pass message 'EnableLogging' with tabId", () => {
       wrapper
-        .find("button")
+        .find(".button-start-listening")
         .first()
         .simulate("click");
       expect(MessageService.enableLogging).toHaveBeenCalledWith(1);
@@ -79,7 +80,7 @@ describe("Popup", () => {
       let localProps = createTestProps({ tabRecord: { enabledStatus: true } });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
-        .find("button")
+        .find(".button-stop-listening")
         .first()
         .simulate("click");
       expect(MessageService.disableLogging).toHaveBeenCalledWith(1);
@@ -105,19 +106,13 @@ describe("Popup", () => {
       });
       wrapper = shallow(<Popup {...localProps} />);
       wrapper
-        .find("button")
+        .find(".button-start-listening")
         .first()
         .simulate("click");
       expect(localProps.errorNotify).toHaveBeenCalledWith(
         "Cannot Start Listening on chrome://version",
         1
       );
-      expect(
-        wrapper
-          .find("button")
-          .at(0)
-          .hasClass("button-start-listening")
-      ).toBeTruthy();
     });
   });
 

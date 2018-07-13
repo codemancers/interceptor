@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import matchSorter from "match-sorter";
 import ContentEditable from "react-simple-contenteditable";
-import { InterceptForm } from "./../components/Intercept_Components/index";
+import { InterceptForm } from "./../components/Intercept_Components";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./Switch";
 

@@ -33,7 +33,7 @@ input[type="search"]::-webkit-search-cancel-button {
   display: inline-block;
   font-size: 1rem;
   outline: 0;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   font-weight: 600;
   cursor: pointer;
   margin-left: 10px;
@@ -185,7 +185,7 @@ label {
   margin: 10px 15px;
 }
 .responseText{
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Anonymous Pro',"Courier New", Courier, monospace;
   line-height: 1.2;
   display: inline-block;
   font-size: 0.8rem;
