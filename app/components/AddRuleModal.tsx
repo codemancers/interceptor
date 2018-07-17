@@ -31,6 +31,12 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
     props.handleClose();
   };
 
+  const handleAddRuleClick = () => {
+    //erase the previously set error message on each re-render
+    props.addRuleErrorNotify("", props.tabId);
+    urlValid();
+  };
+
   const urlValid = () => {
     const IsUrl: boolean = isUrl(props.addRequestUrl);
     if (IsUrl) {
@@ -81,14 +87,7 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
         <button className="btn" onClick={handleClose}>
           Cancel
         </button>
-        <button
-          className="btn btn-primary btn-add-rule"
-          onClick={() => {
-            //erase the previously set error message on each re-render
-            props.addRuleErrorNotify("", props.tabId);
-            urlValid();
-          }}
-        >
+        <button className="btn btn-primary btn-add-rule" onClick={handleAddRuleClick}>
           Add Rule
         </button>
       </div>
