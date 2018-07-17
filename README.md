@@ -80,9 +80,11 @@ This [blogpost](https://crypt.codemancers.com/posts/2018-04-24-intro-to-intercep
 
 ## Attribution
 
-Icons for this projects are used from [The Noun Project](https://thenounproject.com/)
+Icons for this projects are used from [The Noun Project](https://thenounproject.com/) and [Font Awesome](https://fontawesome.com)
 
  * [Download](https://thenounproject.com/prosymbols/collection/set-of-line-essentials-icons-2/?i=790723) icon used is by [ProSymbols](https://thenounproject.com/prosymbols/) from the [Noun Project](http://thenounproject.com/).
+ * [Play Circle](https://fontawesome.com/icons/play-circle?style=solid) and [Stop Circle](https://fontawesome.com/icons/stop-circle?style=solid) icons are used from [Font Awesome](https://fontawesome.com/license)
+
 
 ## License
 
