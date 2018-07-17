@@ -82,7 +82,7 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
           Cancel
         </button>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary btn-add-rule"
           onClick={() => {
             //erase the previously set error message on each re-render
             props.addRuleErrorNotify(``, props.tabId);

@@ -28,10 +28,10 @@ describe("AddRuleModal component test", () => {
       expect(wrapper).toBeDefined();
       expect(wrapper.find("Modal")).toHaveLength(1);
     });
-    test("Contains a input, select and a button element", () => {
+    test("Contains a input, select and two button element", () => {
       expect(wrapper.find("input")).toHaveLength(1);
       expect(wrapper.find("select")).toHaveLength(1);
-      expect(wrapper.find("button")).toHaveLength(1);
+      expect(wrapper.find("button")).toHaveLength(2);
     });
   });
     describe("onChange and click events", () => {
