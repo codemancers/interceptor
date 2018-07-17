@@ -23,10 +23,10 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
 
   const handleClose = () => {
     //erase the previously set error message on each re-render
-    props.addRuleErrorNotify(``, props.tabId);
+    props.addRuleErrorNotify("", props.tabId);
     //reset the url to empty string and request method to "GET"
-    props.updateAddRequestUrl(``, props.tabId);
-    props.updateAddRequestMethod(`GET`, props.tabId);
+    props.updateAddRequestUrl("", props.tabId);
+    props.updateAddRequestMethod("GET", props.tabId);
     //close the modal
     props.handleClose();
   };
@@ -36,11 +36,11 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
     if (IsUrl) {
       props.addRequest(props.addRequestUrl, props.addRequestMethod);
       //reset the url to empty string and request method to "GET"
-      props.updateAddRequestUrl(``, props.tabId);
-      props.updateAddRequestMethod(`GET`, props.tabId);
+      props.updateAddRequestUrl("", props.tabId);
+      props.updateAddRequestMethod("GET", props.tabId);
       return;
     } else {
-      props.addRuleErrorNotify(`Please Enter a valid URL`, props.tabId);
+      props.addRuleErrorNotify("Please Enter a valid URL", props.tabId);
       return;
     }
   };
@@ -85,7 +85,7 @@ export const AddRuleModal: React.SFC<AddRuleModalProps> = props => {
           className="btn btn-primary btn-add-rule"
           onClick={() => {
             //erase the previously set error message on each re-render
-            props.addRuleErrorNotify(``, props.tabId);
+            props.addRuleErrorNotify("", props.tabId);
             urlValid();
           }}
         >

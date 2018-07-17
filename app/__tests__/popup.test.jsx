@@ -150,7 +150,7 @@ describe("Popup", () => {
       expect(wrapper.find("#success-msg").exists()).toBeFalsy();
     });
 
-    test("on clear button click, should trigger props.clearRequests", () => {
+    test("on clear button click, should trigger props.clearFields", () => {
       wrapper
         .find(".btn-clear")
         .first()
