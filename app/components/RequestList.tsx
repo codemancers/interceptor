@@ -18,7 +18,6 @@ export interface RequestObj {
   updateInterceptorStatus?: (tabId: number) => void;
   fetchResponse: React.MouseEvent<HTMLSpanElement>;
   handleSwitchToggle: any;
-  handleChangeUrl: any;
   fetchFailure: any;
 }
 const RequestList: React.SFC<RequestObj> = props => {
