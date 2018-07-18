@@ -1,5 +1,5 @@
 import * as React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { Popup } from "./../containers/Popup";
 
 import * as MessageService from "../message_service";
@@ -151,13 +151,17 @@ describe("Popup", () => {
     });
 
     test("on clear button click, should trigger props.clearFields", () => {
+      //wrapper.instance().handleClick()
+      let localProps = createTestProps();
+      wrapper = mount(<Popup {...localProps} />);
+      const instance = wrapper.instance();
+      jest.spyOn(instance, 'clearRequests');
       wrapper
         .find(".btn-clear")
         .first()
         .simulate("click");
-        let localProps = createTestProps();
-        wrapper = shallow(<Popup {...localProps} />);
-        expect(localProps.clearFields).toHaveBeenCalledTimes(1);
+        expect(instance.clearRequests).toHaveBeenCalled();
+        expect(props.clearFields).toBeCalledWith(1)
     });
   });
 });
