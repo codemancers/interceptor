@@ -150,18 +150,11 @@ describe("Popup", () => {
       expect(wrapper.find("#success-msg").exists()).toBeFalsy();
     });
 
-    test("on clear button click, should trigger props.clearFields", () => {
-      //wrapper.instance().handleClick()
-      let localProps = createTestProps();
-      wrapper = mount(<Popup {...localProps} />);
-      const instance = wrapper.instance();
-      jest.spyOn(instance, 'clearRequests');
-      wrapper
-        .find(".btn-clear")
-        .first()
-        .simulate("click");
-        expect(instance.clearRequests).toHaveBeenCalled();
-        expect(props.clearFields).toBeCalledWith(1)
+    test ('on clear button click, should trigger props.clearFields', () => {
+      let localProps = createTestProps ();
+      wrapper = mount (<Popup {...localProps} />);
+      wrapper.find ('.btn-clear').last ().simulate ('click');
+      expect (localProps.clearFields).toBeCalledWith (1);
     });
   });
 });
