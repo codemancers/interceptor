@@ -153,7 +153,7 @@ describe("Popup", () => {
     test ('on clear button click, should trigger props.clearFields', () => {
       let localProps = createTestProps ();
       wrapper = mount (<Popup {...localProps} />);
-      wrapper.find ('.btn-clear').last ().simulate ('click');
+      wrapper.find ('.btn-clear').first ().simulate ('click');
       expect (localProps.clearFields).toBeCalledWith (1);
     });
   });
