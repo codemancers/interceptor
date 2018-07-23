@@ -10,7 +10,7 @@ export const InterceptAllButton: React.SFC<InterceptAllButtonProps> = props => {
     <button
       id="intercept-all-btn"
       title="Intercept Selected Requests"
-      className="btn btn-sm btn-primary btn-clear"
+      className="btn btn-sm btn-primary"
       disabled={props.disabled}
       onClick={props.handleCheckedRequests}
     >

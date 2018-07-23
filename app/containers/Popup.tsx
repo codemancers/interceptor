@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as uuid from "uuid";
 import * as cx from "classnames";
 import { connect } from "react-redux";
 
@@ -10,6 +11,10 @@ import * as actionTypes from "../actions";
 //icons
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
+
+import { InterceptAllButton } from "./../components/InterceptAllButton";
+import { Switch } from "./../components/Switch";
+import { AddRuleModal } from "./../components/AddRuleModal";
 
 interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
@@ -23,7 +28,13 @@ interface DispatchProps {
   fetchResponse: typeof actionTypes.fetchResponse;
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
+  updateRequest: typeof actionTypes.updateRequest;
+  updateAddRequestMethod: typeof actionTypes.updateAddRequestMethod;
+  updateAddRequestUrl: typeof actionTypes.updateAddRequestUrl;
+  toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
+  handleChangeUrl: typeof actionTypes.handleChangeUrl;
   fetchFailure: typeof actionTypes.fetchFailure;
+  addRuleErrorNotify: typeof actionTypes.addRuleErrorNotify;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -74,6 +85,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         .then(() => {
           this.disableInterceptor(props.currentTab);
           this.updateBadgeIcon(props.currentTab, true);
+          props.sendMessageToUI("Interception Disabled", props.currentTab);
         })
         .catch((err: any) => {
           // something broke in the background store
@@ -81,9 +93,24 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         });
     } else {
       props.updateInterceptorStatus(props.currentTab, true);
-      props.sendMessageToUI("Interception Enabled!", props.currentTab);
+      props.sendMessageToUI("Interception Enabled", props.currentTab);
       this.updateBadgeIcon(props.currentTab, false);
     }
+  };
+
+  addRequest = (url: string, method: string) => {
+    const requestObject = {
+      method,
+      requestId: uuid().replace(/-/g, ""),
+      tabId: this.props.currentTab,
+      type: "xmlhttprequest",
+      url
+    };
+    this.props.updateRequest(this.props.currentTab, requestObject);
+  };
+
+  toggleAddRequestForm = () => {
+    this.props.toggleAddRequestForm(!this.props.tabRecord.showAddRequest, this.props.currentTab);
   };
 
   render() {
@@ -98,6 +125,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     });
     const buttonLabel = tabRecord.enabledStatus ? " Stop Listening" : " Start Listening";
     const ButtonIcon = tabRecord.enabledStatus ? PlayIcon : StopIcon;
+    const enabledRequests = tabRecord.requests
+      ? tabRecord.requests.filter((request: chrome.webRequest.WebRequestFullDetails) => {
+          return tabRecord.checkedReqs[request.requestId];
+        })
+      : [];
 
     return (
       <div className="popup">
@@ -121,19 +153,57 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           )}
           {props.interceptStatus && <div id="success-msg">{props.interceptStatus}</div>}
 
+          <div className="grid-container response-action">
+            <Switch
+              isOn={props.tabRecord.isInterceptorOn}
+              handleSwitchToggle={this.handleSwitchToggle}
+            />
+            <div className="text-right">
+              <button type="button" className="btn btn-sm" onClick={this.toggleAddRequestForm}>
+                Add Rule
+              </button>
+              <InterceptAllButton
+                disabled={!enabledRequests.length}
+                handleCheckedRequests={() => {
+                  return this.handleCheckedRequests(enabledRequests);
+                }}
+              />
+              <button
+                type="button"
+                title="Clear All Requests"
+                className="btn btn-sm btn-primary btn-clear"
+                onClick={this.clearRequests}
+              >
+                CLEAR
+              </button>
+            </div>
+          </div>
+
+          {tabRecord.showAddRequest && (
+            <AddRuleModal
+              handleClose={this.toggleAddRequestForm}
+              updateAddRequestUrl={props.updateAddRequestUrl}
+              updateAddRequestMethod={props.updateAddRequestMethod}
+              addRequest={this.addRequest}
+              addRequestUrl={tabRecord.addRequestUrl}
+              addRequestMethod={tabRecord.addRequestMethod}
+              tabId={props.currentTab}
+              addRuleErrorNotify={props.addRuleErrorNotify}
+              addRuleError={props.tabRecord.addRuleError}
+            />
+          )}
+
           <RequestList
             tabRecord={tabRecord}
             handleCheckToggle={props.handleCheckToggle}
-            handleCheckedRequests={this.handleCheckedRequests}
             handleRespTextChange={props.handleRespTextChange}
             handleStatusCodeChange={props.handleStatusCodeChange}
             handleContentTypeChange={props.handleContentTypeChange}
             handlePaginationChange={props.handlePaginationChange}
             currentTabId={props.currentTab}
-            clearRequests={this.clearRequests}
             updateInterceptorStatus={props.updateInterceptorStatus}
-            handleSwitchToggle={this.handleSwitchToggle}
             fetchResponse={props.fetchResponse}
+            handleChangeUrl={props.handleChangeUrl}
             fetchFailure={props.fetchFailure}
           />
         </div>
@@ -163,7 +233,13 @@ const mapDispatchToProps: DispatchProps = {
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
-  fetchFailure: actionTypes.fetchFailure
+  updateRequest: actionTypes.updateRequest,
+  updateAddRequestMethod: actionTypes.updateAddRequestMethod,
+  updateAddRequestUrl: actionTypes.updateAddRequestUrl,
+  toggleAddRequestForm: actionTypes.toggleAddRequestForm,
+  handleChangeUrl: actionTypes.handleChangeUrl,
+  fetchFailure: actionTypes.fetchFailure,
+  addRuleErrorNotify: actionTypes.addRuleErrorNotify
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

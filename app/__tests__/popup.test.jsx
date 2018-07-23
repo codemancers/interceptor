@@ -1,5 +1,5 @@
 import * as React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { Popup } from "./../containers/Popup";
 
 import * as MessageService from "../message_service";
@@ -7,6 +7,7 @@ import * as MessageService from "../message_service";
 jest.mock("../message_service");
 const createTestProps = props => ({
   tabRecord: {
+    showAddRequest: true,
     PageDetails: [],
     checkedReqs: {},
     enabledStatus: false,
@@ -27,6 +28,7 @@ const createTestProps = props => ({
   handleStatusCodeChange: jest.fn(),
   toggleListeningRequests: jest.fn(),
   updateInterceptorStatus: jest.fn(),
+  clearFields: jest.fn()
   // allow to override common props
   ...props
 });
@@ -53,6 +55,18 @@ describe("Popup", () => {
       expect(wrapper.find(".btn-secondary")).toHaveLength(1);
     });
 
+    test("Should contain one Switch component", () => {
+      expect(wrapper.find("Switch")).toHaveLength(1);
+    });
+
+    test("One InterceptButton component should be present", () => {
+      expect(wrapper.find("InterceptAllButton")).toHaveLength(1);
+    });
+
+    test("Should contain one Clear button", () => {
+      expect(wrapper.find(".btn-clear")).toHaveLength(1);
+    });
+
     test("Contains one RequestList component", () => {
       expect(wrapper.find("RequestList")).toHaveLength(1);
     });
@@ -63,6 +77,9 @@ describe("Popup", () => {
         .first()
         .simulate("click");
       expect(MessageService.enableLogging).toHaveBeenCalledWith(1);
+    });
+    test("contains a AddRuleModal HOC component", () => {
+      expect(wrapper.find("AddRuleModal")).toHaveLength(1);
     });
   });
 
@@ -131,6 +148,13 @@ describe("Popup", () => {
       });
       wrapper = shallow(<Popup {...localProps} />);
       expect(wrapper.find("#success-msg").exists()).toBeFalsy();
+    });
+
+    test ('on clear button click, should trigger props.clearFields', () => {
+      let localProps = createTestProps ();
+      wrapper = mount (<Popup {...localProps} />);
+      wrapper.find ('.btn-clear').simulate ('click');
+      expect (localProps.clearFields).toBeCalledWith (1);
     });
   });
 });

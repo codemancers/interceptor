@@ -14,10 +14,18 @@ export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 export const UPDATE_REQUEST = "UPDATE_REQUEST";
 export const TOGGLE_LISTENING = "TOGGLE_LISTENING";
 export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
+export const HANDLE_MODAL_METHOD_CHANGE = "HANDLE_MODAL_METHOD_CHANGE";
+export const HANDLE_MODAL_URL_CHANGE = "HANDLE_MODAL_URL_CHANGE";
+export const TOGGLE_SHOW_ADD_REQUEST = "TOGGLE_SHOW_ADD_REQUEST";
+export const CHANGE_URL_TABLE = "CHANGE_URL_TABLE";
+export const ADD_RULE_ERROR = "ADD_RULE_ERROR";
 
 // Action Creators
 export function errorNotify(errorMessage: string, tabId: number) {
   return { type: ERROR, payload: { errorMessage, tabId } };
+}
+export function addRuleErrorNotify(errorMessage: string, tabId: number) {
+  return { type: ADD_RULE_ERROR, payload: { errorMessage, tabId } };
 }
 export function clearFields(tabId: number) {
   return { type: CLEAR_REQUESTS, payload: { tabId } };
@@ -69,5 +77,33 @@ export function initialiseDefaults(
   currentUrl: string,
   interceptStatus: string
 ) {
-  return { type: INITIALISE_DEFAULTS, payload: { currentTab, currentUrl, interceptStatus } };
+  return {
+    type: INITIALISE_DEFAULTS,
+    payload: { currentTab, currentUrl, interceptStatus }
+  };
 }
+
+export const updateAddRequestMethod = (value: string, tabId: number) => {
+  return {
+    type: HANDLE_MODAL_METHOD_CHANGE,
+    payload: { value, tabId }
+  };
+};
+
+export const updateAddRequestUrl = (value: string, tabId: number) => {
+  return {
+    type: HANDLE_MODAL_URL_CHANGE,
+    payload: { value, tabId }
+  };
+};
+
+export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => {
+  return {
+    type: TOGGLE_SHOW_ADD_REQUEST,
+    payload: { showAddRequest, tabId }
+  };
+};
+
+export const handleChangeUrl = (value: string, tabId: number, index: number) => {
+  return { type: CHANGE_URL_TABLE, payload: { value, tabId, index } };
+};

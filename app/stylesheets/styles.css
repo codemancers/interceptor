@@ -86,3 +86,77 @@
 .mt15 {
   margin-top: 15px;
 }
+.modal {
+  z-index:100;
+  position: fixed;
+  background: rgba(0,0,0,0.7);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+.modal-content {
+  background: #fff;
+  -webkit-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  -o-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+  -webkit-transition: -webkit-transform .3s ease-out;
+  -o-transition: -o-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  position: relative;
+  top: 50%;
+}
+.modal-header {
+  padding: 10px 20px 0;
+  border-bottom: 1px solid #ccc;
+}
+.modal-body {
+  padding: 20px;
+}
+.modal-footer {
+  padding: 15px;
+  background-color: #eee;
+}
+.modal label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.modal-close {
+  cursor: pointer;
+  font-size: 40px;
+  line-height: 30px;
+  float: right;
+  margin-top: -2px;
+}
+.modal-close:hover {
+  color: #666;
+}
+.modal-close:active {
+  color: #999;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+#success-msg{
+  text-align: center;
+  padding: 5px;
+}

@@ -8,7 +8,11 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
 };
 
 const initialTabProperties = {
+  showAddRequest: false,
+  addRequestUrl: "",
+  addRequestMethod: "GET",
   enabledStatus: false,
+  addRuleError: "",
   requests: [],
   errorMessage: "",
   PageDetails: {
@@ -37,6 +41,21 @@ function extendTabRecords(state: POPUP_PROPS, payload: any, newTabRecords: any) 
       [payload.tabId]: {
         ...state.tabRecord[payload.tabId],
         ...newTabRecords
+      }
+    }
+  };
+}
+
+function changeRequestUrl(state: POPUP_PROPS, payload: any) {
+  const requests = [...state.tabRecord[payload.tabId].requests];
+  requests[payload.index].url = payload.value;
+  return {
+    ...state,
+    tabRecord: {
+      ...state.tabRecord,
+      [payload.tabId]: {
+        ...state.tabRecord[payload.tabId],
+        requests: requests
       }
     }
   };
@@ -97,10 +116,27 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         currentTab: action.payload.currentTab,
         interceptStatus: action.payload.interceptStatus
       };
+    case actionType.HANDLE_MODAL_METHOD_CHANGE:
+      return extendTabRecords(state, action.payload, {
+        addRequestMethod: action.payload.value
+      });
+    case actionType.HANDLE_MODAL_URL_CHANGE:
+      return extendTabRecords(state, action.payload, {
+        addRequestUrl: action.payload.value
+      });
+    case actionType.TOGGLE_SHOW_ADD_REQUEST: {
+      return extendTabRecords(state, action.payload, {
+        showAddRequest: action.payload.showAddRequest
+      });
+    }
     case actionType.ERROR:
       return extendTabRecords(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
+      });
+    case actionType.ADD_RULE_ERROR:
+      return extendTabRecords(state, action.payload, {
+        addRuleError: action.payload.errorMessage
       });
     case actionType.CLEAR_REQUESTS:
       return extendTabRecords(state, action.payload, {
@@ -155,6 +191,8 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
     }
     case actionType.UPDATE_REQUEST:
       return requestsReducer(state, action.payload, [action.payload.request]);
+    case actionType.CHANGE_URL_TABLE:
+      return changeRequestUrl(state, action.payload);
     default:
       return state;
   }

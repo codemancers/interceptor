@@ -1,4 +1,6 @@
 import * as React from "react";
+import ContentEditable from "react-simple-contenteditable";
+
 import { RequestHeaderList } from "./RequestHeaderList";
 interface InterceptTextBox {
   requestRecords: any;
@@ -19,7 +21,6 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
   const responseTextValue = props.requestRecords.responseText || defaultResponseText;
   const statusCodeValue = props.requestRecords.statusCode || defaultStatusCode;
   const contentTypeValue = props.requestRecords.contentType || defaultContentType;
-
   return (
     <div className="form-container">
       <div>
@@ -30,9 +31,15 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
       <div className="grid-container form">
         <div className="full-url">
           <label htmlFor="">URL</label>
-          <a href={props.rowProps.checkbox.url} className="urlText">
-            {props.rowProps.checkbox.url}
-          </a>
+          <ContentEditable
+            tagName="div"
+            className="urlText"
+            html={props.rowProps.checkbox.url}
+            contentEditable="plaintext-only"
+            onChange={(e, value) => {
+              props.handleChangeUrl(value, props.currentTabId, props.index);
+            }}
+          />
         </div>
         <div className="response">
           <label className="responseTextlabel">Mocked Response Text</label>
