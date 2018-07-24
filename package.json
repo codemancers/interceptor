@@ -1,0 +1,20 @@
+{
+  "name": "interceptor-landing",
+  "version": "1.0.0",
+  "description": "Interceptor Landing Page",
+  "author": "Amit Bhavikatti",
+  "license": "MIT",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html --public-url ./"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.2",
+    "typeface-barlow": "0.0.54",
+    "typeface-karla": "0.0.54"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.6.1"
+  }
+}

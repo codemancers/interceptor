@@ -1,0 +1,185 @@
+@import "typeface-barlow";
+@import "typeface-karla";
+@import "bootstrap/dist/css/bootstrap.css";
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html {
+  font-family: sans-serif;
+}
+body {
+  margin: 0;
+  color: #4d4d4d;
+  font-size: 14px;
+  font-family: "Karla", sans-serif;
+}
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+h1 {
+  font-size: 3rem;
+  position: relative;
+  text-align: center;
+  margin: 0 0 1rem 0;
+}
+h2 {
+  font-size: 2rem;
+  text-align: center;
+}
+h3 {
+  font-size: 18px;
+  margin: 20px 0;
+}
+h3 small {
+  color: #999;
+  font-size: 75%;
+  margin-left: 5px;
+}
+p {
+  margin-top: 0;
+  line-height: 21px;
+}
+a {
+  color: #efefef;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  text-decoration: underline;
+  color: #ffffff;
+}
+a:focus,
+a:active,
+a:hover {
+  outline: 0;
+  outline-offset: -2px;
+}
+img {
+  vertical-align: middle;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e6e6e6;
+}
+ul li,
+ol li {
+  margin-bottom: 15px;
+}
+.align-center {
+  text-align: center;
+}
+.img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+::-moz-selection {
+  color: #fff;
+  text-shadow: none;
+  background: grey;
+}
+::selection {
+  color: #fff;
+  text-shadow: none;
+  background: grey;
+}
+
+.blue-section {
+  background-color: #14c1ef;
+  color: #fff;
+}
+header {
+  padding: 1em 0;
+}
+.nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #14c1ef;
+}
+
+.nav li {
+  margin: 0;
+  display: inline-block;
+}
+.nav li a {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 39px;
+  padding: 0 0 0 40px;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+/* BUTTONS */
+.button {
+  color: #fff;
+  border: none;
+  width: 200px;
+  font-size: 12px;
+  background: none;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: center;
+  background: #14c1ef;
+  border-radius: 30px;
+  letter-spacing: 3px;
+  display: inline-block;
+  text-transform: uppercase;
+  -webkit-transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+}
+.button:hover,
+.button:focus {
+  color: #fdfdfd;
+  text-decoration: none;
+  background-color: grey;
+}
+.text-center {
+  text-align: center;
+}
+
+.videoWrapper {
+  float: none;
+  clear: both;
+  width: 100%;
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 25px;
+  height: 0;
+}
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#features {
+  color: #fdfdfd;
+  padding: 2em 0;
+}
+
+.hero h1 {
+  font-family: "Barlow", serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: "normal";
+}
+.hero a {
+  text-decoration: none;
+  color: #fdfdfd;
+}
+.hero {
+  margin-top: 2.1em;
+}
+.no-blue {
+  margin-top: 2em;
+}
