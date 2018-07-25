@@ -51,13 +51,15 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
               props.fetchFailure("", requestId, props.currentTabId);
               props.fetchResponse(props.rowProps.checkbox, props.currentTabId);
             }}
-          >Fetch Server Response</button>
+          >
+            Fetch Server Response
+          </button>
           <textarea
             name="responseText"
             className="responseText"
             defaultValue={responseTextValue}
             key={props.requestRecords.serverResponse}
-            title="Mocked Response Text"
+            title="Mock Response"
             //value={textAreaValue}
             onChange={event => {
               props.handleRespTextChange(event.target.value, requestId, props.currentTabId);
