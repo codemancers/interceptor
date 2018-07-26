@@ -52,7 +52,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
               props.fetchResponse(props.rowProps.checkbox, props.currentTabId);
             }}
           >
-            Fetch Server Response
+            Fetch Response
           </button>
           <textarea
             name="responseText"
