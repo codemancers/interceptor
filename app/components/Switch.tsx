@@ -2,11 +2,13 @@ import * as React from "react";
 
 export const Switch: React.SFC<Switch> = props => {
   let classNames = ["switch", props.isOn ? "switch_is-on" : "switch_is-off"].join(" ");
+  let interceptLabelText = props.isOn ? "Disable Interception" : "Enable Interception";
   return (
     <div className="toggle-switch-container">
-      <span>Toggle Interception</span>
       <div className={classNames} onClick={props.handleSwitchToggle}>
-        <ToggleButton isOn={props.isOn} />
+        <div className="tooltip" data-tooltip={interceptLabelText}>
+          <ToggleButton isOn={props.isOn} />
+        </div>
       </div>
     </div>
   );

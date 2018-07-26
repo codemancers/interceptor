@@ -160,3 +160,37 @@
   text-align: center;
   padding: 5px;
 }
+
+/*Tooltip Styles */
+
+.tooltip {
+  position: relative;
+  color: #3B627E;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.tooltip:hover::before {
+  content: "";
+  border: solid transparent;
+  border-bottom-color: #4862A3;
+  border-width: 10px;
+  position: absolute;
+  top: 11px;
+  left: 16px;
+}
+.tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  min-width: 15em;
+  font-weight: 600;
+  line-height: 1.3em;
+  margin: 0;
+  background: #3a539b;
+  color: #fff;
+  padding: 6px;
+  border-radius: 5px;
+  left: 10%;
+  top: 29px;
+  z-index: 1;
+  font-size: 2.7em;
+}
