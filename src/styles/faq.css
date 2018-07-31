@@ -1,0 +1,28 @@
+.faq-section {
+  margin: 40px auto;
+}
+.faq-item {
+  padding-bottom: 10px;
+}
+.box {
+  background: rgba(246, 246, 246, 1);
+  color: #666666;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  font-size: 13px;
+  text-transform: none;
+  cursor: pointer;
+  border: 1px solid #d9d9d9;
+}
+.answer {
+  display: none;
+  background: #ffffff;
+  word-wrap: break-word;
+  padding: 20px;
+  border-bottom: 1px solid #d9d9d9;
+  border-left: 1px solid #d9d9d9;
+  border-right: 1px solid #d9d9d9;
+  color: #000000;
+  padding-left: 30px;
+}

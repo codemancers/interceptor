@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="A browser extension that mocks AJAX request at the browser level so you can run front ends without really starting a backend server."
+  />
+  <title>FAQ - Interceptor</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="src/styles/index.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="src/styles/faq.css" />
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+
+<body>
+  <svg style="display: none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="image">
+      <rect x="0" y="0" width="100%" height="100%" fill="#999" />
+    </symbol>
+  </svg>
+
+  <header class="fixed-top sticky p-0">
+    <div class="container p-sm-0">
+      <nav class="navbar navbar-expand-md navbar-dark">
+        <a class="navbar-brand p-0 m-0 position-relative z-1" href="index.html">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-label="Interceptor" role="Image" width="32" height="32" viewBox="0 0 32 32">
+            <rect fill="#3A539B" width="32" height="32" x="0" y="0" />
+            <path fill="#ffffff" d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z" />
+            <path fill="#ffffff" d="m 18.125,13.875 -4.25,4.25 9.03125,9.03125 4.25,-4.25 L 18.125,13.875 z" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+          </svg>
+          <span class="ml-2 pl-1">INTERCEPTOR</span>
+        </a>
+        <a class="btn-outline-light btn btn-sm d-md-none" href="https://github.com/code-mancers/interceptor">Github</a>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link py-0" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-0" href="https://github.com/code-mancers/interceptor">Github</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link py-0" href="faq.html">FAQ</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="jumbotron bg-white mb-0">
+    <div class="container">
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">What is Interceptor ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Why should I use Interceptor ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I use Interception extension ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Can I intercept a request that hasn't been listened to ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I listen/intercept a request that has been made from other tab/window ?</span>
+        </section>
+        <section class="answer">
+          Not Possible
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I turn off interceptor ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I stop listening to incoming requests ?</span>
+        </section>
+        <section class="answer">
+          Answer
+        </section>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="bg-brand py-3 navbar-dark text-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col">
+          Copyright &copy; 2018
+          <a class="text-light" href="http://codemancers.com">Codemancers</a>
+        </div>
+        <div class="col text-md-right">
+          <a href="https://github.com/code-mancers" class="btn btn-sm btn-outline-light">
+            Github
+          </a>
+          <a href="https://twitter.com/code-mancers" class="btn btn-sm btn-outline-light ml-3">
+            Twitter
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    $(document).ready(function () {
+      $(".box").click(function () {
+        $(this).next().slideToggle("fast");
+        $(this).find('i').toggleClass('d-none');
+      });
+    });
+
+  </script>
+</body>
+
+</html>
