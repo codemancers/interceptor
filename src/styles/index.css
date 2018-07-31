@@ -1,185 +1,78 @@
-@import "typeface-barlow";
-@import "typeface-karla";
 @import "bootstrap/dist/css/bootstrap.css";
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
+:root {
+  --bc: #3A539B; /* bc = brabd-color */
 }
-html {
-  font-family: sans-serif;
+
+::-moz-selection{background:var(--bc);color:#fff;text-shadow:none}
+::selection{background:var(--bc);color:#fff;text-shadow:none}
+::-moz-selection{background:var(--bc);color:#fff;text-shadow:none}
+
+.container {
+  max-width: 853px;
 }
-body {
-  margin: 0;
-  color: #4d4d4d;
-  font-size: 14px;
-  font-family: "Karla", sans-serif;
-}
-h1,
-h2,
-h3 {
-  font-weight: 700;
-}
-h1 {
-  font-size: 3rem;
+header .navbar{
+  padding: 5px;
+  min-height: 42px;
   position: relative;
-  text-align: center;
-  margin: 0 0 1rem 0;
+  background-color: var(--bc);
 }
-h2 {
-  font-size: 2rem;
-  text-align: center;
-}
-h3 {
-  font-size: 18px;
-  margin: 20px 0;
-}
-h3 small {
-  color: #999;
-  font-size: 75%;
-  margin-left: 5px;
-}
-p {
-  margin-top: 0;
-  line-height: 21px;
-}
-a {
-  color: #efefef;
-  text-decoration: none;
-}
-a:hover,
-a:focus {
-  text-decoration: underline;
-  color: #ffffff;
-}
-a:focus,
-a:active,
-a:hover {
-  outline: 0;
-  outline-offset: -2px;
-}
-img {
-  vertical-align: middle;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid #e6e6e6;
-}
-ul li,
-ol li {
-  margin-bottom: 15px;
-}
-.align-center {
-  text-align: center;
-}
-.img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-}
-::-moz-selection {
-  color: #fff;
-  text-shadow: none;
-  background: grey;
-}
-::selection {
-  color: #fff;
-  text-shadow: none;
-  background: grey;
-}
-
-.blue-section {
-  background-color: #14c1ef;
-  color: #fff;
-}
-header {
-  padding: 1em 0;
-}
-.nav {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background: #14c1ef;
-}
-
-.nav li {
-  margin: 0;
-  display: inline-block;
-}
-.nav li a {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 39px;
-  padding: 0 0 0 40px;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-}
-
-/* BUTTONS */
-.button {
-  color: #fff;
-  border: none;
-  width: 200px;
-  font-size: 12px;
-  background: none;
-  font-weight: 400;
-  line-height: 40px;
-  text-align: center;
-  background: #14c1ef;
-  border-radius: 30px;
-  letter-spacing: 3px;
-  display: inline-block;
-  text-transform: uppercase;
-  -webkit-transition: background-color 0.25s ease-out, color 0.25s ease-out;
-  transition: background-color 0.25s ease-out, color 0.25s ease-out;
-}
-.button:hover,
-.button:focus {
-  color: #fdfdfd;
-  text-decoration: none;
-  background-color: grey;
-}
-.text-center {
-  text-align: center;
-}
-
-.videoWrapper {
-  float: none;
-  clear: both;
-  width: 100%;
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 25px;
-  height: 0;
-}
-.videoWrapper iframe {
-  position: absolute;
+header .navbar:after {
   top: 0;
   left: 0;
+  content: '';
+  position: absolute;
+  border-bottom: 42px solid transparent;
+  border-left: 42px solid #fff;
+}
+header {
+  box-shadow: 0 5px 0 0 var(--bc);
+  background: linear-gradient(to right, #fff 0%,#fff 50%,var(--bc) 50%,var(--bc) 100%);
+}
+.navbar-brand {
+  font-size: 0;
+}
+.navbar-brand span {
+  color: #fff;
+  font-size: 20px;
+  vertical-align: middle;
+}
+.z-1 {
+  z-index: 1;
+}
+.videoWrapper {
+  clear: both;
+  float: none;
+  height: 0;
+  padding-bottom: 56.25%;
+  padding-top: 25px;
+  position: relative;
   width: 100%;
+}
+.videoWrapper iframe {
   height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
-#features {
-  color: #fdfdfd;
-  padding: 2em 0;
+.display-5 {
+  font-size: 26px;
 }
-
-.hero h1 {
-  font-family: "Barlow", serif;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: "normal";
+hr.small {
+  width: 25%;
+  margin: 0 auto;
+  border-top-width: 2px;
 }
-.hero a {
-  text-decoration: none;
-  color: #fdfdfd;
+.bg-brand {
+  background-color: var(--bc);
 }
-.hero {
-  margin-top: 2.1em;
-}
-.no-blue {
-  margin-top: 2em;
+@media (min-width: 768px) {
+  .w-md-25 {
+    width: 25%;
+    display: inline-block;
+  }
+  .w-md-25.btn-block + .btn-block  {
+    margin-top: 0;
+  }
 }
