@@ -6,14 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>FAQ - Interceptor</title>
-  <meta name="description" content="Answers to Frequently Asked Questions about Interceptor extension."
-  />
-  <meta name="twitter:card" content="Answers to Frequently Asked Questions about Interceptor extension."></meta>
+  <meta name="description" content="Answers to Frequently Asked Questions about Interceptor extension." />
+  <meta name="twitter:card" content="Answers to Frequently Asked Questions about Interceptor extension." />
   <meta name="twitter:site" content="@codemancers" />
   <!-- <meta property="og:url" content="" /> -->
   <meta property="og:title" content="FAQ - Interceptor" />
-  <meta property="og:description" content="Answers to Frequently Asked Questions about Interceptor extension.."
-  />
+  <meta property="og:description" content="Answers to Frequently Asked Questions about Interceptor extension.." />
   <!-- <meta property="og:image" content="" />-->
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="src/styles/index.css" />
@@ -69,11 +67,9 @@
           <span class="question pl-2">What is Interceptor ?</span>
         </section>
         <section class="answer">
-          Interceptor is a chrome/firefox extension intended for the use by web developers
-          which allows you to intercept/modify the HTTP response sent out by back-end servers
-          when a request is made from front-end.
-          In addition, You can use Interceptor to listen for all the incoming requests, inspect/view
-          HTTP response and headers for each requests made.
+          Interceptor is a chrome/firefox extension intended for the use by web developers which allows you to intercept/modify the
+          HTTP response sent out by back-end servers when a request is made from front-end. In addition, You can use Interceptor
+          to listen for all the incoming requests, inspect/view HTTP response and headers for each requests made.
         </section>
       </div>
       <div class="faq-item">
@@ -85,26 +81,35 @@
           <span class="question pl-2">Why should I use Interceptor ?</span>
         </section>
         <section class="answer">
-          Front-end developers often face difficulty in developing/testing their web app as they have
-          wait for backend developer to provide with an API for any dynamic data to be shown on the page.
-          With this extension, you can write your own back-end! and own custom responses.
+          Front-end developers often face difficulty in developing/testing their web app as they have wait for backend developer to
+          provide with an API for any dynamic data to be shown on the page. With this extension, you can write your own back-end
+          with custom responses!
         </section>
       </div>
       <div class="faq-item">
         <section class="box">
           <i class="fa fa-plus" aria-hidden="true"></i>
           <i class="fa fa-minus d-none" aria-hidden="true"></i>
-          </span>
           <span class="question pl-2">How do I use Interception extension ?</span>
         </section>
         <section class="answer">
-          After you download the extension from Chrome Webstore/Firefox addons store. You will find a
-          Interceptor icon in your extension bar.
-          When you open the pop-up, you will find a "Start Listening" button. On clicking it, you will be able
-          to view all the incoming requests for that tab. Simply expand the requests you are interested to
-          intercept, Type in your custom response, check the checkbox on right and hit `Intercept Button`.
-          Whenever the browser tab sees that particular request, the browser will be sent a `fake` response
-          earlier typed out by you instead of from the server.
+          After you download the extension from Chrome Webstore/Firefox addons store. You will find a Interceptor icon in your extension
+          bar.
+          <ul>
+            <li>When you open the pop-up, you will find a "Start Listening" button.On clicking it, you will be able to view all
+              the incoming requests for that tab.</li>
+            <li>
+              Simply expand the requests you are interested to intercept and type in your custom response
+            </li>
+            <li>
+              Select the content-type and status code for the fake/mocked data.
+            </li>
+            <li>
+              Check the checkbox on the right and hit `Intercept Button`.
+            </li>
+            Whenever the browser tab sees that particular request, the browser will recieve a `fake` response with specified content-type
+            and status code earlier typed out by you.
+          </ul>
         </section>
       </div>
       <div class="faq-item">
@@ -116,33 +121,33 @@
           <span class="question pl-2">Can I intercept a request that hasn't been listened to ?</span>
         </section>
         <section class="answer">
-          <pre>
-Sure. You can intercept a request that hasn't been listened to.
-- Click on `Add Rule` button
-- Type in the `URL` and `HTTP method`(`GET`, `POST`, `PUT` etc)
-- Click 'Add Rule'. You will find that the new rule gets added to the list.
-- Further follow the same steps that you followed to intercept a listened request.
-          </pre>
+          Sure. You can intercept a request that hasn't been listened to.
+          <ul>
+            <li>Click on `Add Rule` button</li>
+            <li>Type in the `URL` and `HTTP method`(`GET`, `POST`, `PUT` etc)</li>
+            <li>Click 'Add Rule'. You will find that the new rule gets added to the list.</li>
+            <li>Further follow the same steps that you followed to intercept a listened request.</li>
+          </ul>
         </section>
       </div>
       <div class="faq-item">
-          <section class="box">
-            <span>
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              <i class="fa fa-minus d-none" aria-hidden="true"></i>
-            </span>
-            <span class="question pl-2">I have listened to too many requests. Can I fiter out all the un-wanted requests ?</span>
-          </section>
-          <section class="answer">
-            <pre>
-  Yes. You can filter the requests as per these paramters.
-  - Search for relevant requests.
-    Suppose you need to just see the requests containing the name `codemancers.com` in it. Type
-    in the word and list shows all the corresponding requests that match
-  - Filter by `Method`. Simple, Just choose one the of method to filter and you are good to go.
-            </pre>
-          </section>
-        </div>
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2"> There are too many requests listed. Can I fiter out un-wanted requests ?</span>
+        </section>
+        <section class="answer">
+          Yes. You can filter the requests as per these parameters.
+          <ul>
+            <li>Search for relevant requests.</li>
+            Suppose you need to just see the requests containing the name `codemancers.com` in it. Type in the word and list shows all
+            the corresponding requests that match.
+            <li>Filter by `Method`. Simple, Just choose one the of method to filter and you are good to go.</li>
+          </ul>
+        </section>
+      </div>
       <div class="faq-item">
         <section class="box">
           <span>
@@ -152,9 +157,8 @@ Sure. You can intercept a request that hasn't been listened to.
           <span class="question pl-2">How do I listen/intercept a request that has been made from other tab/window ?</span>
         </section>
         <section class="answer">
-          Currenly this is not Possible. It doesn't make sense to listen to all requests across various
-          tabs. You can anyhow go to other tab/window and listen to/intercept the same URL and fake a completely
-          different response.
+          Currenly this is not Possible. It doesn't make sense to listen to all requests across various tabs. You can anyhow go to
+          required tab/window and listen to/intercept a custom response.
         </section>
       </div>
       <div class="faq-item">
@@ -166,10 +170,11 @@ Sure. You can intercept a request that hasn't been listened to.
           <span class="question pl-2">How do I turn off interceptor ?</span>
         </section>
         <section class="answer">
-          Turning off interceptor means shutting down the fake/mock server that you had been using.
-          Once you toggle the `Toggle Intercept`  to `OFF` position, all requests in that particular tab will return
-          the `real` response rather than the response from Interceptor.
+          Turning off interceptor means shutting down the fake/mock server that you had been using. Once you toggle the `Toggle Intercept`
+          to `OFF` position, all requests in that particular tab will return the `real` response rather than the response
+          from Interceptor.
         </section>
+      </div>
       <div class="faq-item">
         <section class="box">
           <span>
@@ -180,6 +185,19 @@ Sure. You can intercept a request that hasn't been listened to.
         </section>
         <section class="answer">
           Just click the `Stop Listening` button.
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Can I edit a URL ?</span>
+        </section>
+        <section class="answer">
+          On Expanding any request detail, you will find URL header with full URL listed below it. Just click on the URL you want to
+          edit and change it. It is a content-editable section.
         </section>
       </div>
     </div>
