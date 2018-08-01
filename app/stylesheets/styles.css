@@ -70,16 +70,6 @@
   min-width: 278px;
   max-width: 278px;
 }
-.fetch-responsetext,
-.fetch-responsetext:hover,
-.fetch-responsetext:focus,
-.fetch-responsetext:active {
-  background-image: url("./../images/fetchResponse.svg");
-  background-position: 5px;
-  background-size: 14px;
-  background-repeat: no-repeat;
-
-}
 .select-status{
   width: 155px;
 }
