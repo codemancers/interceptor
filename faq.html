@@ -69,7 +69,11 @@
           <span class="question pl-2">What is Interceptor ?</span>
         </section>
         <section class="answer">
-          Answer
+          Interceptor is a chrome/firefox extension intended for the use by web developers
+          which allows you to intercept/modify the HTTP response sent out by back-end servers
+          when a request is made from front-end.
+          In addition, You can use Interceptor to listen for all the incoming requests, inspect/view
+          HTTP response and headers for each requests made.
         </section>
       </div>
       <div class="faq-item">
@@ -81,7 +85,9 @@
           <span class="question pl-2">Why should I use Interceptor ?</span>
         </section>
         <section class="answer">
-          Answer
+          Front-end developers often face difficulty in developing/testing their web app as they have
+          wait for backend developer to provide with an API for any dynamic data to be shown on the page.
+          With this extension, you can write your own back-end! and own custom responses.
         </section>
       </div>
       <div class="faq-item">
@@ -92,7 +98,13 @@
           <span class="question pl-2">How do I use Interception extension ?</span>
         </section>
         <section class="answer">
-          Answer
+          After you download the extension from Chrome Webstore/Firefox addons store. You will find a
+          Interceptor icon in your extension bar.
+          When you open the pop-up, you will find a "Start Listening" button. On clicking it, you will be able
+          to view all the incoming requests for that tab. Simply expand the requests you are interested to
+          intercept, Type in your custom response, check the checkbox on right and hit `Intercept Button`.
+          Whenever the browser tab sees that particular request, the browser will be sent a `fake` response
+          earlier typed out by you instead of from the server.
         </section>
       </div>
       <div class="faq-item">
@@ -104,9 +116,33 @@
           <span class="question pl-2">Can I intercept a request that hasn't been listened to ?</span>
         </section>
         <section class="answer">
-          Answer
+          <pre>
+Sure. You can intercept a request that hasn't been listened to.
+- Click on `Add Rule` button
+- Type in the `URL` and `HTTP method`(`GET`, `POST`, `PUT` etc)
+- Click 'Add Rule'. You will find that the new rule gets added to the list.
+- Further follow the same steps that you followed to intercept a listened request.
+          </pre>
         </section>
       </div>
+      <div class="faq-item">
+          <section class="box">
+            <span>
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              <i class="fa fa-minus d-none" aria-hidden="true"></i>
+            </span>
+            <span class="question pl-2">I have listened to too many requests. Can I fiter out all the un-wanted requests ?</span>
+          </section>
+          <section class="answer">
+            <pre>
+  Yes. You can filter the requests as per these paramters.
+  - Search for relevant requests.
+    Suppose you need to just see the requests containing the name `codemancers.com` in it. Type
+    in the word and list shows all the corresponding requests that match
+  - Filter by `Method`. Simple, Just choose one the of method to filter and you are good to go.
+            </pre>
+          </section>
+        </div>
       <div class="faq-item">
         <section class="box">
           <span>
@@ -116,7 +152,9 @@
           <span class="question pl-2">How do I listen/intercept a request that has been made from other tab/window ?</span>
         </section>
         <section class="answer">
-          Not Possible
+          Currenly this is not Possible. It doesn't make sense to listen to all requests across various
+          tabs. You can anyhow go to other tab/window and listen to/intercept the same URL and fake a completely
+          different response.
         </section>
       </div>
       <div class="faq-item">
@@ -128,9 +166,10 @@
           <span class="question pl-2">How do I turn off interceptor ?</span>
         </section>
         <section class="answer">
-          Answer
+          Turning off interceptor means shutting down the fake/mock server that you had been using.
+          Once you toggle the `Toggle Intercept`  to `OFF` position, all requests in that particular tab will return
+          the `real` response rather than the response from Interceptor.
         </section>
-      </div>
       <div class="faq-item">
         <section class="box">
           <span>
@@ -140,7 +179,7 @@
           <span class="question pl-2">How do I stop listening to incoming requests ?</span>
         </section>
         <section class="answer">
-          Answer
+          Just click the `Stop Listening` button.
         </section>
       </div>
     </div>
