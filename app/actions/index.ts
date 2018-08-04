@@ -97,10 +97,10 @@ export const updateAddRequestUrl = (value: string, tabId: number) => {
   };
 };
 
-export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => {
+export const toggleAddRequestForm = (showAddRuleModal: boolean) => {
   return {
     type: TOGGLE_SHOW_ADD_REQUEST,
-    payload: { showAddRequest, tabId }
+    payload: { showAddRuleModal }
   };
 };
 

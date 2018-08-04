@@ -8,6 +8,7 @@ import { Logo } from "../components/Logo";
 import RequestList from "../components/RequestList";
 import { POPUP_PROPS } from "../types";
 import * as actionTypes from "../actions";
+import { updateAddRequestFields } from "../actions/addRequest";
 //icons
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
@@ -110,7 +111,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   toggleAddRequestForm = () => {
-    this.props.toggleAddRequestForm(!this.props.tabRecord.showAddRequest, this.props.currentTab);
+    this.props.toggleAddRequestForm(!this.props.showAddRuleModal);
   };
 
   render() {
@@ -179,17 +180,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             </div>
           </div>
 
-          {tabRecord.showAddRequest && (
+          {props.showAddRuleModal && (
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
-              updateAddRequestUrl={props.updateAddRequestUrl}
-              updateAddRequestMethod={props.updateAddRequestMethod}
-              addRequest={this.addRequest}
-              addRequestUrl={tabRecord.addRequestUrl}
-              addRequestMethod={tabRecord.addRequestMethod}
-              tabId={props.currentTab}
-              addRuleErrorNotify={props.addRuleErrorNotify}
-              addRuleError={props.tabRecord.addRuleError}
+              addRequestDetails={props.addRequestDetails}
+              updateAddRequestFields={props.updateAddRequestFields}
             />
           )}
 
@@ -214,10 +209,12 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
 
 const mapStateToProps = (state: POPUP_PROPS) => {
   return {
-    tabRecord: state.tabRecord[state.currentTab],
-    currentTab: state.currentTab,
-    currentUrl: state.currentUrl,
-    interceptStatus: state.interceptStatus
+    tabRecord: state.rootReducer.tabRecord[state.rootReducer.currentTab],
+    currentTab: state.rootReducer.currentTab,
+    currentUrl: state.rootReducer.currentUrl,
+    interceptStatus: state.rootReducer.interceptStatus,
+    showAddRuleModal: state.rootReducer.showAddRuleModal,
+    addRequestDetails: state.addRequestReducer
   };
 };
 
@@ -233,13 +230,14 @@ const mapDispatchToProps: DispatchProps = {
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
-  updateRequest: actionTypes.updateRequest,
-  updateAddRequestMethod: actionTypes.updateAddRequestMethod,
-  updateAddRequestUrl: actionTypes.updateAddRequestUrl,
+  // updateRequest: actionTypes.updateRequest,
+  // updateAddRequestMethod: actionTypes.updateAddRequestMethod,
+  // updateAddRequestUrl: actionTypes.updateAddRequestUrl,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
-  handleChangeUrl: actionTypes.handleChangeUrl,
+  // handleChangeUrl: actionTypes.handleChangeUrl,
   fetchFailure: actionTypes.fetchFailure,
-  addRuleErrorNotify: actionTypes.addRuleErrorNotify
+  // addRuleErrorNotify: actionTypes.addRuleErrorNotify,
+  updateAddRequestFields
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

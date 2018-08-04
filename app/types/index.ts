@@ -2,12 +2,13 @@ enum interceptStatus {
   Success = "Interception Success!",
   Fail = "Interception Disabled!"
 }
+
 export interface POPUP_PROPS {
   currentTab: number;
   currentUrl: string;
-  interceptStatus: interceptStatus;
+  interceptStatus?: interceptStatus;
   tabRecord: any;
-  requestRecords: any;
+  showAddRuleModal: boolean;
 }
 
 export interface interceptOn {
@@ -26,4 +27,12 @@ export interface Action extends POPUP_PROPS {
 export interface requestListProps extends POPUP_PROPS {
   requests: Array<chrome.webRequest.WebRequestDetails>;
   handleCheckToggle: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+export interface newRequest {
+  fields: {
+    url: string;
+    method: string;
+  };
+  errorMessage?: string;
 }

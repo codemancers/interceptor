@@ -4,13 +4,11 @@ import * as actionType from "../actions";
 export const INITIAL_POPUP_STATE: POPUP_PROPS = {
   tabRecord: {},
   currentUrl: "",
-  currentTab: -1
+  currentTab: -1,
+  showAddRuleModal: false
 };
 
 const initialTabProperties = {
-  showAddRequest: false,
-  addRequestUrl: "",
-  addRequestMethod: "GET",
   enabledStatus: false,
   addRuleError: "",
   requests: [],
@@ -116,32 +114,36 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         currentTab: action.payload.currentTab,
         interceptStatus: action.payload.interceptStatus
       };
-    case actionType.HANDLE_MODAL_METHOD_CHANGE:
-      return extendTabRecords(state, action.payload, {
-        addRequestMethod: action.payload.value
-      });
-    case actionType.HANDLE_MODAL_URL_CHANGE:
-      return extendTabRecords(state, action.payload, {
-        addRequestUrl: action.payload.value
-      });
+    // case actionType.HANDLE_MODAL_METHOD_CHANGE:
+    //   return extendTabRecords(state, action.payload, {
+    //     addRequestMethod: action.payload.value
+    //   });
+    // case actionType.HANDLE_MODAL_URL_CHANGE:
+    //   return extendTabRecords(state, action.payload, {
+    //     addRequestUrl: action.payload.value
+    //   });
     case actionType.TOGGLE_SHOW_ADD_REQUEST: {
-      return extendTabRecords(state, action.payload, {
-        showAddRequest: action.payload.showAddRequest
-      });
+      return {
+        ...state,
+        showAddRuleModal: action.payload.showAddRuleModal
+      };
+      // return extendTabRecords(state, action.payload, {
+      //   showAddRequest: action.payload.showAddRequest
+      // });
     }
     case actionType.ERROR:
       return extendTabRecords(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
       });
-    case actionType.ADD_RULE_ERROR:
-      return extendTabRecords(state, action.payload, {
-        addRuleError: action.payload.errorMessage
-      });
-    case actionType.CLEAR_REQUESTS:
-      return extendTabRecords(state, action.payload, {
-        requests: []
-      });
+    // case actionType.ADD_RULE_ERROR:
+    //   return extendTabRecords(state, action.payload, {
+    //     addRuleError: action.payload.errorMessage
+    //   });
+    // case actionType.CLEAR_REQUESTS:
+    //   return extendTabRecords(state, action.payload, {
+    //     requests: []
+    //   });
     case actionType.TOGGLE_CHECKBOX:
       return extendTabRecords(state, action.payload, {
         checkedReqs: {
