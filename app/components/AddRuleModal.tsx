@@ -6,6 +6,7 @@ interface AddRuleModalProps {
   addRequestMethod: string;
   addRequestUrl: string;
   addRuleErrorNotify: (errorMessage: string, tabId: number) => void;
+  addRuleError: string;
   handleClose: () => void;
   tabId: number;
   updateAddRequestMethod: (value: string, tabId: number) => void;
@@ -23,18 +24,16 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
 
   handleClose = () => {
     const { props } = this;
-    //erase the previously set error message on each re-render
-    props.addRuleErrorNotify("", props.tabId);
     //reset the url to empty string and request method to "GET"
     props.updateAddRequestUrl("", props.tabId);
     props.updateAddRequestMethod("GET", props.tabId);
+    //Erase the previously set error on opening the modal window
+    props.addRuleErrorNotify("", props.tabId);
     //close the modal
     props.handleClose();
   };
 
   handleAddRuleClick = () => {
-    //erase the previously set error message on each re-render
-    this.props.addRuleErrorNotify("", this.props.tabId);
     this.urlValid();
   };
 
@@ -43,9 +42,8 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
     const IsUrl: boolean = this.isUrl(props.addRequestUrl);
     if (IsUrl) {
       props.addRequest(props.addRequestUrl, props.addRequestMethod);
-      //reset the url to empty string and request method to "GET"
-      props.updateAddRequestUrl("", props.tabId);
-      props.updateAddRequestMethod("GET", props.tabId);
+      //close the modal after adding the url successfully
+      this.handleClose();
       return;
     } else {
       props.addRuleErrorNotify("Please Enter a valid URL", props.tabId);
@@ -54,6 +52,7 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
   };
   render() {
     const { props } = this;
+
     return (
       <Modal handleClose={this.handleClose} modalTitle="Add Rule">
         {props.addRuleError && (
@@ -72,7 +71,6 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
                 props.updateAddRequestUrl(e.target.value, props.tabId);
               }}
             />
-            {props.addRequestUrl}
           </div>
           <div className="control-group">
             <label htmlFor="modal-request-method">Method</label>
