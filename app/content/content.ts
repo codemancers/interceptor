@@ -38,7 +38,7 @@ class Intercept {
     });
   };
   interceptSelected = (message: string, tabId: number) => {
-    const presentState = this.store.getState().tabRecord[tabId];
+    const presentState = this.store.getState().rootReducer.tabRecord[tabId];
     if (!presentState) {
       return;
     }

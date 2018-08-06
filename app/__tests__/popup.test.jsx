@@ -16,7 +16,7 @@ const createTestProps = props => ({
     requests: []
   },
   showAddRuleModal: true,
-  addRequestDetails: {fields : { url : "codemancers.com", method: "GET", error: ""}},
+  addRequestDetails: { fields: { url: "codemancers.com", method: "GET", error: "" } },
   currentTab: 1,
   currentUrl: "http://www.google.com",
   clearFields: jest.fn(),
@@ -29,7 +29,7 @@ const createTestProps = props => ({
   handleStatusCodeChange: jest.fn(),
   toggleListeningRequests: jest.fn(),
   updateInterceptorStatus: jest.fn(),
-  clearFields: jest.fn()
+  clearFields: jest.fn(),
   // allow to override common props
   ...props
 });
@@ -151,11 +151,11 @@ describe("Popup", () => {
       expect(wrapper.find("#success-msg").exists()).toBeFalsy();
     });
 
-    test ('on clear button click, should trigger props.clearFields', () => {
-      let localProps = createTestProps ();
-      wrapper = mount (<Popup {...localProps} />);
-      wrapper.find ('.btn-clear').simulate ('click');
-      expect (localProps.clearFields).toBeCalledWith (1);
+    test("on clear button click, should trigger props.clearFields", () => {
+      let localProps = createTestProps();
+      wrapper = mount(<Popup {...localProps} />);
+      wrapper.find(".btn-clear").simulate("click");
+      expect(localProps.clearFields).toBeCalledWith(1);
     });
   });
 });

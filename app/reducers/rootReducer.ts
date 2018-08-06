@@ -10,7 +10,6 @@ export const INITIAL_POPUP_STATE: POPUP_PROPS = {
 
 const initialTabProperties = {
   enabledStatus: false,
-  addRuleError: "",
   requests: [],
   errorMessage: "",
   PageDetails: {
