@@ -33,6 +33,6 @@ export interface newRequest {
   fields: {
     url: string;
     method: string;
+    error?: string;
   };
-  errorMessage?: string;
 }

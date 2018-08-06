@@ -127,23 +127,16 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         ...state,
         showAddRuleModal: action.payload.showAddRuleModal
       };
-      // return extendTabRecords(state, action.payload, {
-      //   showAddRequest: action.payload.showAddRequest
-      // });
     }
     case actionType.ERROR:
       return extendTabRecords(state, action.payload, {
         errorMessage: action.payload.errorMessage,
         enabledStatus: false
       });
-    // case actionType.ADD_RULE_ERROR:
-    //   return extendTabRecords(state, action.payload, {
-    //     addRuleError: action.payload.errorMessage
-    //   });
-    // case actionType.CLEAR_REQUESTS:
-    //   return extendTabRecords(state, action.payload, {
-    //     requests: []
-    //   });
+    case actionType.CLEAR_REQUESTS:
+      return extendTabRecords(state, action.payload, {
+        requests: []
+      });
     case actionType.TOGGLE_CHECKBOX:
       return extendTabRecords(state, action.payload, {
         checkedReqs: {

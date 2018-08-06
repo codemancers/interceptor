@@ -1,11 +1,10 @@
 export const RESET = "RESET";
 export const UPDATE_REQUEST_FIELDS = "UPDATE_REQUEST_FIELDS";
-export const UPDATE_FIELD = "UPDATE_FIELD";
 
-export const updateAddRequestFields = (name, value) => {
+export const updateAddRequestFields = (url: string, method: string, error: string) => {
   return {
     type: UPDATE_REQUEST_FIELDS,
-    payload: { name, value }
+    payload: { url, method, error }
   };
 };
 

@@ -4,9 +4,9 @@ import { RESET, UPDATE_REQUEST_FIELDS, UPDATE_FIELD } from "../actions/addReques
 const initialState: newRequest = {
   fields: {
     url: "",
-    method: ""
-  },
-  errorMessage: ""
+    method: "GET",
+    error: ""
+  }
 };
 
 export const addRequestReducer = (state = initialState, action: Action) => {

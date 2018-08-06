@@ -15,7 +15,7 @@ import { StopIcon } from "../components/Icons/StopIcon";
 
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./../components/Switch";
-import { AddRuleModal } from "./../components/AddRuleModal";
+import AddRuleModal from "./../components/AddRuleModal";
 
 interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
@@ -30,12 +30,9 @@ interface DispatchProps {
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
   updateRequest: typeof actionTypes.updateRequest;
-  updateAddRequestMethod: typeof actionTypes.updateAddRequestMethod;
-  updateAddRequestUrl: typeof actionTypes.updateAddRequestUrl;
   toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
   handleChangeUrl: typeof actionTypes.handleChangeUrl;
   fetchFailure: typeof actionTypes.fetchFailure;
-  addRuleErrorNotify: typeof actionTypes.addRuleErrorNotify;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -184,7 +181,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
               addRequestDetails={props.addRequestDetails}
-              updateAddRequestFields={props.updateAddRequestFields}
+              updateRequest={props.updateRequest}
+              tabId={props.currentTab}
             />
           )}
 
@@ -230,14 +228,14 @@ const mapDispatchToProps: DispatchProps = {
   fetchResponse: actionTypes.fetchResponse,
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
-  // updateRequest: actionTypes.updateRequest,
-  // updateAddRequestMethod: actionTypes.updateAddRequestMethod,
-  // updateAddRequestUrl: actionTypes.updateAddRequestUrl,
+  updateRequest: actionTypes.updateRequest,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
-  // handleChangeUrl: actionTypes.handleChangeUrl,
+  handleChangeUrl: actionTypes.handleChangeUrl,
   fetchFailure: actionTypes.fetchFailure,
-  // addRuleErrorNotify: actionTypes.addRuleErrorNotify,
   updateAddRequestFields
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Popup);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Popup);
