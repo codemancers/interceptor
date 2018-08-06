@@ -1,15 +1,12 @@
 import * as React from "react";
 import { shallow } from "enzyme";
-import { AddRuleModal } from "./../components/AddRuleModal";
+import AddRuleModal  from "./../components/AddRuleModal";
 
 const createTestProps = props => ({
+  addRequestDetails:{ fields : {url : "http://www.codemancers.com", method: "GET", error:""}},
+  updateAddRequestFields: jest.fn(),
   handleClose: jest.fn(),
-  addRequestMethod: "GET",
-  addRequest: jest.fn(),
-  addRequestUrl: "http://www.codemancers.com",
-  updateAddRequestMethod: jest.fn(),
-  updateAddRequestUrl: jest.fn(),
-  addRuleErrorNotify:jest.fn(),
+  updateRequest: jest.fn(),
   tabId: 4545
   // allow to override common props
   ...props
@@ -41,38 +38,33 @@ describe("AddRuleModal component test", () => {
         .find("input")
         .first()
         .simulate("change", { target: { value: "a" } });
-      expect(props.updateAddRequestUrl).toHaveBeenCalledTimes(1);
+      expect(props.updateAddRequestFields).toHaveBeenCalledTimes(1);
     });
     test("onChange method input", ()=> {
       wrapper
       .find("select")
       .first()
       .simulate("change", { target: { value: "a" } });
-    expect(props.updateAddRequestMethod).toHaveBeenCalledTimes(1);
+    expect(props.updateAddRequestFields).toHaveBeenCalledTimes(1);
     });
 
-    test("onClick of addRule button and for Valid URL, props.addRequest must be called with proper params and reset fields", ()=> {
+    test("onClick of addRule button and for Valid URL, props.addRequest must be called with proper params", ()=> {
       wrapper
       .find(".btn-add-rule")
       .first()
       .simulate("click");
-    //to clear out the earlier error message
-    expect(props.addRuleErrorNotify).toHaveBeenCalledWith("", 4545)
-    expect(props.addRequest).toHaveBeenCalledTimes(1);
-    expect(props.addRequest).toHaveBeenCalledWith("http://www.codemancers.com", "GET")
-    //to reset url and method fields to empty strings
-    expect(props.updateAddRequestUrl).toHaveBeenCalledWith("",4545)
-    expect(props.updateAddRequestMethod).toHaveBeenCalledWith("GET", 4545)
+    expect(props.updateRequest).toHaveBeenCalledTimes(1);
+    //expect(props.updateRequest).toHaveBeenCalledWith("http://www.codemancers.com", "GET")
     });
 
-    test("onClick of addRule button and for Valid URL, props.addRuleErrorNotify must be called", ()=> {
-      const wrapperWithInvalidUrl = shallow(<AddRuleModal {...props} addRequestUrl="www.codemancers.com" /> );
+    test("onClick of addRule button and for invalid URL, props.addRuleErrorNotify must be called", ()=> {
+      const wrapperWithInvalidUrl = shallow(<AddRuleModal {...props} addRequestDetails={{fields : {url : "www.codemancers.com", method: "GET", error:""}}} />    );
       wrapperWithInvalidUrl
       .find(".btn-add-rule")
       .first()
       .simulate("click");
-    expect(props.addRuleErrorNotify).toHaveBeenCalled();
-    expect(props.addRuleErrorNotify).toHaveBeenCalledWith("Please Enter a valid URL", 4545)
+    expect(props.updateAddRequestFields).toHaveBeenCalled();
+    expect(props.updateAddRequestFields).toHaveBeenCalledWith("www.codemancers.com", "GET", "Please Enter a valid URL")
     });
 })
 

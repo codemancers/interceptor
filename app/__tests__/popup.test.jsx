@@ -7,7 +7,6 @@ import * as MessageService from "../message_service";
 jest.mock("../message_service");
 const createTestProps = props => ({
   tabRecord: {
-    showAddRequest: true,
     PageDetails: [],
     checkedReqs: {},
     enabledStatus: false,
@@ -16,6 +15,8 @@ const createTestProps = props => ({
     isInterceptorOn: true,
     requests: []
   },
+  showAddRuleModal: true,
+  addRequestDetails: {fields : { url : "codemancers.com", method: "GET", error: ""}},
   currentTab: 1,
   currentUrl: "http://www.google.com",
   clearFields: jest.fn(),

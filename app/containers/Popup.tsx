@@ -183,6 +183,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
               addRequestDetails={props.addRequestDetails}
               updateRequest={props.updateRequest}
               tabId={props.currentTab}
+              updateAddRequestFields={props.updateAddRequestFields}
             />
           )}
 

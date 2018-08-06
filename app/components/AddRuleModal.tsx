@@ -1,8 +1,6 @@
 import * as React from "react";
-import { connect } from "react-redux";
-
+import * as uuid from "uuid";
 import { Modal } from "./ModalWrapper";
-import { updateAddRequestFields } from "./../actions/addRequest";
 
 interface AddRuleModalProps {
   addRequestDetails: Object;
@@ -11,7 +9,7 @@ interface AddRuleModalProps {
   tabId: number;
   updateRequest: (tabId: number, request: chrome.webRequest.WebRequestBodyDetails) => void;
 }
-class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
+export default class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
   isUrl = (str: string) => {
     try {
       new URL(str);
@@ -115,18 +113,3 @@ class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
     );
   }
 }
-
-const mapStateToProps = (state: POPUP_PROPS) => {
-  return {
-    ...state.addRequestReducer
-  };
-};
-
-const mapDispatchToProps = {
-  updateAddRequestFields
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddRuleModal);
