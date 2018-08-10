@@ -67,7 +67,8 @@
       "\\.(ts|tsx|js|jsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/app/__tests__/setup.ts",
-    "testRegex": "/__tests__/.*\\.test\\.(jsx|js)$"
+    "testRegex": "/__tests__/.*\\.test\\.(jsx|js)$",
+    "testURL": "http://localhost/"
   },
   "scripts": {
     "build": "webpack -p --config webpack.config.prod.js",
@@ -77,10 +78,16 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "linters":{
-       "*.{js,jsx,ts,tsx}": ["prettier --config .prettierrc --write", "git add", "jest"]
+    "linters": {
+      "*.{js,jsx,ts,tsx}": [
+        "prettier --config .prettierrc --write",
+        "git add",
+        "jest"
+      ]
     },
-    "ignore": [ "/node_modules/"]
+    "ignore": [
+      "/node_modules/"
+    ]
   },
   "dependencies": {
     "axios": "^0.18.0",
