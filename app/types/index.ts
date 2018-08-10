@@ -31,8 +31,8 @@ export interface requestListProps extends POPUP_PROPS {
 
 export interface newRequest {
   fields: {
-    url: string;
-    method: string;
-    error?: string;
+    modal_url: string;
+    modal_method: string;
+    modal_error?: string;
   };
 }

@@ -41,6 +41,11 @@ const isChromeUrl = (url: string) => {
   return CHROME_URL_REGEX.test(url);
 };
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
+  componentDidMount() {
+    //close the add modal form when switching to other tab
+    //if not called, then the modal will be open when popup is open in other tab
+    this.props.toggleAddRequestForm(false);
+  }
   isUrlInValid = (tabUrl: string) => {
     return !tabUrl || isChromeUrl(tabUrl);
   };

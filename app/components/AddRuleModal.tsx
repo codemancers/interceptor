@@ -4,7 +4,7 @@ import { Modal } from "./ModalWrapper";
 
 interface AddRuleModalProps {
   addRequestDetails: Object;
-  updateAddRequestFields: ((url: string, method: string, error: string) => void);
+  updateAddRequestFields: ({ modal_url, modal_method, modal_error }) => void;
   handleClose: () => void;
   tabId: number;
   updateRequest: (tabId: number, request: chrome.webRequest.WebRequestBodyDetails) => void;
@@ -19,11 +19,18 @@ export default class AddRuleModal extends React.PureComponent<AddRuleModalProps,
     }
   };
 
-  handleClose = () => {
-    const { props } = this;
+  componentDidMount() {
     //erase the previously set error message on each re-render
     //reset the url to empty string and request method to "GET"
-    props.updateAddRequestFields("", "GET", "");
+    this.props.updateAddRequestFields({
+      modal_url: "",
+      modal_method: "GET",
+      modal_error: ""
+    });
+  }
+
+  handleClose = () => {
+    const { props } = this;
     //close the modal
     props.handleClose();
   };
@@ -34,35 +41,38 @@ export default class AddRuleModal extends React.PureComponent<AddRuleModalProps,
 
   urlValid = () => {
     const { props } = this;
-    const IsUrl: boolean = this.isUrl(props.addRequestDetails.fields.url);
+    const IsUrl: boolean = this.isUrl(props.addRequestDetails.fields.modal_url);
     if (IsUrl) {
       const requestObject = {
-        method: props.addRequestDetails.fields.method,
+        method: props.addRequestDetails.fields.modal_method,
         requestId: uuid().replace(/-/g, ""),
         tabId: props.tabId,
         type: "xmlhttprequest",
-        url: props.addRequestDetails.fields.url
+        url: props.addRequestDetails.fields.modal_url
       };
       props.updateRequest(props.tabId, requestObject);
       this.handleClose();
       return;
     } else {
-      props.updateAddRequestFields(
-        props.addRequestDetails.fields.url,
-        props.addRequestDetails.fields.method,
-        "Please Enter a valid URL"
-      );
+      props.updateAddRequestFields({
+        modal_error: "Please Enter a valid URL"
+      });
       return;
     }
+  };
+
+  updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    this.props.updateAddRequestFields({ [name]: value });
   };
   render() {
     const { props } = this;
     return (
       <Modal handleClose={this.handleClose} modalTitle="Add Rule">
-        {props.addRequestDetails.fields.error && (
+        {props.addRequestDetails.fields.modal_error && (
           <p className="popup-error-message popup-error">
             {" "}
-            {props.addRequestDetails.fields.error}{" "}
+            {props.addRequestDetails.fields.modal_error}{" "}
           </p>
         )}
         <div className="modal-body">
@@ -71,28 +81,20 @@ export default class AddRuleModal extends React.PureComponent<AddRuleModalProps,
             <input
               className="form-control"
               type="text"
-              name="request_url"
-              defaultValue={props.addRequestDetails.fields.url}
+              name="modal_url"
+              defaultValue={props.addRequestDetails.fields.modal_url}
               id="url-input-modal"
-              onChange={e => {
-                props.updateAddRequestFields(
-                  e.target.value,
-                  props.addRequestDetails.fields.method,
-                  ""
-                );
-              }}
+              onChange={this.updateField}
             />
           </div>
           <div className="control-group">
             <label htmlFor="modal-request-method">Method</label>
             <select
-              name="request_method"
-              id="modal-request-method"
-              value={props.addRequestDetails.fields.method}
+              name="modal_method"
+              id="modal_request_method"
+              value={props.addRequestDetails.fields.modal_method}
               className="modal-method form-control"
-              onChange={e =>
-                props.updateAddRequestFields(props.addRequestDetails.fields.url, e.target.value, "")
-              }
+              onChange={this.updateField}
             >
               <option value="GET">GET</option>
               <option value="POST">POST</option>

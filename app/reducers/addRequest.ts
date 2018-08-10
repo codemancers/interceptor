@@ -1,11 +1,11 @@
 import { newRequest, Action } from "../types";
-import { RESET, UPDATE_REQUEST_FIELDS, UPDATE_FIELD } from "../actions/addRequest";
+import { RESET, UPDATE_REQUEST_FIELDS } from "../actions/addRequest";
 
 const initialState: newRequest = {
   fields: {
-    url: "",
-    method: "GET",
-    error: ""
+    modal_url: "",
+    modal_method: "GET",
+    modal_error: ""
   }
 };
 
@@ -18,11 +18,6 @@ export const addRequestReducer = (state = initialState, action: Action) => {
           ...state.fields,
           ...action.payload
         }
-      };
-    case UPDATE_FIELD:
-      return {
-        ...state,
-        [action.payload.name]: action.payload.value
       };
     case RESET:
       return initialState;

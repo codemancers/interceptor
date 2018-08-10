@@ -113,14 +113,6 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
         currentTab: action.payload.currentTab,
         interceptStatus: action.payload.interceptStatus
       };
-    // case actionType.HANDLE_MODAL_METHOD_CHANGE:
-    //   return extendTabRecords(state, action.payload, {
-    //     addRequestMethod: action.payload.value
-    //   });
-    // case actionType.HANDLE_MODAL_URL_CHANGE:
-    //   return extendTabRecords(state, action.payload, {
-    //     addRequestUrl: action.payload.value
-    //   });
     case actionType.TOGGLE_SHOW_ADD_REQUEST: {
       return {
         ...state,
