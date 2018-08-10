@@ -30,6 +30,8 @@ const createTestProps = props => ({
   toggleListeningRequests: jest.fn(),
   updateInterceptorStatus: jest.fn(),
   clearFields: jest.fn(),
+  toggleAddRequestForm: jest.fn(),
+  updateAddRequestFields: jest.fn(),
   // allow to override common props
   ...props
 });

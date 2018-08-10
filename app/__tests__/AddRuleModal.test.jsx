@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import AddRuleModal  from "./../components/AddRuleModal";
 
 const createTestProps = props => ({
-  addRequestDetails:{ fields : {url : "http://www.codemancers.com", method: "GET", error:""}},
+  addRequestDetails:{ fields : {modal_url : "http://www.codemancers.com", modal_method: "GET", modal_error:""}},
   updateAddRequestFields: jest.fn(),
   handleClose: jest.fn(),
   updateRequest: jest.fn(),
@@ -38,16 +38,16 @@ describe("AddRuleModal component test", () => {
         .find("input")
         .first()
         .simulate("change", { target: { value: "a" } });
-      expect(props.updateAddRequestFields).toHaveBeenCalledTimes(1);
-      expect(props.updateAddRequestFields).toHaveBeenCalledWith("a", "GET", "");
+      expect(props.updateAddRequestFields).toHaveBeenCalledTimes(2);
+      expect(props.updateAddRequestFields).toHaveBeenCalledWith({"modal_url": "a"})
     });
     test("onChange method input", ()=> {
       wrapper
       .find("select")
       .first()
       .simulate("change", { target: { value: "POST" } });
-    expect(props.updateAddRequestFields).toHaveBeenCalledTimes(1);
-    expect(props.updateAddRequestFields).toHaveBeenCalledWith("http://www.codemancers.com", "POST", "");
+    expect(props.updateAddRequestFields).toHaveBeenCalledTimes(2);
+    expect(props.updateAddRequestFields).toHaveBeenCalledWith({"modal_method": "POST"})
     });
 
     test("onClick of addRule button and for Valid URL, props.addRequest must be called with proper params", ()=> {
@@ -66,7 +66,7 @@ describe("AddRuleModal component test", () => {
       .simulate("click");
     expect(props.updateRequest).toHaveBeenCalledTimes(0);
     expect(props.updateAddRequestFields).toHaveBeenCalled();
-    expect(props.updateAddRequestFields).toHaveBeenCalledWith("www.codemancers.com", "GET", "Please Enter a valid URL")
+    expect(props.updateAddRequestFields).toHaveBeenCalledWith({"modal_error": "Please Enter a valid URL"})
     });
 })
 
