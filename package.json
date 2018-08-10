@@ -58,7 +58,6 @@
       "js",
       "jsx"
     ],
-    "testURL": "http://localhost",
     "globals": {
       "__DEV__": true,
       "__RCTProfileIsProfiling": false
