@@ -32,6 +32,7 @@ const createTestProps = props => ({
   clearFields: jest.fn(),
   toggleAddRequestForm: jest.fn(),
   updateAddRequestFields: jest.fn(),
+  resetAddRequest: jest.fn(),
   // allow to override common props
   ...props
 });

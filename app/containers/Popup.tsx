@@ -6,9 +6,13 @@ import { connect } from "react-redux";
 import * as MessageService from "../message_service";
 import { Logo } from "../components/Logo";
 import RequestList from "../components/RequestList";
-import { POPUP_PROPS } from "../types";
+import { POPUP_PROPS, newRequestFields } from "../types";
 import * as actionTypes from "../actions";
-import { updateAddRequestFields } from "../actions/addRequest";
+import {
+  updateAddRequestFields,
+  resetAddRequest,
+  updateRequestRootFields
+} from "../actions/addRequest";
 //icons
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
@@ -36,18 +40,17 @@ interface DispatchProps {
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
+const ABOUT_URL_REGEX = /^about:.+$/;
 
-const isChromeUrl = (url: string) => {
-  return CHROME_URL_REGEX.test(url);
-};
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   componentDidMount() {
     //close the add modal form when switching to other tab
     //if not called, then the modal will be open when popup is open in other tab
     this.props.toggleAddRequestForm(false);
   }
+
   isUrlInValid = (tabUrl: string) => {
-    return !tabUrl || isChromeUrl(tabUrl);
+    return !tabUrl || CHROME_URL_REGEX.test(tabUrl) || ABOUT_URL_REGEX.test(tabUrl);
   };
 
   toggleListening = (): void => {
@@ -101,15 +104,15 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
-  addRequest = (url: string, method: string) => {
-    const requestObject = {
-      method,
-      requestId: uuid().replace(/-/g, ""),
-      tabId: this.props.currentTab,
-      type: "xmlhttprequest",
-      url
-    };
-    this.props.updateRequest(this.props.currentTab, requestObject);
+  addRequest = (request: newRequestFields) => {
+    if (this.isUrlInValid(this.props.currentUrl)) {
+      this.props.errorNotify(
+        `Cannot Start Listening on ${this.props.currentUrl}`,
+        this.props.currentTab
+      );
+      return;
+    }
+    this.props.updateRequest(this.props.currentTab, { ...request, tabId: this.props.currentTab });
   };
 
   toggleAddRequestForm = () => {
@@ -185,10 +188,11 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
           {props.showAddRuleModal && (
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
-              addRequestDetails={props.addRequestDetails}
-              updateRequest={props.updateRequest}
-              tabId={props.currentTab}
-              updateAddRequestFields={props.updateAddRequestFields}
+              addRequest={this.addRequest}
+              addRequestDetails={this.props.addRequestDetails}
+              updateAddRequestFields={this.props.updateAddRequestFields}
+              resetAddRequest={this.props.resetAddRequest}
+              updateRequestRootFields={this.props.updateRequestRootFields}
             />
           )}
 
@@ -238,10 +242,9 @@ const mapDispatchToProps: DispatchProps = {
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
   handleChangeUrl: actionTypes.handleChangeUrl,
   fetchFailure: actionTypes.fetchFailure,
-  updateAddRequestFields
+  updateAddRequestFields: updateAddRequestFields,
+  resetAddRequest: resetAddRequest,
+  updateRequestRootFields: updateRequestRootFields
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Popup);
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);

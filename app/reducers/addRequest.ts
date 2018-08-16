@@ -1,12 +1,16 @@
-import { newRequest, Action } from "../types";
-import { RESET, UPDATE_REQUEST_FIELDS } from "../actions/addRequest";
+import * as uuid from "uuid";
 
-const initialState: newRequest = {
+import { newRequest, Action } from "../types";
+import { RESET, UPDATE_REQUEST_FIELDS, UPDATE_REQUEST_ROOT_FIELDS } from "../actions/addRequest";
+
+export const initialState: newRequest = {
   fields: {
-    modal_url: "",
-    modal_method: "GET",
-    modal_error: ""
-  }
+    url: "",
+    method: "GET",
+    type: "xmlhttprequest",
+    requestId: uuid().replace(/-/g, "")
+  },
+  error: ""
 };
 
 export const addRequestReducer = (state = initialState, action: Action) => {
@@ -19,8 +23,19 @@ export const addRequestReducer = (state = initialState, action: Action) => {
           ...action.payload
         }
       };
+    case UPDATE_REQUEST_ROOT_FIELDS:
+      return {
+        ...state,
+        ...action.payload
+      };
     case RESET:
-      return initialState;
+      return {
+        initialState,
+        fields: {
+          ...initialState.fields,
+          requestId: uuid().replace(/-/g, "")
+        }
+      };
 
     default:
       return state;

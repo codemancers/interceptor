@@ -1,8 +1,12 @@
 import { wrapStore } from "react-chrome-redux";
 
 import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
+import { initialState } from "./../reducers/addRequest";
 import createStore from "./../store/popup_store";
-export const store = createStore({ rootReducer: INITIAL_POPUP_STATE });
+export const store = createStore({
+  rootReducer: INITIAL_POPUP_STATE,
+  addRequestReducer: initialState
+});
 import { toggleListeningRequests, updateRequest } from "./../actions";
 
 interface TabRecord {

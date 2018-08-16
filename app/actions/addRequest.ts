@@ -1,21 +1,25 @@
+import { newRequestFields, newRequest } from "../types";
+
 export const RESET = "RESET";
 export const UPDATE_REQUEST_FIELDS = "UPDATE_REQUEST_FIELDS";
-interface requestDetails {
-  modal_url?: string;
-  modal_method?: string;
-  modal_error?: string;
-}
+export const UPDATE_REQUEST_ROOT_FIELDS = "UPDATE_REQUEST_ROOT_FIELDS";
 
-export const updateAddRequestFields = (requestDetails: requestDetails) => {
-  const { modal_url, modal_method, modal_error } = requestDetails;
+export const updateAddRequestFields = (payload: newRequestFields) => {
   return {
     type: UPDATE_REQUEST_FIELDS,
-    payload: { modal_url, modal_method, modal_error }
+    payload
   };
 };
 
 export const resetAddRequest = () => {
   return {
     type: RESET
+  };
+};
+
+export const updateRequestRootFields = (payload: newRequest) => {
+  return {
+    type: UPDATE_REQUEST_ROOT_FIELDS,
+    payload
   };
 };

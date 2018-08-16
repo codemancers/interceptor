@@ -1,3 +1,5 @@
+import { newRequestFields } from "../types";
+
 //ACTION CONSTANTS
 export const ERROR = "ERROR";
 export const CLEAR_REQUESTS = "CLEAR_REQUESTS";
@@ -61,7 +63,10 @@ export function fetchSuccess(data: string, requestId: string, tabId: number) {
 export function fetchFailure(error: string, requestId: string, tabId: number) {
   return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId, tabId } };
 }
-export function updateRequest(tabId: number, request: Array<chrome.webRequest.WebRequestDetails>) {
+export function updateRequest(
+  tabId: number,
+  request: Array<chrome.webRequest.WebRequestDetails | newRequestFields>
+) {
   return { type: UPDATE_REQUEST, payload: { tabId, request } };
 }
 export function toggleListeningRequests(tabId: number, enabledStatus: boolean) {

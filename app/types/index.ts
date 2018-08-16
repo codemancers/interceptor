@@ -29,10 +29,20 @@ export interface requestListProps extends POPUP_PROPS {
   handleCheckToggle: React.ChangeEventHandler<HTMLInputElement>;
 }
 
+export interface newRequestFields {
+  url: string;
+  method: string;
+  requestId?: string;
+  type?: string;
+  tabId?: number;
+}
+
+export interface requestRootFields {
+  fields?: newRequestFields;
+  error?: string;
+}
+
 export interface newRequest {
-  fields: {
-    modal_url: string;
-    modal_method: string;
-    modal_error?: string;
-  };
+  fields: newRequestFields;
+  error: string;
 }
