@@ -1,22 +1,24 @@
 import * as React from "react";
-import * as uuid from "uuid";
 import * as cx from "classnames";
 import { connect } from "react-redux";
 
 import * as MessageService from "../message_service";
-import { Logo } from "../components/Logo";
-import RequestList from "../components/RequestList";
-import { POPUP_PROPS, newRequestFields } from "../types";
+import { POPUP_PROPS, newRequestFields, ReduxState } from "../types";
+
 import * as actionTypes from "../actions";
 import {
   updateAddRequestFields,
   resetAddRequest,
   updateRequestRootFields
 } from "../actions/addRequest";
+
 //icons
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
 
+// components
+import { Logo } from "../components/Logo";
+import RequestList from "../components/RequestList";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./../components/Switch";
 import AddRuleModal from "./../components/AddRuleModal";
@@ -37,6 +39,9 @@ interface DispatchProps {
   toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
   handleChangeUrl: typeof actionTypes.handleChangeUrl;
   fetchFailure: typeof actionTypes.fetchFailure;
+  updateAddRequestFields: typeof updateAddRequestFields;
+  resetAddRequest: typeof resetAddRequest;
+  updateRequestRootFields: typeof updateRequestRootFields;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
@@ -72,6 +77,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
+    console.log("handleCheckedRequests :: ", this.props.currentTab, requests);
     MessageService.interceptChecked(this.props.currentTab, requests);
   };
 
@@ -113,6 +119,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
       return;
     }
     this.props.updateRequest(this.props.currentTab, { ...request, tabId: this.props.currentTab });
+    MessageService.updateBadgeText(this.props.currentTab, this.props.tabRecord.requests.length + 1);
   };
 
   toggleAddRequestForm = () => {
@@ -215,7 +222,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   }
 }
 
-const mapStateToProps = (state: POPUP_PROPS) => {
+const mapStateToProps = (state: ReduxState) => {
   return {
     tabRecord: state.rootReducer.tabRecord[state.rootReducer.currentTab],
     currentTab: state.rootReducer.currentTab,

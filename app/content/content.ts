@@ -25,18 +25,21 @@ interface selectedReqs {
 export type GenericCallbackWithoutParams = () => void;
 class Intercept {
   store: BgStore;
+
   constructor() {
     this.store = new Store({
       portName: "INTERCEPTOR"
     });
   }
+
   startMessageListener = () => {
     this.store.ready().then(() => {
-      chrome.runtime.onMessage.addListener((request, _, __) => {
+      chrome.runtime.onMessage.addListener(request => {
         this.interceptSelected(request.message, request.tabId);
       });
     });
   };
+
   interceptSelected = (message: string, tabId: number) => {
     const presentState = this.store.getState().rootReducer.tabRecord[tabId];
     if (!presentState) {
@@ -73,6 +76,7 @@ class Intercept {
       checkedTabRecords,
       tabId
     };
+
     if (message !== "DISABLE_INTERCEPTOR") {
       if (
         requestObj.requestsToIntercept.length < 1 ||

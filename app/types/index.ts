@@ -3,6 +3,11 @@ enum interceptStatus {
   Fail = "Interception Disabled!"
 }
 
+export interface ReduxState {
+  rootReducer: POPUP_PROPS;
+  addRequestReducer: newRequest;
+}
+
 export interface POPUP_PROPS {
   currentTab: number;
   currentUrl: string;

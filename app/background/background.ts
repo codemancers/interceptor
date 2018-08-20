@@ -66,6 +66,10 @@ class BackgroundWorker {
           this.updateBadgeIcon(request.tabId, request.disabledStatus);
           break;
         }
+        case "UPDATE_BADGE_TEXT": {
+          this.updateBadgeText(request.tabId, request.count);
+          break;
+        }
       }
     });
   };
