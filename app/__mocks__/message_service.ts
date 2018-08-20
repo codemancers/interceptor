@@ -3,7 +3,6 @@ export const getRequests = jest.fn((tabId: number, callback) => {
 });
 
 export const disableInterceptor = jest.fn();
-export const interceptChecked = jest.fn();
 export const enableLogging = jest.fn();
 export const clearData = jest.fn();
 export const disableLogging = jest.fn();
