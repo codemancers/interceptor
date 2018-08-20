@@ -1,20 +1,27 @@
 import * as React from "react";
-import * as uuid from "uuid";
 import * as cx from "classnames";
 import { connect } from "react-redux";
 
 import * as MessageService from "../message_service";
-import { Logo } from "../components/Logo";
-import RequestList from "../components/RequestList";
-import { POPUP_PROPS } from "../types";
+import { POPUP_PROPS, newRequestFields, ReduxState } from "../types";
+
 import * as actionTypes from "../actions";
+import {
+  updateAddRequestFields,
+  resetAddRequest,
+  updateRequestRootFields
+} from "../actions/addRequest";
+
 //icons
 import { PlayIcon } from "../components/Icons/PlayIcon";
 import { StopIcon } from "../components/Icons/StopIcon";
 
+// components
+import { Logo } from "../components/Logo";
+import RequestList from "../components/RequestList";
 import { InterceptAllButton } from "./../components/InterceptAllButton";
 import { Switch } from "./../components/Switch";
-import { AddRuleModal } from "./../components/AddRuleModal";
+import AddRuleModal from "./../components/AddRuleModal";
 
 interface DispatchProps {
   errorNotify: typeof actionTypes.errorNotify;
@@ -29,22 +36,26 @@ interface DispatchProps {
   toggleListeningRequests: typeof actionTypes.toggleListeningRequests;
   sendMessageToUI: typeof actionTypes.sendMessageToUI;
   updateRequest: typeof actionTypes.updateRequest;
-  updateAddRequestMethod: typeof actionTypes.updateAddRequestMethod;
-  updateAddRequestUrl: typeof actionTypes.updateAddRequestUrl;
   toggleAddRequestForm: typeof actionTypes.toggleAddRequestForm;
   handleChangeUrl: typeof actionTypes.handleChangeUrl;
   fetchFailure: typeof actionTypes.fetchFailure;
-  addRuleErrorNotify: typeof actionTypes.addRuleErrorNotify;
+  updateAddRequestFields: typeof updateAddRequestFields;
+  resetAddRequest: typeof resetAddRequest;
+  updateRequestRootFields: typeof updateRequestRootFields;
 }
 
 const CHROME_URL_REGEX = /^chrome:\/\/.+$/;
+const ABOUT_URL_REGEX = /^about:.+$/;
 
-const isChromeUrl = (url: string) => {
-  return CHROME_URL_REGEX.test(url);
-};
 export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
+  componentDidMount() {
+    //close the add modal form when switching to other tab
+    //if not called, then the modal will be open when popup is open in other tab
+    this.props.toggleAddRequestForm(false);
+  }
+
   isUrlInValid = (tabUrl: string) => {
-    return !tabUrl || isChromeUrl(tabUrl);
+    return !tabUrl || CHROME_URL_REGEX.test(tabUrl) || ABOUT_URL_REGEX.test(tabUrl);
   };
 
   toggleListening = (): void => {
@@ -66,6 +77,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
+    console.log("handleCheckedRequests :: ", this.props.currentTab, requests);
     MessageService.interceptChecked(this.props.currentTab, requests);
   };
 
@@ -98,19 +110,20 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     }
   };
 
-  addRequest = (url: string, method: string) => {
-    const requestObject = {
-      method,
-      requestId: uuid().replace(/-/g, ""),
-      tabId: this.props.currentTab,
-      type: "xmlhttprequest",
-      url
-    };
-    this.props.updateRequest(this.props.currentTab, requestObject);
+  addRequest = (request: newRequestFields) => {
+    if (this.isUrlInValid(this.props.currentUrl)) {
+      this.props.errorNotify(
+        `Cannot Start Listening on ${this.props.currentUrl}`,
+        this.props.currentTab
+      );
+      return;
+    }
+    this.props.updateRequest(this.props.currentTab, { ...request, tabId: this.props.currentTab });
+    MessageService.updateBadgeText(this.props.currentTab, this.props.tabRecord.requests.length + 1);
   };
 
   toggleAddRequestForm = () => {
-    this.props.toggleAddRequestForm(!this.props.tabRecord.showAddRequest, this.props.currentTab);
+    this.props.toggleAddRequestForm(!this.props.showAddRuleModal);
   };
 
   render() {
@@ -179,17 +192,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
             </div>
           </div>
 
-          {tabRecord.showAddRequest && (
+          {props.showAddRuleModal && (
             <AddRuleModal
               handleClose={this.toggleAddRequestForm}
-              updateAddRequestUrl={props.updateAddRequestUrl}
-              updateAddRequestMethod={props.updateAddRequestMethod}
               addRequest={this.addRequest}
-              addRequestUrl={tabRecord.addRequestUrl}
-              addRequestMethod={tabRecord.addRequestMethod}
-              tabId={props.currentTab}
-              addRuleErrorNotify={props.addRuleErrorNotify}
-              addRuleError={props.tabRecord.addRuleError}
+              addRequestDetails={this.props.addRequestDetails}
+              updateAddRequestFields={this.props.updateAddRequestFields}
+              resetAddRequest={this.props.resetAddRequest}
+              updateRequestRootFields={this.props.updateRequestRootFields}
             />
           )}
 
@@ -212,12 +222,14 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   }
 }
 
-const mapStateToProps = (state: POPUP_PROPS) => {
+const mapStateToProps = (state: ReduxState) => {
   return {
-    tabRecord: state.tabRecord[state.currentTab],
-    currentTab: state.currentTab,
-    currentUrl: state.currentUrl,
-    interceptStatus: state.interceptStatus
+    tabRecord: state.rootReducer.tabRecord[state.rootReducer.currentTab],
+    currentTab: state.rootReducer.currentTab,
+    currentUrl: state.rootReducer.currentUrl,
+    interceptStatus: state.rootReducer.interceptStatus,
+    showAddRuleModal: state.rootReducer.showAddRuleModal,
+    addRequestDetails: state.addRequestReducer
   };
 };
 
@@ -234,12 +246,12 @@ const mapDispatchToProps: DispatchProps = {
   toggleListeningRequests: actionTypes.toggleListeningRequests,
   sendMessageToUI: actionTypes.sendMessageToUI,
   updateRequest: actionTypes.updateRequest,
-  updateAddRequestMethod: actionTypes.updateAddRequestMethod,
-  updateAddRequestUrl: actionTypes.updateAddRequestUrl,
   toggleAddRequestForm: actionTypes.toggleAddRequestForm,
   handleChangeUrl: actionTypes.handleChangeUrl,
   fetchFailure: actionTypes.fetchFailure,
-  addRuleErrorNotify: actionTypes.addRuleErrorNotify
+  updateAddRequestFields: updateAddRequestFields,
+  resetAddRequest: resetAddRequest,
+  updateRequestRootFields: updateRequestRootFields
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

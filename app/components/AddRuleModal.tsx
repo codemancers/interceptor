@@ -1,18 +1,18 @@
 import * as React from "react";
+
 import { Modal } from "./ModalWrapper";
 
+import { newRequest, newRequestFields, requestRootFields } from "../types";
+
 interface AddRuleModalProps {
-  addRequest: (url: string, method: string) => void;
-  addRequestMethod: string;
-  addRequestUrl: string;
-  addRuleErrorNotify: (errorMessage: string, tabId: number) => void;
-  addRuleError: string;
+  addRequestDetails: newRequest;
+  addRequest: (fields: newRequestFields) => void;
+  updateAddRequestFields: (fields: newRequestFields) => void;
+  updateRequestRootFields: (request: requestRootFields) => void;
   handleClose: () => void;
-  tabId: number;
-  updateAddRequestMethod: (value: string, tabId: number) => void;
-  updateAddRequestUrl: (value: string, tabId: number) => void;
+  resetAddRequest: () => void;
 }
-export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
+export default class AddRuleModal extends React.Component<AddRuleModalProps, {}> {
   isUrl = (str: string) => {
     try {
       new URL(str);
@@ -22,64 +22,57 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
     }
   };
 
-  handleClose = () => {
-    const { props } = this;
+  componentDidMount() {
+    //erase the previously set error message on each re-render
     //reset the url to empty string and request method to "GET"
-    props.updateAddRequestUrl("", props.tabId);
-    props.updateAddRequestMethod("GET", props.tabId);
-    //Erase the previously set error on opening the modal window
-    props.addRuleErrorNotify("", props.tabId);
-    //close the modal
-    props.handleClose();
-  };
+    this.props.resetAddRequest();
+  }
 
   handleAddRuleClick = () => {
-    this.urlValid();
-  };
-
-  urlValid = () => {
-    const { props } = this;
-    const IsUrl: boolean = this.isUrl(props.addRequestUrl);
+    const {
+      addRequestDetails: { fields }
+    } = this.props;
+    const IsUrl: boolean = this.isUrl(fields.url);
     if (IsUrl) {
-      props.addRequest(props.addRequestUrl, props.addRequestMethod);
-      //close the modal after adding the url successfully
-      this.handleClose();
-      return;
+      this.props.addRequest(fields);
+      this.props.handleClose();
     } else {
-      props.addRuleErrorNotify("Please Enter a valid URL", props.tabId);
-      return;
+      this.props.updateRequestRootFields({
+        error: "Please Enter a valid URL"
+      });
     }
   };
-  render() {
-    const { props } = this;
 
+  updateField = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    this.props.updateAddRequestFields({ [name]: value });
+  };
+
+  render() {
+    const { fields, error } = this.props.addRequestDetails;
     return (
-      <Modal handleClose={this.handleClose} modalTitle="Add Rule">
-        {props.addRuleError && (
-          <p className="popup-error-message popup-error"> {props.addRuleError} </p>
-        )}
+      <Modal handleClose={this.props.handleClose} modalTitle="Add Rule">
+        {Boolean(error) && <p className="popup-error-message popup-error">{error}</p>}
         <div className="modal-body">
           <div className="control-group">
             <label htmlFor="url-input-modal">URL</label>
             <input
               className="form-control"
               type="text"
-              name="request_url"
-              defaultValue={props.addRequestUrl}
+              name="url"
+              value={fields.url}
               id="url-input-modal"
-              onChange={e => {
-                props.updateAddRequestUrl(e.target.value, props.tabId);
-              }}
+              onChange={this.updateField}
             />
           </div>
           <div className="control-group">
             <label htmlFor="modal-request-method">Method</label>
             <select
-              name="request_method"
-              id="modal-request-method"
-              value={props.addRequestMethod}
+              name="method"
+              id="request_method"
+              value={fields.method}
               className="modal-method form-control"
-              onChange={e => props.updateAddRequestMethod(e.target.value, props.tabId)}
+              onChange={this.updateField}
             >
               <option value="GET">GET</option>
               <option value="POST">POST</option>
@@ -89,7 +82,7 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
           </div>
         </div>
         <div className="modal-footer text-right">
-          <button className="btn" onClick={this.handleClose}>
+          <button className="btn" onClick={this.props.handleClose}>
             Cancel
           </button>
           <button className="btn btn-primary btn-add-rule" onClick={this.handleAddRuleClick}>
@@ -100,9 +93,3 @@ export class AddRuleModal extends React.PureComponent<AddRuleModalProps, {}> {
     );
   }
 }
-
-AddRuleModal.defaultProps = {
-  addRequestMethod: "GET",
-  addRequestUrl: "",
-  tabId: -1
-};

@@ -1,3 +1,5 @@
+import { newRequestFields } from "../types";
+
 //ACTION CONSTANTS
 export const ERROR = "ERROR";
 export const CLEAR_REQUESTS = "CLEAR_REQUESTS";
@@ -14,19 +16,14 @@ export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 export const UPDATE_REQUEST = "UPDATE_REQUEST";
 export const TOGGLE_LISTENING = "TOGGLE_LISTENING";
 export const INITIALISE_DEFAULTS = "INITIALISE_DEFAULTS";
-export const HANDLE_MODAL_METHOD_CHANGE = "HANDLE_MODAL_METHOD_CHANGE";
-export const HANDLE_MODAL_URL_CHANGE = "HANDLE_MODAL_URL_CHANGE";
 export const TOGGLE_SHOW_ADD_REQUEST = "TOGGLE_SHOW_ADD_REQUEST";
 export const CHANGE_URL_TABLE = "CHANGE_URL_TABLE";
-export const ADD_RULE_ERROR = "ADD_RULE_ERROR";
 
 // Action Creators
 export function errorNotify(errorMessage: string, tabId: number) {
   return { type: ERROR, payload: { errorMessage, tabId } };
 }
-export function addRuleErrorNotify(errorMessage: string, tabId: number) {
-  return { type: ADD_RULE_ERROR, payload: { errorMessage, tabId } };
-}
+
 export function clearFields(tabId: number) {
   return { type: CLEAR_REQUESTS, payload: { tabId } };
 }
@@ -66,7 +63,10 @@ export function fetchSuccess(data: string, requestId: string, tabId: number) {
 export function fetchFailure(error: string, requestId: string, tabId: number) {
   return { type: FETCH_DATA_FAILURE, payload: { error: error, requestId, tabId } };
 }
-export function updateRequest(tabId: number, request: Array<chrome.webRequest.WebRequestDetails>) {
+export function updateRequest(
+  tabId: number,
+  request: Array<chrome.webRequest.WebRequestDetails | newRequestFields>
+) {
   return { type: UPDATE_REQUEST, payload: { tabId, request } };
 }
 export function toggleListeningRequests(tabId: number, enabledStatus: boolean) {
@@ -83,27 +83,12 @@ export function initialiseDefaults(
   };
 }
 
-export const updateAddRequestMethod = (value: string, tabId: number) => {
-  return {
-    type: HANDLE_MODAL_METHOD_CHANGE,
-    payload: { value, tabId }
-  };
-};
-
-export const updateAddRequestUrl = (value: string, tabId: number) => {
-  return {
-    type: HANDLE_MODAL_URL_CHANGE,
-    payload: { value, tabId }
-  };
-};
-
-export const toggleAddRequestForm = (showAddRequest: boolean, tabId: number) => {
+export const toggleAddRequestForm = (showAddRuleModal: boolean) => {
   return {
     type: TOGGLE_SHOW_ADD_REQUEST,
-    payload: { showAddRequest, tabId }
+    payload: { showAddRuleModal }
   };
 };
-
 export const handleChangeUrl = (value: string, tabId: number, index: number) => {
   return { type: CHANGE_URL_TABLE, payload: { value, tabId, index } };
 };
