@@ -6,9 +6,9 @@
 A browser extension that mocks AJAX request at the browser level so you
 can run front ends without really starting a backend server.
 
-Firefox : https://addons.mozilla.org/en-US/firefox/addon/xhr-interceptor/
+Firefox : [![Mozilla Add-on](https://img.shields.io/amo/rating/xhr-interceptor.svg)](https://addons.mozilla.org/en-US/firefox/addon/xhr-interceptor/)
 
-Chrome : https://chrome.google.com/webstore/detail/interceptor/enenfaicdcfgcnjmiigcjbmlbaoapnen
+Chrome : [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/enenfaicdcfgcnjmiigcjbmlbaoapnen.svg)](https://chrome.google.com/webstore/detail/interceptor/enenfaicdcfgcnjmiigcjbmlbaoapnen)
 
 ## Development
 
