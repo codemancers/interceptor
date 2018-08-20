@@ -7,4 +7,5 @@
 package-lock.json
 /.vscode
 .env
-
+web-ext-artifacts/*
+!web-ext-artifacts/.gitkeep
