@@ -74,6 +74,7 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   clearRequests = (): void => {
     MessageService.clearData(this.props.currentTab);
     this.props.clearFields(this.props.currentTab);
+    this.disableInterceptor(this.props.currentTab);
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
@@ -97,7 +98,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
         .then(() => {
           this.disableInterceptor(props.currentTab);
           this.updateBadgeIcon(props.currentTab, true);
-          props.sendMessageToUI("Interception Disabled", props.currentTab);
         })
         .catch((err: any) => {
           // something broke in the background store
@@ -254,4 +254,7 @@ const mapDispatchToProps: DispatchProps = {
   updateRequestRootFields: updateRequestRootFields
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Popup);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Popup);
