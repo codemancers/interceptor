@@ -78,7 +78,6 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
   };
 
   handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
-    console.log("handleCheckedRequests :: ", this.props.currentTab, requests);
     MessageService.interceptChecked(this.props.currentTab, requests);
   };
 
