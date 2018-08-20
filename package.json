@@ -17,6 +17,9 @@
   ],
   "private": true,
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/travis-cli": "^7.0.0",
     "@types/chrome": "^0.0.65",
     "@types/classnames": "^2.2.3",
     "@types/clean-webpack-plugin": "^0.1.2",
@@ -68,13 +71,16 @@
     },
     "setupTestFrameworkScriptFile": "<rootDir>/app/__tests__/setup.ts",
     "testRegex": "/__tests__/.*\\.test\\.(jsx|js)$",
-    "testURL": "http://localhost/"
+    "testPathIgnorePatterns": ["/node_modules/", "/.*\\.config\\.js$/"]
   },
   "scripts": {
     "build": "webpack -p --config webpack.config.prod.js",
     "watch": "webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch",
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "commit": "git-cz",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -109,5 +115,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
   }
 }
