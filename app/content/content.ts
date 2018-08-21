@@ -96,7 +96,7 @@ class Intercept {
       ) {
         this.runInterceptor(requestObj);
         this.store.dispatch(sendMessageToUI("Interception Success!", requestObj.tabId));
-      } else if (message === "DISABLE_INTERCEPTOR" && !requestObj.interceptEnabledForTab) {
+      } else if (message === "DISABLE_INTERCEPTOR") {
         this.disableInterceptor();
         this.store.dispatch(sendMessageToUI("Interception Disabled!", requestObj.tabId));
       }

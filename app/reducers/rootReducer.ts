@@ -126,7 +126,9 @@ export const reducer = (state = INITIAL_POPUP_STATE, action: Action) => {
       });
     case actionType.CLEAR_REQUESTS:
       return extendTabRecords(state, action.payload, {
-        requests: []
+        requests: [],
+        requestRecords: {},
+        checkedReqs: {}
       });
     case actionType.TOGGLE_CHECKBOX:
       return extendTabRecords(state, action.payload, {

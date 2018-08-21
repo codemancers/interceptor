@@ -159,6 +159,7 @@ describe("Popup", () => {
       wrapper = mount(<Popup {...localProps} />);
       wrapper.find(".btn-clear").simulate("click");
       expect(localProps.clearFields).toBeCalledWith(1);
+      expect(MessageService.disableInterceptor).toBeCalledWith(1);
     });
   });
 });
