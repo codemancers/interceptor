@@ -17,10 +17,10 @@ export interface contentType {
   [contentType: number]: string;
 }
 interface selectedReqs {
-  interceptEnabledForTab: boolean;
+  interceptEnabledForTab?: boolean;
   checkedTabRecords: any;
   requestsToIntercept: Array<chrome.webRequest.WebRequestBodyDetails>;
-  tabId: number;
+  tabId?: number;
 }
 export type GenericCallbackWithoutParams = () => void;
 class Intercept {
@@ -35,8 +35,22 @@ class Intercept {
   startMessageListener = () => {
     this.store.ready().then(() => {
       chrome.runtime.onMessage.addListener(request => {
-        this.interceptSelected(request.message, request.tabId);
+        switch (request.message) {
+          case "CLEAR_DATA":
+            this.clearAll();
+            break;
+
+          default:
+            this.interceptSelected(request.message, request.tabId);
+        }
       });
+    });
+  };
+
+  clearAll = () => {
+    this.runInterceptor({
+      requestsToIntercept: [],
+      checkedTabRecords: []
     });
   };
 
