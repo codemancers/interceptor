@@ -126,6 +126,7 @@ class BackgroundWorker {
     this.data[this.currentTab].enabled = false;
     store.dispatch(toggleListeningRequests(tabId, false));
   };
+
   clearData = (tabId: number) => {
     this.data[this.currentTab].requests = [];
     this.updateBadgeText(tabId, 0);

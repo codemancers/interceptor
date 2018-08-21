@@ -11,12 +11,12 @@ export function disableLogging(tabId: number) {
 
 export function clearData(tabId: number) {
   chrome.runtime.sendMessage({ message: "CLEAR_DATA", tabId });
+  chrome.tabs.sendMessage(tabId, { message: "CLEAR_DATA" });
 }
 
-export function interceptChecked(tabId: number, requests: Array<any>) {
+export function interceptChecked(tabId: number) {
   chrome.tabs.sendMessage(tabId, {
     message: "INTERCEPT_CHECKED",
-    requestsToIntercept: requests,
     tabId
   });
 }

@@ -76,9 +76,8 @@ export class Popup extends React.Component<POPUP_PROPS & DispatchProps, {}> {
     this.props.clearFields(this.props.currentTab);
   };
 
-  handleCheckedRequests = (requests: Array<chrome.webRequest.WebRequestDetails>): void => {
-    console.log("handleCheckedRequests :: ", this.props.currentTab, requests);
-    MessageService.interceptChecked(this.props.currentTab, requests);
+  handleCheckedRequests = (): void => {
+    MessageService.interceptChecked(this.props.currentTab);
   };
 
   disableInterceptor = (tabId: number): void => {
