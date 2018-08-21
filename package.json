@@ -80,8 +80,7 @@
     "linters": {
       "*.{js,jsx,ts,tsx}": [
         "prettier --config .prettierrc --write",
-        "git add",
-        "jest"
+        "git add"
       ]
     },
     "ignore": [
