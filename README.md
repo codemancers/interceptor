@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/code-mancers/interceptor.svg?branch=master)](https://travis-ci.org/code-mancers/interceptor)
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/code-mancers/interceptor/blob/master/LICENSE)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 
 A browser extension that mocks AJAX request at the browser level so you
 can run front ends without really starting a backend server.
