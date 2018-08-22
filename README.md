@@ -14,11 +14,30 @@ Chrome : [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/ene
 
 ## Development
 
+In Chrome
+
 ```
 $ yarn install
-$ npm run watch
+$ yarn run watch
 # Install "./dist" directory as "unpacked chrome extension" (google it!)
 ```
+
+In Firefox
+
+```
+$ yarn install
+$ yarn run watch
+$ yarn global add web-ext 
+$ web-ext run -s dist -f "/usr/bin/firefox"
+```
+
+## Release
+
+```
+$ yarn run build
+$ AMO_API_KEY=<amo api key> AMO_API_SECRET=<amo api secret> NEW_VERSION=0.3.2 gulp release:prod
+```
+
 
 ## How to use
 
