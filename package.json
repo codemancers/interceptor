@@ -1,6 +1,6 @@
 {
   "name": "interceptor",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A browser extension that mocks AJAX request at the browser level so you can run frontend without really starting a backend server.",
   "license": "MIT",
   "homepage": "https://github.com/code-mancers/interceptor#readme",

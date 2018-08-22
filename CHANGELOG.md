@@ -1,3 +1,14 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/code-mancers/interceptor/compare/0.3.0...0.3.1) (2018-08-22)
+
+
+### Bug Fixes
+
+* **package.json:** remove jest from lint staged ([3b89dde](https://github.com/code-mancers/interceptor/commit/3b89dde))
+* **popup:** clear active interception when clear recorded data ([0f233ac](https://github.com/code-mancers/interceptor/commit/0f233ac)), closes [#149](https://github.com/code-mancers/interceptor/issues/149)
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/code-mancers/interceptor/compare/0.2.1...0.3.0) (2018-08-20)
 
