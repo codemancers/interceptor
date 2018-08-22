@@ -3,8 +3,9 @@ const zip = require("gulp-zip");
 const replace = require("gulp-replace");
 const sequence = require('run-sequence');
 const git = require('gulp-git');
-var conventionalChangelog = require('gulp-conventional-changelog');
-var fs = require('fs');
+const conventionalChangelog = require('gulp-conventional-changelog');
+const fs = require('fs');
+const signAddon = require('sign-addon').default;
 
 const APP_PATH = "./app/";
 const DIST_PATH = "./dist/";
@@ -104,14 +105,15 @@ gulp.task("app:zip", function() {
 
 gulp.task("sign", function() {
   const manifest = require(DIST_PATH + "manifest.json");
-  const distFileName = manifest.name + "-" + manifest.version + "signed.xpi";
+  const distFileName = manifest.name + "-" + manifest.version + ".xpi";
   signAddon({
-    xpiPath: distFileName,
+    xpiPath: OUTPUT_PATH + distFileName,
     version: manifest.version,
     apiKey: process.env.AMO_API_KEY,
     apiSecret: process.env.AMO_API_SECRET,
     downloadDir: OUTPUT_PATH,
-    channel: 'unlisted'
+    channel: 'listed',
+    id: '{024f65fd-47e3-4556-bd93-4c0a1d08cd33}'
   })
   .then(function(result) {
     if (result.success) {
@@ -138,7 +140,7 @@ gulp.task("release:prod", function(done) {
     "push-changes",
     "create-new-tag",
     ["xpi", "zip", "app:zip"],
-    // "sign",
+    "sign",
     done
   );
 });
