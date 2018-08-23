@@ -6,8 +6,8 @@
   "license": "MIT",
   "main": "index.html",
   "scripts": {
-    "start": "parcel src/*",
-    "build": "parcel build src/* --public-url ./",
+    "start": "parcel src/public/*",
+    "build": "parcel build src/public/* --public-url ./",
     "serve": "npm run build && node server.js"
   },
   "dependencies": {
