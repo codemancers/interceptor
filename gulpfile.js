@@ -1,78 +1,96 @@
 const gulp = require("gulp");
 const zip = require("gulp-zip");
 const replace = require("gulp-replace");
-const sequence = require('run-sequence');
-const git = require('gulp-git');
-const conventionalChangelog = require('gulp-conventional-changelog');
-const fs = require('fs');
-const signAddon = require('sign-addon').default;
+const sequence = require("run-sequence");
+const git = require("gulp-git");
+const conventionalChangelog = require("gulp-conventional-changelog");
+const fs = require("fs");
+const signAddon = require("sign-addon").default;
 
 const APP_PATH = "./app/";
 const DIST_PATH = "./dist/";
 const OUTPUT_PATH = "./web-ext-artifacts/";
 
-gulp.task('changelog', function () {
-  return gulp.src('CHANGELOG.md', {
-    buffer: false
-  })
-    .pipe(conventionalChangelog({
-      preset: 'angular' // Or to any other commit message convention you use.
-    }))
-    .pipe(gulp.dest('./'));
+gulp.task("autoprefixer", function() {
+  var postcss = require("gulp-postcss");
+  var autoprefixer = require("autoprefixer");
+
+  return gulp
+    .src("./app/stylesheets/*.css")
+    .pipe(postcss([autoprefixer()]))
+    .pipe(gulp.dest("./app/stylesheets/"));
 });
 
-gulp.task('commit-changes', function () {
-  return gulp.src(['./package.json', './CHANGELOG.md', './app/manifest.json'])
-    .pipe(git.add())
-    // to avoid issue https://github.com/stevelacy/gulp-git/issues/186
-    .pipe(git.commit(undefined, {
-      args: '-m "build: release ' + process.env.NEW_VERSION + '"',
-      disableMessageRequirement: true,
-      disableAppendPaths: true,
-    }))
-    .on('error',function(error) {
-      console.log(error);
-    });
+gulp.task("changelog", function() {
+  return gulp
+    .src("CHANGELOG.md", {
+      buffer: false
+    })
+    .pipe(
+      conventionalChangelog({
+        preset: "angular" // Or to any other commit message convention you use.
+      })
+    )
+    .pipe(gulp.dest("./"));
 });
 
-gulp.task('push-changes', function (done) {
-  git.push('origin', 'master', done);
+gulp.task("commit-changes", function() {
+  return (
+    gulp
+      .src(["./package.json", "./CHANGELOG.md", "./app/manifest.json"])
+      .pipe(git.add())
+      // to avoid issue https://github.com/stevelacy/gulp-git/issues/186
+      .pipe(
+        git.commit(undefined, {
+          args: '-m "build: release ' + process.env.NEW_VERSION + '"',
+          disableMessageRequirement: true,
+          disableAppendPaths: true
+        })
+      )
+      .on("error", function(error) {
+        console.log(error);
+      })
+  );
 });
 
-gulp.task('create-new-tag', function (done) {
+gulp.task("push-changes", function(done) {
+  git.push("origin", "master", done);
+});
+
+gulp.task("create-new-tag", function(done) {
   var version = getPackageJsonVersion();
-  git.tag(version, version, function (error) {
+  git.tag(version, version, function(error) {
     if (error) {
       return done(error);
     }
-    git.push('origin', 'master', {args: '--tags'}, done);
+    git.push("origin", "master", { args: "--tags" }, done);
   });
 
-  function getPackageJsonVersion () {
+  function getPackageJsonVersion() {
     // We parse the json file instead of using require because require caches
     // multiple calls so the version number won't be updated
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  };
+    return JSON.parse(fs.readFileSync("./package.json", "utf8")).version;
+  }
 });
 
 gulp.task("manifest:version", function() {
   return gulp
     .src([DIST_PATH + "manifest.json"])
-    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, '$1' + process.env.NEW_VERSION + '$3'))
+    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, "$1" + process.env.NEW_VERSION + "$3"))
     .pipe(gulp.dest(DIST_PATH));
 });
 
 gulp.task("manifest:version:app", function() {
   return gulp
     .src([APP_PATH + "manifest.json"])
-    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, '$1' + process.env.NEW_VERSION + '$3'))
+    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, "$1" + process.env.NEW_VERSION + "$3"))
     .pipe(gulp.dest(APP_PATH));
 });
 
 gulp.task("package:version", function() {
   return gulp
     .src(["./package.json"])
-    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, '$1' + process.env.NEW_VERSION + '$3'))
+    .pipe(replace(/(.*"version": ")(.*)(",.*)/g, "$1" + process.env.NEW_VERSION + "$3"))
     .pipe(gulp.dest("./"));
 });
 
@@ -112,28 +130,29 @@ gulp.task("sign", function() {
     apiKey: process.env.AMO_API_KEY,
     apiSecret: process.env.AMO_API_SECRET,
     downloadDir: OUTPUT_PATH,
-    channel: 'listed',
-    id: '{024f65fd-47e3-4556-bd93-4c0a1d08cd33}'
+    channel: "listed",
+    id: "{024f65fd-47e3-4556-bd93-4c0a1d08cd33}"
   })
-  .then(function(result) {
-    if (result.success) {
-      console.log("The following signed files were downloaded:");
-      console.log(result.downloadedFiles);
-      console.log("Your extension ID is:");
-      console.log(result.id);
-    } else {
-      console.error("Your add-on could not be signed!");
-      console.error("Check the console for details.");
-    }
-    console.log(result.success ? "SUCCESS" : "FAIL");
-  })
-  .catch(function(error) {
-    console.error("Signing error:", error);
-  });
+    .then(function(result) {
+      if (result.success) {
+        console.log("The following signed files were downloaded:");
+        console.log(result.downloadedFiles);
+        console.log("Your extension ID is:");
+        console.log(result.id);
+      } else {
+        console.error("Your add-on could not be signed!");
+        console.error("Check the console for details.");
+      }
+      console.log(result.success ? "SUCCESS" : "FAIL");
+    })
+    .catch(function(error) {
+      console.error("Signing error:", error);
+    });
 });
 
 gulp.task("release:prod", function(done) {
   sequence(
+    "autoprefixer",
     ["manifest:version", "manifest:version:app", "package:version"],
     "changelog",
     "commit-changes",
