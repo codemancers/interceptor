@@ -1,17 +1,29 @@
 @import "bootstrap/dist/css/bootstrap.css";
 
 :root {
-  --bc: #3A539B; /* bc = brabd-color */
+  --bc: #3a539b; /* bc = brabd-color */
 }
 
-::-moz-selection{background:var(--bc);color:#fff;text-shadow:none}
-::selection{background:var(--bc);color:#fff;text-shadow:none}
-::-moz-selection{background:var(--bc);color:#fff;text-shadow:none}
+::-moz-selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
+::selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
 
 .container {
   max-width: 853px;
 }
-header .navbar{
+header .navbar {
   padding: 5px;
   min-height: 42px;
   position: relative;
@@ -20,14 +32,14 @@ header .navbar{
 header .navbar:after {
   top: 0;
   left: 0;
-  content: '';
+  content: "";
   position: absolute;
   border-bottom: 42px solid transparent;
   border-left: 42px solid #fff;
 }
 header {
   box-shadow: 0 5px 0 0 var(--bc);
-  background: linear-gradient(to right, #fff 0%,#fff 50%,var(--bc) 50%,var(--bc) 100%);
+  background: linear-gradient(to right, #fff 0%, #fff 50%, var(--bc) 50%, var(--bc) 100%);
 }
 .navbar-brand {
   font-size: 0;
@@ -67,12 +79,17 @@ hr.small {
 .bg-brand {
   background-color: var(--bc);
 }
+#features img {
+  -webkit-filter: drop-shadow(3px 3px 3px #666);
+  filter: drop-shadow(3px 3px 3px #666);
+}
+
 @media (min-width: 768px) {
   .w-md-25 {
     width: 25%;
     display: inline-block;
   }
-  .w-md-25.btn-block + .btn-block  {
+  .w-md-25.btn-block + .btn-block {
     margin-top: 0;
   }
 }
