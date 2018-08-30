@@ -1,11 +1,16 @@
-image: alpine:latest
+image: node:alphine
 
 pages:
+  cache:
+    paths:
+    - node_modules/
+
   stage: deploy
   script:
-  - echo 'Nothing to do...'
+  - npm install
+  - npm run build
   artifacts:
     paths:
-    - src/public/
+    - public
   only:
   - master

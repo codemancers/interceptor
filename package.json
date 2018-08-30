@@ -7,7 +7,7 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel src/public/*",
-    "build": "parcel build src/public/* --public-url ./",
+    "build": "parcel build src/public/* --public-url ./ -d public/",
     "serve": "npm run build && NODE_ENV=development && nodemon server.js --config .nodemonrc"
   },
   "dependencies": {
