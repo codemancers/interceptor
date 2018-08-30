@@ -30,7 +30,7 @@ export const addRequestReducer = (state = initialState, action: Action) => {
       };
     case RESET:
       return {
-        initialState,
+        ...initialState,
         fields: {
           ...initialState.fields,
           requestId: uuid().replace(/-/g, "")
