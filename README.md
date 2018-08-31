@@ -9,8 +9,8 @@ npm install
 npm start
 ```
 
-## Production
+## Production build
 
 ```
-npm run serve
+npm run build
 ```
