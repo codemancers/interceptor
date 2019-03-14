@@ -44,7 +44,7 @@ export const InterceptTextBox: React.SFC<InterceptTextBox> = props => {
         <div className="response">
           <label className="responseTextlabel">Mocked Response Text </label>
           <button
-            title="FetchResponse Text"
+            title="Fetch Response Text"
             className="fetch-responsetext btn-sm btn-primary"
             disabled={props.requestRecords.fetching}
             onClick={() => {
