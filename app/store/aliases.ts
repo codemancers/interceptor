@@ -1,5 +1,5 @@
 import * as axios from "axios";
-import { fetchSuccess, fetchFailure, handleRespTextChange } from "./../actions";
+import { fetchSuccess, fetchFailure,fetchingResponse, handleRespTextChange } from "./../actions";
 
 interface payload {
   requestDetails: chrome.webRequest.WebRequestHeadersDetails;
@@ -23,6 +23,9 @@ const fetchDataAlias = (payload: payload) => {
           {}
         )
       : {};
+
+    dispatch(fetchingResponse(tabId,requestId,true));
+
     axios({
       method,
       url,
@@ -44,7 +47,10 @@ const fetchDataAlias = (payload: payload) => {
             tabId
           )
         );
-      });
+        })
+        .finally(()=>{
+            dispatch(fetchingResponse(tabId,requestId,false));
+        });
   };
 };
 
