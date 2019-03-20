@@ -11,7 +11,7 @@ export const PAGINATION_CHANGE = "PAGINATION_CHANGE";
 export const UPDATE_MESSAGE = "UPDATE_MESSAGE";
 export const UPDATE_INTERCEPTOR_STATUS = "UPDATE_INTERCEPTOR_STATUS";
 export const FETCH_DATA = "FETCH_DATA";
-export const FETCHING_DATA = "FETCHING_DATA";
+export const FETCH_DATA_IN_PROGRESS = "FETCH_DATA_IN_PROGRESS";
 export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
 export const FETCH_DATA_FAILURE = "FETCH_DATA_FAILURE";
 export const UPDATE_REQUEST = "UPDATE_REQUEST";
@@ -49,23 +49,20 @@ export function sendMessageToUI(message: string, tabId: number) {
 export function updateInterceptorStatus(tabId: number, value: boolean) {
   return { type: UPDATE_INTERCEPTOR_STATUS, payload: { tabId, value } };
 }
-
 export function fetchingResponse(
-    tabId: number,
-    requestId:any,
-    fetching: boolean
+  tabId: number,
+  requestId:any,
+  fetching: boolean
 ){
   return {
-    type: FETCHING_DATA,
+    type: FETCH_DATA_IN_PROGRESS,
     payload:{
-        tabId,
-        requestId,
-        fetching
-      }
+      tabId,
+      requestId,
+      fetching
     }
+  }
 }
-
-
 export function fetchResponse(
   requestDetails: chrome.webRequest.WebRequestHeadersDetails,
   tabId: number
