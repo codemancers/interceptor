@@ -47,10 +47,10 @@ const fetchDataAlias = (payload: payload) => {
             tabId
           )
         );
-        })
-        .finally(()=>{
-            dispatch(fetchingResponse(tabId,requestId,false));
-        });
+      })
+      .finally(()=>{
+        dispatch(fetchingResponse(tabId,requestId,false));
+      });
   };
 };
 
