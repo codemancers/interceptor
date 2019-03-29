@@ -28,7 +28,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{loader: "ts-loader", options: {transpileOnly: true}}],
+        use: [{ loader: "ts-loader", options: { transpileOnly: true } }],
         exclude: /node_modules/
       },
       {
@@ -48,11 +48,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
-      {from: "manifest.json"},
-      {from: "index.html"},
-      {from: "./lib/*"},
-      {from: "stylesheets/*"},
-      {from: "images/*"}
+      { from: "manifest.json" },
+      { from: "index.html" },
+      { from: "./lib/*" },
+      { from: "stylesheets/*" },
+      { from: "stylesheets/fonts/*" },
+      { from: "images/*" }
     ]),
     new TsCheckerWebpackPlugin({
       tsconfig: path.resolve("tsconfig.json"),
