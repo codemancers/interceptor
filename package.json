@@ -75,10 +75,13 @@
     ],
     "globals": {
       "__DEV__": true,
-      "__RCTProfileIsProfiling": false
+      "__RCTProfileIsProfiling": false,
+      "ts-jest": {
+        "diagnostics": false
+      }
     },
     "transform": {
-      "\\.(ts|tsx|js|jsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "\\.(ts|tsx|js|jsx)$": "ts-jest"
     },
     "setupFilesAfterEnv": [
       "<rootDir>/app/__tests__/setup.ts"
