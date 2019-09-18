@@ -105,7 +105,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.11",
     "match-sorter": "^2.2.3",
