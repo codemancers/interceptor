@@ -32,13 +32,14 @@
     "@types/react-redux": "^6.0.0",
     "@types/react-table": "^6.7.11",
     "@types/redux-logger": "^3.0.6",
-    "clean-webpack-plugin": "^0.1.19",
-    "copy-webpack-plugin": "^4.5.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
     "cz-conventional-changelog": "^3.0.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-adapter-react-helper": "^1.2.3",
-    "fork-ts-checker-webpack-plugin": "^0.4.1",
+    "fork-ts-checker-webpack-plugin": "^1.5.0",
     "gulp": "^3.9.1",
     "gulp-conventional-changelog": "^2.0.1",
     "gulp-git": "^2.8.0",
@@ -90,7 +91,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "commit": "git-cz",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s",
+    "fx": "web-ext run -s dist"
   },
   "lint-staged": {
     "./app/*.{js,jsx,ts,tsx}": [
@@ -101,7 +103,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
-    "css-loader": "^0.28.11",
     "match-sorter": "^2.2.3",
     "react": "^16.3.2",
     "react-chrome-redux": "^1.5.1",

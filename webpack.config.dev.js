@@ -2,9 +2,9 @@ const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-let pathsToClean = ["dist"];
+let pathsToClean = { cleanOnceBeforeBuildPatterns: ["dist"] };
 
 module.exports = {
   context: path.join(__dirname, "app"),
@@ -28,7 +28,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{loader: "ts-loader", options: {transpileOnly: true}}],
+        use: [{ loader: "ts-loader", options: { transpileOnly: true } }],
         exclude: /node_modules/
       },
       {
@@ -48,11 +48,11 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(pathsToClean),
     new CopyWebpackPlugin([
-      {from: "manifest.json"},
-      {from: "index.html"},
-      {from: "./lib/*"},
-      {from: "stylesheets/*"},
-      {from: "images/*"}
+      { from: "manifest.json" },
+      { from: "index.html" },
+      { from: "./lib/*" },
+      { from: "stylesheets/*" },
+      { from: "images/*" }
     ]),
     new TsCheckerWebpackPlugin({
       tsconfig: path.resolve("tsconfig.json"),
