@@ -89,20 +89,13 @@
     "watch": "webpack --config webpack.config.dev.js --watch --progress --colors",
     "test": "jest",
     "test:watch": "jest --watch",
-    "commitmsg": "commitlint -E GIT_PARAMS",
     "commit": "git-cz",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s",
-    "precommit": "lint-staged"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s"
   },
   "lint-staged": {
-    "linters": {
-      "./app/*.{js,jsx,ts,tsx}": [
-        "prettier --config .prettierrc --write",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "/node_modules/"
+    "./app/*.{js,jsx,ts,tsx}": [
+      "prettier --config .prettierrc --write",
+      "git add"
     ]
   },
   "dependencies": {
@@ -131,5 +124,11 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
   }
 }
