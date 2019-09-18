@@ -114,10 +114,10 @@
     "react": "^16.9.0",
     "react-chrome-redux": "^1.5.1",
     "react-dom": "^16.9.0",
-    "react-redux": "^5.0.6",
+    "react-redux": "^7.1.1",
     "react-simple-contenteditable": "^0.0.5",
     "react-table": "^6.8.6",
-    "redux": "3.5.2",
+    "redux": "^4.0.4",
     "redux-thunk": "^2.2.0",
     "uuid": "^3.2.1"
   },
