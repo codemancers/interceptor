@@ -1,4 +1,4 @@
-import { Store } from "react-chrome-redux";
+import { Store } from "webext-redux";
 import { sendMessageToUI } from "./../actions";
 
 interface BgStore {

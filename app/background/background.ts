@@ -1,4 +1,4 @@
-import { wrapStore } from "react-chrome-redux";
+import { wrapStore } from "webext-redux";
 
 import { INITIAL_POPUP_STATE } from "./../reducers/rootReducer";
 import { initialState } from "./../reducers/addRequest";
