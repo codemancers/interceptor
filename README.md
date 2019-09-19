@@ -35,7 +35,7 @@ $ web-ext run -s dist -f "/usr/bin/firefox"
 
 ```
 $ yarn run build
-$ AMO_API_KEY=<amo api key> AMO_API_SECRET=<amo api secret> NEW_VERSION=0.3.2 gulp release:prod
+$ AMO_API_KEY=<amo api key> AMO_API_SECRET=<amo api secret> NEW_VERSION=0.3.2 yarn run release
 ```
 
 

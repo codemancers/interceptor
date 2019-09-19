@@ -99,7 +99,8 @@
     "test:watch": "jest --watch",
     "commit": "git-cz",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s",
-    "fx": "web-ext run -s dist"
+    "fx": "web-ext run -s dist",
+    "release": "gulp release"
   },
   "lint-staged": {
     "./app/*.{js,jsx,ts,tsx}": [
