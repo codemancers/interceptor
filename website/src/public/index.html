@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Interceptor</title>
+  <meta name="description" content="A browser extension that mocks AJAX request at the browser level so you can change UI data without really starting a backend
+  server."
+  />
+  <meta name="twitter:card" content="A browser extension that mocks AJAX request at the browser level so you can change UI data without really starting a backend
+  server."
+  />
+
+  <meta name="twitter:site" content="@codemancers" />
+  <!-- <meta property="og:url" content="" /> -->
+  <meta property="og:title" content="Interceptor" />
+  <meta property="og:description" content="A browser extension that mocks AJAX request at the browser level so you can  without really starting a backend server."
+  />
+  <!-- <meta property="og:image" content="" />-->
+
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/styles/index.css" />
+</head>
+
+<body>
+  <svg style="display: none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="image">
+      <rect x="0" y="0" width="100%" height="100%" fill="#999" />
+    </symbol>
+  </svg>
+
+  <header class="fixed-top sticky p-0">
+    <div class="container p-sm-0">
+      <nav class="navbar navbar-expand-md navbar-dark">
+        <a class="navbar-brand p-0 m-0 position-relative z-1" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-label="Interceptor" role="Image" width="32" height="32" viewBox="0 0 32 32">
+            <rect fill="#3A539B" width="32" height="32" x="0" y="0" />
+            <path fill="#ffffff" d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z" />
+            <path fill="#ffffff" d="m 18.125,13.875 -4.25,4.25 9.03125,9.03125 4.25,-4.25 L 18.125,13.875 z" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+          </svg>
+          <span class="ml-2 pl-1 text-capitalize">Interceptor</span>
+        </a>
+        <a class="btn-outline-light btn btn-sm d-md-none" href="https://github.com/code-mancers/interceptor">Github</a>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link py-0" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-0" href="https://github.com/code-mancers/interceptor">Github</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-0" href="faq.html">FAQ</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <section class="jumbotron text-center bg-white mb-0">
+    <div class="container">
+      <p class="lead display-5 text-muted my-5">
+        Interceptor is a browser extension that mocks AJAX requests at the browser level so you can work on the front end UI without really starting a backend
+        server.
+      </p>
+      <hr class="small mb-5" />
+      <p class="d-block mb-3 text-muted">Install Interceptor from</p>
+      <div class="text-center lead mb-3">
+        <a target="_blank" href="https://chrome.google.com/webstore/detail/interceptor/enenfaicdcfgcnjmiigcjbmlbaoapnen" class="w-md-25 btn-block btn btn-lg btn-outline-primary mb-3 mb-md-0 mr-md-3">Chrome
+          Web Store</a>
+        <a target="_blank" href="https://addons.mozilla.org/en-US/firefox/addon/xhr-interceptor/" class="w-md-25 btn-block btn btn-lg btn-outline-primary">Firefox
+          Add-ons
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <div class="videoWrapper">
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/x_kaiVdVNts?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0"
+          allowfullscreen=""></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-light" id="features">
+    <div class="container">
+      <div class="text-center">
+        <h2>Features</h2>
+        <h4 class="font-weight-light text-muted">
+          Using Interceptor, you can mock and/or modify HTTP AJAX requests.
+        </h4>
+      </div>
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-6 align-self-center">
+          <h3 class="font-weight-light">Listen to Incoming Requests</h3>
+          <p class="lead my-3">
+            Interceptor lists out all the requests requested by the browser on a per-tab basis. You can choose to enable/disable the
+            <mark>Listen</mark> feature whenever you want to.
+          </p>
+        </div>
+        <div class="col-lg-6 mt-5 mt-md-0">
+          <img width="400" src="assets/images/listen_requests.png" alt="">
+        </div>
+      </div>
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-6">
+          <img width="400" src="assets/images/intercept_requests.png" alt="">
+        </div>
+        <div class="col-lg-6 align-self-center">
+          <h3 class="font-weight-light">Modify the Response</h3>
+          <p class="lead my-3">
+            You can inspect each request and modify the response as you need, and interceptor will make sure that the modified response
+            will be sent to the browser tab when requested again.
+          </p>
+        </div>
+      </div>
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-6 align-self-center">
+          <h3 class="font-weight-light">Inspect Server Response</h3>
+          <p class="lead my-3">
+            You can see the actual response sent out by the website's backend whenever you need to. It will help you know the structure
+            of response which helps you modify it and intercept.
+          </p>
+        </div>
+        <div class="col-lg-6 mt-5 mt-md-0">
+          <img width="400" src="assets/images/inspect_response.png" alt="">
+        </div>
+      </div>
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-6">
+          <img width="400" src="assets/images/add_rule.png" alt="">
+        </div>
+        <div class="col-lg-6 align-self-center">
+          <h3 class="font-weight-light">Add interception rules</h3>
+          <p class="lead my-3">
+            You can add a interception rules for requests and define responses that haven't been recieved yet. So you can
+            define a mock response for a request even before it comes back from the server.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <section class="text-center py-5 border-top">
+    <div class="container">
+      <p class="d-block mb-3 text-muted">Install Interceptor from</p>
+      <div class="text-center lead mb-3">
+        <a href="https://chrome.google.com/webstore/detail/interceptor/enenfaicdcfgcnjmiigcjbmlbaoapnen" class="btn btn-lg btn-outline-primary w-md-25 btn-block mb-3 mb-md-0 mr-md-3">Chrome
+          Web Store</a>
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/xhr-interceptor/" class="btn btn-lg w-md-25 btn-block btn-outline-primary">Firefox
+          Add-ons
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-brand py-3 navbar-dark text-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col">
+          &copy; 2018
+          <a class="text-light" href="https://codemancers.com">Codemancers</a>
+        </div>
+        <div class="col text-md-right">
+          <a href="https://github.com/code-mancers" target="_blank" class="btn btn-sm btn-outline-light">
+            Github
+          </a>
+          <a href="https://twitter.com/codemancershq" target="_blank" class="btn btn-sm btn-outline-light ml-3">
+            Twitter
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- <script type="text/javascript" src="src/index.js"></script> -->
+</body>
+
+</html>

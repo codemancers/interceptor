@@ -1,0 +1,95 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
+:root {
+  --bc: #3a539b; /* bc = brabd-color */
+}
+
+::-moz-selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
+::selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: var(--bc);
+  color: #fff;
+  text-shadow: none;
+}
+
+.container {
+  max-width: 853px;
+}
+header .navbar {
+  padding: 5px;
+  min-height: 42px;
+  position: relative;
+  background-color: var(--bc);
+}
+header .navbar:after {
+  top: 0;
+  left: 0;
+  content: "";
+  position: absolute;
+  border-bottom: 42px solid transparent;
+  border-left: 42px solid #fff;
+}
+header {
+  box-shadow: 0 5px 0 0 var(--bc);
+  background: linear-gradient(to right, #fff 0%, #fff 50%, var(--bc) 50%, var(--bc) 100%);
+}
+.navbar-brand {
+  font-size: 0;
+}
+.navbar-brand span {
+  color: #fff;
+  font-size: 20px;
+  vertical-align: middle;
+}
+.z-1 {
+  z-index: 1;
+}
+.videoWrapper {
+  clear: both;
+  float: none;
+  height: 0;
+  padding-bottom: 56.25%;
+  padding-top: 25px;
+  position: relative;
+  width: 100%;
+}
+.videoWrapper iframe {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.display-5 {
+  font-size: 26px;
+}
+hr.small {
+  width: 25%;
+  margin: 0 auto;
+  border-top-width: 2px;
+}
+.bg-brand {
+  background-color: var(--bc);
+}
+#features img {
+  -webkit-filter: drop-shadow(3px 3px 3px #666);
+  filter: drop-shadow(3px 3px 3px #666);
+}
+
+@media (min-width: 768px) {
+  .w-md-25 {
+    width: 25%;
+    display: inline-block;
+  }
+  .w-md-25.btn-block + .btn-block {
+    margin-top: 0;
+  }
+}

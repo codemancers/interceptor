@@ -1,0 +1,19 @@
+{
+  "name": "interceptor-landing",
+  "version": "1.0.0",
+  "homepage": "https://codemancers.gitlab.io/interceptor-landing/",
+  "description": "Interceptor Landing Page",
+  "author": "Amit Bhavikatti",
+  "license": "MIT",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel src/public/index.html",
+    "build": "NODE_ENV=production parcel build src/public/index.html --public-url ./ -d public/"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}

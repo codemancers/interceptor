@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FAQ - Interceptor</title>
+  <meta name="description" content="Answers to Frequently Asked Questions about Interceptor extension." />
+  <meta name="twitter:card" content="Answers to Frequently Asked Questions about Interceptor extension." />
+  <meta name="twitter:site" content="@codemancers" />
+  <!-- <meta property="og:url" content="" /> -->
+  <meta property="og:title" content="FAQ - Interceptor" />
+  <meta property="og:description" content="Answers to Frequently Asked Questions about Interceptor extension.." />
+  <!-- <meta property="og:image" content="" />-->
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/styles/index.css" />
+  <link rel="stylesheet" href="assets/styles/faq.css" />
+</head>
+
+<body>
+  <svg style="display: none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="image">
+      <rect x="0" y="0" width="100%" height="100%" fill="#999" />
+    </symbol>
+  </svg>
+
+  <header class="fixed-top sticky p-0">
+    <div class="container p-sm-0">
+      <nav class="navbar navbar-expand-md navbar-dark">
+        <a class="navbar-brand p-0 m-0 position-relative z-1" href="index.html">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-label="Interceptor" role="Image" width="32" height="32" viewBox="0 0 32 32">
+            <rect fill="#3A539B" width="32" height="32" x="0" y="0" />
+            <path fill="#ffffff" d="M 1,1 1,31 13.875,18.125 4.84375,9.09375 l 4.25,-4.25 L 18.125,13.875 31,1 1,1 z" />
+            <path fill="#ffffff" d="m 18.125,13.875 -4.25,4.25 9.03125,9.03125 4.25,-4.25 L 18.125,13.875 z" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+            <path fill="#ffffff" d="m 31,1 1,-1 0,32 -32,0 1,-1 30,0" />
+          </svg>
+          <span class="ml-2 pl-1">INTERCEPTOR</span>
+        </a>
+        <a class="btn-outline-light btn btn-sm d-md-none" href="https://github.com/code-mancers/interceptor">Github</a>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link py-0" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-0" href="https://github.com/code-mancers/interceptor">Github</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link py-0" href="faq.html">FAQ</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="jumbotron bg-white mb-0">
+    <div class="container">
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">What is Interceptor ?</span>
+        </section>
+        <section class="answer">
+          Interceptor is a chrome/firefox extension intended for the use by web developers which allows you to intercept/modify the
+          HTTP response sent out by back-end servers when a request is made from front-end. In addition, You can use Interceptor
+          to listen for all the incoming requests, inspect/view HTTP response and headers for each request made.
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Why should I use Interceptor ?</span>
+        </section>
+        <section class="answer">
+          Front-end developers often face difficulty in developing/testing their web app as they have wait for backend developer to
+          provide with an API for any dynamic data to be shown on the page. With this extension, you can write your own back-end
+          with custom responses!
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          <span class="question pl-2">How do I use Interception extension ?</span>
+        </section>
+        <section class="answer">
+          After you download the extension from Chrome Webstore/Firefox addons store. You will find a Interceptor icon in your extension
+          bar.
+          <ul>
+            <li>When you open the pop-up, you will find a "Start Listening" button.On clicking it, you will be able to view
+              all the incoming requests for that tab.</li>
+            <li>
+              Simply expand the requests you are interested to intercept and type in your custom response
+            </li>
+            <li>
+              Select the content-type and status code for the fake/mocked data.
+            </li>
+            <li>
+              Check the checkbox on the right and hit
+              <mark>Intercept Button</mark>
+            </li>
+            Whenever the browser tab sees that particular request, the browser will recieve a
+            <mark>fake</mark> response with specified content-type and status code earlier typed out by you.
+          </ul>
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Can I intercept a request that hasn't been listened to ?</span>
+        </section>
+        <section class="answer">
+          Sure. You can intercept a request that hasn't been listened to.
+          <ul>
+            <li>Click on
+              <mark>Add Rule</mark> button</li>
+            <li>Type in the
+              <mark>URL</mark> and
+              <mark>HTTP method</mark>(
+              <mark>GET</mark>,
+              <mark>POST</mark>,
+              <mark>PUT</mark> etc)</li>
+            <li>Click 'Add Rule'. You will find that the new rule gets added to the list.</li>
+            <li>Further follow the same steps that you followed to intercept a listened request.</li>
+          </ul>
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2"> There are too many requests listed. Can I fiter out un-wanted requests ?</span>
+        </section>
+        <section class="answer">
+          Yes. You can filter the requests as per these parameters.
+          <ul>
+            <li>Search for relevant requests.</li>
+            Suppose you need to just see the requests containing the name
+            <mark>codemancers.com</mark> in it. Type in the word and list shows all the corresponding requests that match.
+            <li>Filter by
+              <mark>Method</mark>. Simple, Just choose one the of method to filter and you are good to go.</li>
+          </ul>
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I listen/intercept a request that has been made from other tab/window ?</span>
+        </section>
+        <section class="answer">
+          Currenly this is not Possible. It doesn't make sense to listen to all requests across various tabs. You can anyhow go to
+          required tab/window and listen to/intercept a custom response.
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I turn off interceptor ?</span>
+        </section>
+        <section class="answer">
+          Turning off interceptor means shutting down the fake/mock server that you had been using. Once you toggle the
+          <mark>Toggle Intercept</mark>
+          to
+          <mark>OFF</mark> position, all requests in that particular tab will return the
+          <mark>real</mark> response rather than the response from Interceptor.
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">How do I stop listening to incoming requests ?</span>
+        </section>
+        <section class="answer">
+          Just click the
+          <mark>Stop Listening</mark> button.
+        </section>
+      </div>
+      <div class="faq-item">
+        <section class="box">
+          <span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <i class="fa fa-minus d-none" aria-hidden="true"></i>
+          </span>
+          <span class="question pl-2">Can I edit a URL ?</span>
+        </section>
+        <section class="answer">
+          On Expanding any request detail, you will find URL header with full URL listed below it. Just click on the URL you want to
+          edit and change it. It is a content-editable section.
+        </section>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="bg-brand py-3 navbar-dark text-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col">
+          &copy; 2018
+          <a class="text-light" href="http://codemancers.com">Codemancers</a>
+        </div>
+        <div class="col text-md-right">
+          <a href="https://github.com/code-mancers" class="btn btn-sm btn-outline-light">
+            Github
+          </a>
+          <a href="https://twitter.com/code-mancers" class="btn btn-sm btn-outline-light ml-3">
+            Twitter
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $(".box").click(function () {
+        $(this).next().slideToggle("fast");
+        $(this).find('i').toggleClass('d-none');
+      });
+    });
+  </script>
+</body>
+
+</html>
