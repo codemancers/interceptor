@@ -42,8 +42,7 @@ function commitChanges() {
 }
 
 function pushChanges(done) {
-  // git.push('origin', 'master', done);
-  console.log("push");
+  git.push('origin', 'master', done);
   return done();
 }
 
@@ -53,9 +52,8 @@ function createNewTag(done) {
     if (error) {
       return done(error);
     }
-    console.log("push with tags");
+    git.push('origin', 'master', {args: '--tags'}, done);
     return done();
-    // git.push('origin', 'master', {args: '--tags'}, done);
   });
 
   function getPackageJsonVersion() {
@@ -136,6 +134,7 @@ function sign() {
     });
 }
 
+exports.changelog = changelog;
 exports.release = series(
   parallel(manifestVersion, manifestAppVersion, packageVersion),
   changelog,
@@ -145,15 +144,3 @@ exports.release = series(
   parallel(xpi, zipDist, zipApp),
   sign
 );
-
-// gulp.task("release:prod", function(done) {
-//   sequence(
-//     ["manifest:version", "manifest:version:app", "package:version"],
-//     "changelog",
-//     "commit-push-changes",
-//     "create-new-tag",
-//     ["xpi", "zip", "app:zip"],
-//     "sign",
-//     done
-//   );
-// });
