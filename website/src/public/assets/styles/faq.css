@@ -1,0 +1,38 @@
+.faq-section {
+  margin: 40px auto;
+}
+.faq-item {
+  padding-bottom: 10px;
+}
+.box {
+  background: rgba(246, 246, 246, 1);
+  color: #666666;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  font-size: 13px;
+  text-transform: none;
+  cursor: pointer;
+  border: 1px solid #d9d9d9;
+}
+.answer {
+  display: none;
+  background: #ffffff;
+  word-wrap: break-word;
+  padding: 20px;
+  border-bottom: 1px solid #d9d9d9;
+  border-left: 1px solid #d9d9d9;
+  border-right: 1px solid #d9d9d9;
+  color: #000000;
+  padding-left: 30px;
+}
+.fa-plus {
+  content: url('data:image/svg+xml,<svg width="1em" height="1em" aria-hidden="true" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>');
+  vertical-align: -0.2em;
+  padding-left: 0.1em;
+}
+.fa-minus {
+  content: url('data:image/svg+xml,<svg width="1em" height="1em" aria-hidden="true" data-prefix="fas" data-icon="minus" class="svg-inline--fa fa-minus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>');
+  vertical-align: -0.2em;
+  padding-left: 0.1em;
+}
