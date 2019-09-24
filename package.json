@@ -40,11 +40,11 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-adapter-react-helper": "^1.2.3",
     "fork-ts-checker-webpack-plugin": "^1.5.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-conventional-changelog": "^2.0.1",
     "gulp-git": "^2.8.0",
     "gulp-replace": "^1.0.0",
-    "gulp-zip": "^4.2.0",
+    "gulp-zip": "^5.0.0",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
     "lint-staged": "^9.2.5",
@@ -99,7 +99,8 @@
     "test:watch": "jest --watch",
     "commit": "git-cz",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -u -s",
-    "fx": "web-ext run -s dist"
+    "fx": "web-ext run -s dist",
+    "release": "gulp release"
   },
   "lint-staged": {
     "./app/*.{js,jsx,ts,tsx}": [
